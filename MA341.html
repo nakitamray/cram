@@ -1,0 +1,3709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MA 341 — The Complete Real Analysis Codex</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true
+  },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+<style>
+:root {
+  --ink: #1a1612;
+  --paper: #f4ede0;
+  --paper-deep: #ebe2d0;
+  --rule: #2a221a;
+  --accent: #8b1e1e;
+  --accent-soft: #c1463a;
+  --gold: #b08442;
+  --teal: #2c5757;
+  --shadow: rgba(26, 22, 18, 0.12);
+  --highlight: #f7e9b8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'EB Garamond', Georgia, serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.65;
+  font-size: 18px;
+  background-image:
+    radial-gradient(ellipse at top left, rgba(176, 132, 66, 0.06), transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(139, 30, 30, 0.04), transparent 50%);
+  background-attachment: fixed;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(26,22,18,0.012) 2px, rgba(26,22,18,0.012) 3px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.masthead {
+  position: relative;
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+  border-bottom: 3px double var(--rule);
+  background: var(--paper);
+  z-index: 2;
+}
+
+.masthead .pretitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.masthead h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-style: italic;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1.05;
+  margin-bottom: 0.5rem;
+}
+
+.masthead h1 .amp { color: var(--accent); font-weight: 400; }
+
+.masthead .subtitle {
+  font-size: 1.1rem;
+  color: var(--rule);
+  font-style: italic;
+  max-width: 600px;
+  margin: 0 auto 1.5rem;
+}
+
+.masthead .meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 1rem;
+}
+
+.ornament {
+  display: flex; align-items: center; justify-content: center;
+  gap: 1rem; margin: 1.25rem 0; color: var(--accent);
+}
+.ornament .line { height: 1px; background: var(--rule); width: 80px; opacity: 0.4; }
+.ornament .symbol { font-size: 1.2rem; font-style: italic; }
+
+.toc-wrap {
+  position: sticky; top: 0;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  z-index: 100;
+  box-shadow: 0 2px 12px var(--shadow);
+}
+.toc {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; flex-wrap: wrap; justify-content: center;
+  padding: 0.5rem 1rem;
+}
+.toc a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink); text-decoration: none;
+  padding: 0.6rem 1rem;
+  border-right: 1px solid rgba(26,22,18,0.15);
+  transition: all 0.2s; white-space: nowrap;
+}
+.toc a:last-child { border-right: none; }
+.toc a:hover { background: var(--ink); color: var(--paper); }
+.toc a .num { color: var(--accent); font-weight: 600; }
+
+main {
+  max-width: 920px; margin: 0 auto;
+  padding: 3rem 2rem 6rem;
+  position: relative; z-index: 2;
+}
+
+.chapter { margin-bottom: 6rem; position: relative; }
+
+.chapter-header {
+  border-top: 4px double var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 2.5rem 0 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.chapter-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.4em;
+  color: var(--accent); text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.chapter-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 500;
+  font-size: clamp(2rem, 4vw, 3rem); line-height: 1.1;
+}
+.chapter-tagline {
+  font-style: italic; color: var(--rule);
+  margin-top: 0.75rem; font-size: 1.05rem; opacity: 0.8;
+}
+
+.section { margin-bottom: 3rem; }
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 1.7rem;
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex; align-items: baseline; gap: 0.75rem;
+}
+.section-title .marker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; color: var(--accent);
+  letter-spacing: 0.2em;
+}
+
+h3.subsection {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-style: italic;
+  font-size: 1.3rem; margin: 1.75rem 0 0.75rem;
+  color: var(--accent);
+}
+
+h4.minihead {
+  font-family: 'EB Garamond', serif;
+  font-weight: 700; font-size: 1.1rem;
+  margin: 1.25rem 0 0.5rem;
+  color: var(--ink);
+  text-transform: none;
+}
+
+p { margin-bottom: 1rem; }
+p strong, li strong { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 0.75rem 0 1rem 1.5rem; }
+ul li, ol li { margin-bottom: 0.5rem; }
+
+.box {
+  margin: 1.5rem 0;
+  background: rgba(255, 252, 244, 0.7);
+  border-left: 4px solid var(--rule);
+  padding: 1.25rem 1.5rem;
+  position: relative;
+  box-shadow: 2px 2px 0 rgba(26,22,18,0.06);
+}
+.box-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem; font-weight: 600;
+}
+
+.box.definition { border-left-color: var(--teal); }
+.box.definition .box-label { color: var(--teal); }
+.box.theorem { border-left-color: var(--accent); background: rgba(247, 233, 184, 0.25); }
+.box.theorem .box-label { color: var(--accent); }
+.box.lemma { border-left-color: var(--gold); }
+.box.lemma .box-label { color: var(--gold); }
+.box.intuition {
+  border-left-color: var(--accent);
+  border-left-style: dashed;
+  background: rgba(247, 233, 184, 0.4);
+}
+.box.intuition .box-label { color: var(--accent); }
+.box.warning {
+  border-left-color: var(--accent-soft);
+  background: rgba(193, 70, 58, 0.06);
+}
+.box.warning .box-label { color: var(--accent-soft); }
+.box.proof {
+  border-left-color: var(--gold);
+  border-left-style: dotted;
+  background: rgba(176, 132, 66, 0.05);
+  font-size: 0.97rem;
+}
+.box.proof .box-label { color: var(--gold); }
+
+.box-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-style: italic;
+  font-size: 1.15rem; display: inline;
+}
+
+.example {
+  margin: 1.5rem 0;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.example-header {
+  background: var(--ink); color: var(--paper);
+  padding: 0.5rem 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.25em;
+  text-transform: uppercase;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.example-body { padding: 1.25rem 1.5rem; }
+.example-body .problem {
+  font-style: italic;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px dotted var(--rule);
+}
+.example-body .solution-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem; font-weight: 600;
+  margin-top: 0.75rem;
+}
+
+.practice {
+  margin: 2rem 0;
+  border: 2px solid var(--ink);
+  background: var(--paper-deep);
+  padding: 1.5rem;
+  position: relative;
+}
+.practice::before {
+  content: 'YOUR TURN';
+  position: absolute; top: -10px; left: 1rem;
+  background: var(--accent); color: var(--paper);
+  padding: 2px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 0.3em; font-weight: 600;
+}
+.practice-item {
+  margin: 1rem 0;
+  padding: 0.75rem 0;
+  border-bottom: 1px dotted var(--rule);
+}
+.practice-item:last-child { border-bottom: none; }
+.practice-item .q-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600; color: var(--accent);
+  margin-right: 0.5rem;
+}
+
+details { margin-top: 0.5rem; cursor: pointer; }
+details summary {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal); font-weight: 600;
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--teal);
+  background: rgba(44, 87, 87, 0.05);
+  user-select: none; transition: all 0.2s;
+}
+details summary:hover { background: var(--teal); color: var(--paper); }
+details[open] summary { background: var(--teal); color: var(--paper); margin-bottom: 0.75rem; }
+details summary::-webkit-details-marker { display: none; }
+details summary::before { content: '▸ '; }
+details[open] summary::before { content: '▾ '; }
+
+details .answer {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(44, 87, 87, 0.08);
+  border-left: 3px solid var(--teal);
+  font-size: 0.97rem;
+}
+
+mjx-container { margin: 0.25rem 0; }
+
+.tip {
+  font-size: 0.92rem; font-style: italic;
+  color: var(--rule);
+  border-left: 2px solid var(--gold);
+  padding: 0.5rem 0.75rem;
+  margin: 1rem 0;
+  background: rgba(176, 132, 66, 0.05);
+}
+.tip::before { content: '✦ '; color: var(--gold); font-style: normal; margin-right: 0.25rem; }
+
+.facts {
+  list-style: none; margin-left: 0;
+  border-top: 1px dashed var(--rule);
+  border-bottom: 1px dashed var(--rule);
+  padding: 0.75rem 0; margin: 1rem 0;
+}
+.facts li {
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  position: relative;
+}
+.facts li::before {
+  content: '§'; position: absolute; left: 0;
+  color: var(--accent); font-weight: 600;
+}
+
+footer {
+  border-top: 3px double var(--rule);
+  padding: 3rem 2rem;
+  text-align: center;
+  font-style: italic;
+  color: var(--rule);
+  background: var(--paper);
+}
+footer .closing {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem; margin-bottom: 0.5rem;
+}
+footer .signoff {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 0.3em;
+  color: var(--gold); margin-top: 1rem;
+}
+
+.chapter-intro::first-letter {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 600;
+  font-size: 4rem; float: left;
+  line-height: 0.9;
+  margin: 0.1rem 0.5rem 0 0;
+  color: var(--accent);
+}
+
+@media (max-width: 720px) {
+  body { font-size: 17px; }
+  .toc { padding: 0.25rem; }
+  .toc a { padding: 0.5rem 0.6rem; font-size: 0.62rem; }
+  main { padding: 2rem 1rem 4rem; }
+  .box { padding: 1rem; }
+  .example-body { padding: 1rem; }
+}
+
+@media print {
+  .toc-wrap { display: none; }
+  body { background: white; }
+  .chapter { page-break-before: always; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="pretitle">MA 341 · Purdue · Comprehensive Final Companion</div>
+  <h1>The Complete<br/>Real Analysis <span class="amp">&amp;</span> Codex</h1>
+  <div class="ornament">
+    <span class="line"></span>
+    <span class="symbol">❦</span>
+    <span class="line"></span>
+  </div>
+  <p class="subtitle">A full-spectrum study guide to Bartle &amp; Sherbert, 4th ed., Chapters 1 through 6.3 — every section, every theorem, with intuition, proof sketches, and abundant worked examples.</p>
+  <div class="meta">Sets · Reals · Sequences · Series · Limits · Continuity · Differentiation</div>
+</header>
+
+<nav class="toc-wrap">
+  <div class="toc">
+    <a href="#ch1"><span class="num">I.</span> &nbsp;Preliminaries</a>
+    <a href="#ch2"><span class="num">II.</span> &nbsp;The Reals</a>
+    <a href="#ch3"><span class="num">III.</span> &nbsp;Sequences</a>
+    <a href="#ch4"><span class="num">IV.</span> &nbsp;Limits</a>
+    <a href="#ch5"><span class="num">V.</span> &nbsp;Continuity</a>
+    <a href="#ch6"><span class="num">VI.</span> &nbsp;Differentiation</a>
+    <a href="#cheat"><span class="num">★</span> &nbsp;Tactics</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============================================================ -->
+<!-- ============== CHAPTER 1: PRELIMINARIES ==================== -->
+<!-- ============================================================ -->
+<section class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">— Chapter the First —</div>
+    <h2 class="chapter-title">Preliminaries</h2>
+    <div class="chapter-tagline">The grammar and toolkit of mathematical proof</div>
+  </div>
+
+  <p class="chapter-intro">Real analysis is the rigorous study of $\mathbb{R}$ — limits, continuity, differentiation, all formalized. But before we get there, Chapter 1 sets up the language: how to talk about sets, how functions behave precisely, how induction works, and what it means for a set to be "infinite." Master this chapter and the rest becomes much easier — most proofs in this course are written using exactly these constructions.</p>
+
+  <!-- ====================================================== -->
+  <!-- 1.1 SETS AND FUNCTIONS -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 1.1</span> Sets and Functions</h2>
+
+    <h3 class="subsection">Set Notation</h3>
+    <p>A <strong>set</strong> is a collection of objects called <strong>elements</strong>. We write $x \in A$ for "$x$ is in $A$" and $x \notin A$ for "$x$ is not in $A$." Two sets $A$ and $B$ are <strong>equal</strong>, written $A = B$, exactly when they contain the same elements.</p>
+
+    <p>Standard sets:</p>
+    <ul>
+      <li>$\mathbb{N} = \{1, 2, 3, \ldots\}$ — natural numbers</li>
+      <li>$\mathbb{Z} = \{\ldots, -2, -1, 0, 1, 2, \ldots\}$ — integers</li>
+      <li>$\mathbb{Q} = \{p/q : p, q \in \mathbb{Z}, q \neq 0\}$ — rational numbers</li>
+      <li>$\mathbb{R}$ — real numbers</li>
+      <li>$\emptyset$ — the empty set</li>
+    </ul>
+
+    <h3 class="subsection">Set Operations</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition 1.1.1</span>
+      <span class="box-title">— Subset, Equality</span>
+      <p>$A$ is a <strong>subset</strong> of $B$, written $A \subseteq B$, if every element of $A$ is also in $B$. We write $A = B$ when $A \subseteq B$ and $B \subseteq A$.</p>
+    </div>
+
+    <div class="tip">The standard way to prove set equality $A = B$ is to prove both inclusions: pick $x \in A$ and show $x \in B$, then pick $x \in B$ and show $x \in A$.</div>
+
+    <div class="box definition">
+      <span class="box-label">Definition 1.1.2</span>
+      <span class="box-title">— Union, Intersection, Difference</span>
+      <ul>
+        <li>$A \cup B = \{x : x \in A \text{ or } x \in B\}$ — <strong>union</strong></li>
+        <li>$A \cap B = \{x : x \in A \text{ and } x \in B\}$ — <strong>intersection</strong></li>
+        <li>$A \setminus B = \{x : x \in A \text{ and } x \notin B\}$ — <strong>set difference</strong> ("$A$ minus $B$")</li>
+        <li>If $A \cap B = \emptyset$, the sets are <strong>disjoint</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 1.1.4</span>
+      <span class="box-title">— De Morgan's Laws</span>
+      <p>For any sets $A, B, C$:</p>
+      $$ A \setminus (B \cup C) = (A \setminus B) \cap (A \setminus C) $$
+      $$ A \setminus (B \cap C) = (A \setminus B) \cup (A \setminus C) $$
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">In Plain English</span>
+      <p>"Not (B or C)" = "(not B) and (not C)." If you're outside both $B$ and $C$, you must be outside $B$ AND outside $C$. The maneuver of swapping $\cup \leftrightarrow \cap$ when negating is fundamental.</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 1.1.A · Proving De Morgan</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Prove $A \setminus (B \cup C) = (A \setminus B) \cap (A \setminus C)$.</p>
+        <p class="solution-label">Proof</p>
+        <p><strong>($\subseteq$)</strong> Let $x \in A \setminus (B \cup C)$. Then $x \in A$ and $x \notin B \cup C$. The latter means $x \notin B$ AND $x \notin C$. So $x \in A \setminus B$ and $x \in A \setminus C$, giving $x \in (A \setminus B) \cap (A \setminus C)$.</p>
+        <p><strong>($\supseteq$)</strong> Let $x \in (A \setminus B) \cap (A \setminus C)$. Then $x \in A$, $x \notin B$, and $x \notin C$. So $x \notin B \cup C$. Hence $x \in A \setminus (B \cup C)$. ∎</p>
+      </div>
+    </div>
+
+    <h3 class="subsection">Cartesian Products</h3>
+    <p>The <strong>Cartesian product</strong> $A \times B = \{(a, b) : a \in A, b \in B\}$ — the set of ordered pairs. So $\mathbb{R} \times \mathbb{R} = \mathbb{R}^2$ is the plane.</p>
+
+    <h3 class="subsection">Functions</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition 1.1.5</span>
+      <span class="box-title">— Function</span>
+      <p>A <strong>function</strong> from $A$ to $B$, written $f: A \to B$, is a rule that assigns to each $x \in A$ <em>exactly one</em> element $f(x) \in B$.</p>
+      <ul>
+        <li>$A$ is the <strong>domain</strong>, $B$ the <strong>codomain</strong>.</li>
+        <li>The <strong>range</strong> (or image) is $f(A) = \{f(x) : x \in A\} \subseteq B$.</li>
+        <li>The <strong>graph</strong> of $f$ is $\{(x, f(x)) : x \in A\} \subseteq A \times B$.</li>
+      </ul>
+    </div>
+
+    <div class="box definition">
+      <span class="box-label">Definition 1.1.7</span>
+      <span class="box-title">— Injective, Surjective, Bijective</span>
+      <ul>
+        <li><strong>Injective (one-to-one):</strong> $f(x_1) = f(x_2) \implies x_1 = x_2$. (Different inputs give different outputs.)</li>
+        <li><strong>Surjective (onto $B$):</strong> for every $y \in B$, there is some $x \in A$ with $f(x) = y$. (Range = codomain.)</li>
+        <li><strong>Bijective:</strong> both injective and surjective. Then $f$ has an <strong>inverse</strong> function $f^{-1}: B \to A$.</li>
+      </ul>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Mental Picture</span>
+      <p>Visualize arrows from $A$ into $B$.</p>
+      <ul>
+        <li><strong>Injective</strong> = no two arrows point to the same target.</li>
+        <li><strong>Surjective</strong> = every target gets at least one arrow.</li>
+        <li><strong>Bijective</strong> = perfect pairing — each target gets exactly one arrow.</li>
+      </ul>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 1.1.B · Identifying Function Properties</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">For each function $f: \mathbb{R} \to \mathbb{R}$, determine if it is injective, surjective, both, or neither.</p>
+        <p>(a) $f(x) = 2x + 3$ &nbsp;&nbsp; (b) $f(x) = x^2$ &nbsp;&nbsp; (c) $f(x) = x^3$ &nbsp;&nbsp; (d) $f(x) = e^x$</p>
+        <p class="solution-label">Solution</p>
+        <p><strong>(a)</strong> $2x_1 + 3 = 2x_2 + 3 \Rightarrow x_1 = x_2$. Injective. For any $y$, $x = (y-3)/2$ works. Surjective. <em>Bijective.</em></p>
+        <p><strong>(b)</strong> $f(-1) = f(1)$, so not injective. Range is $[0, \infty) \neq \mathbb{R}$, so not surjective.</p>
+        <p><strong>(c)</strong> Strictly increasing (derivative $3x^2 \geq 0$, zero only at one point), so injective. Range is all of $\mathbb{R}$, so surjective. <em>Bijective.</em></p>
+        <p><strong>(d)</strong> $e^x$ is strictly increasing, so injective. But range is $(0, \infty)$, so NOT surjective onto $\mathbb{R}$.</p>
+      </div>
+    </div>
+
+    <h3 class="subsection">Direct &amp; Inverse Images</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition 1.1.8</span>
+      <span class="box-title">— Image and Preimage</span>
+      <p>For $f: A \to B$, $E \subseteq A$, $H \subseteq B$:</p>
+      <ul>
+        <li><strong>Direct image:</strong> $f(E) = \{f(x) : x \in E\}$</li>
+        <li><strong>Inverse image / preimage:</strong> $f^{-1}(H) = \{x \in A : f(x) \in H\}$</li>
+      </ul>
+      <p>Note: $f^{-1}(H)$ is defined whether or not $f$ has an inverse function!</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 1.1.C · Computing Images</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Let $f: \mathbb{R} \to \mathbb{R}$, $f(x) = x^2$. Compute $f([-1, 2])$ and $f^{-1}([1, 4])$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$f([-1,2]) = \{x^2 : -1 \leq x \leq 2\} = [0, 4]$ (max at $x=2$, min at $x=0$).</p>
+        <p>$f^{-1}([1,4]) = \{x : 1 \leq x^2 \leq 4\} = [-2,-1] \cup [1,2]$.</p>
+      </div>
+    </div>
+
+    <h3 class="subsection">Composition and Inverses</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition</span>
+      <span class="box-title">— Composition</span>
+      <p>If $f: A \to B$ and $g: B \to C$, then $g \circ f: A \to C$ is defined by $(g \circ f)(x) = g(f(x))$.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem</span>
+      <span class="box-title">— Inverse Functions</span>
+      <p>If $f: A \to B$ is bijective, there is a unique function $f^{-1}: B \to A$ with $f^{-1}(f(x)) = x$ for $x \in A$ and $f(f^{-1}(y)) = y$ for $y \in B$.</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 1.1.D · Finding an Inverse</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Let $f: \mathbb{R} \to \mathbb{R}$, $f(x) = 3x + 5$. Show $f$ is bijective and find $f^{-1}$.</p>
+        <p class="solution-label">Solution</p>
+        <p><em>Injective:</em> $3x_1 + 5 = 3x_2 + 5 \Rightarrow x_1 = x_2$. ✓</p>
+        <p><em>Surjective:</em> For $y \in \mathbb{R}$, set $x = (y-5)/3$. Then $f(x) = y$. ✓</p>
+        <p>Solving $y = 3x + 5$ for $x$: $f^{-1}(y) = (y-5)/3$. ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P1.</span> Prove $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$.
+        <details><summary>Show approach</summary>
+          <div class="answer">($\subseteq$) Take $x \in A \cap (B \cup C)$: then $x \in A$ and ($x \in B$ or $x \in C$). Case split: if $x \in B$, then $x \in A \cap B$; if $x \in C$, then $x \in A \cap C$. Either way, $x \in (A\cap B) \cup (A \cap C)$. ($\supseteq$) Reverse by cases.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P2.</span> Show that $f: \mathbb{R} \setminus \{0\} \to \mathbb{R} \setminus \{0\}$, $f(x) = 1/x$, is a bijection. Find $f^{-1}$.
+        <details><summary>Show answer</summary>
+          <div class="answer">Injective: $1/x_1 = 1/x_2 \Rightarrow x_1 = x_2$. Surjective: for $y \neq 0$, $f(1/y) = y$. So $f^{-1}(y) = 1/y$ — $f$ is its own inverse.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P3.</span> Let $f: \mathbb{R} \to \mathbb{R}$, $f(x) = x^2$. Compute $f([-2, 1])$, $f^{-1}([0, 9])$, and $f^{-1}([-4, 4])$.
+        <details><summary>Show answers</summary>
+          <div class="answer">$f([-2,1]) = [0, 4]$ (max at $x=-2$). $f^{-1}([0,9]) = [-3, 3]$. $f^{-1}([-4,4]) = [-2, 2]$ (the negative part of $[-4,4]$ is unreachable).</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P4.</span> If $f: A \to B$ and $g: B \to C$ are both injective, show $g \circ f$ is injective.
+        <details><summary>Show approach</summary>
+          <div class="answer">Suppose $(g \circ f)(x_1) = (g \circ f)(x_2)$. Then $g(f(x_1)) = g(f(x_2))$, so by injectivity of $g$, $f(x_1) = f(x_2)$. By injectivity of $f$, $x_1 = x_2$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 1.2 INDUCTION -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 1.2</span> Mathematical Induction</h2>
+
+    <p>The natural numbers $\mathbb{N} = \{1, 2, 3, \ldots\}$ have a special property: induction. The principle takes a few equivalent forms.</p>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 1.2.2</span>
+      <span class="box-title">— Principle of Mathematical Induction</span>
+      <p>Let $S \subseteq \mathbb{N}$ such that:</p>
+      <ol>
+        <li><strong>(Base step)</strong> $1 \in S$.</li>
+        <li><strong>(Inductive step)</strong> For each $k \in \mathbb{N}$, $k \in S$ implies $k+1 \in S$.</li>
+      </ol>
+      <p>Then $S = \mathbb{N}$.</p>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">The Domino Picture</span>
+      <p>An infinite row of dominoes. The base step says: "the first domino falls." The inductive step says: "if any domino falls, the next one falls too." Conclusion: all dominoes fall.</p>
+    </div>
+
+    <h4 class="minihead">How to write an induction proof:</h4>
+    <ol>
+      <li>State $P(n)$ — the proposition you want to prove for all $n \in \mathbb{N}$.</li>
+      <li><strong>Base case:</strong> Verify $P(1)$ (or whatever your starting point is — $P(0)$ also works if applicable).</li>
+      <li><strong>Inductive hypothesis:</strong> "Assume $P(k)$ is true for some $k \in \mathbb{N}$."</li>
+      <li><strong>Inductive step:</strong> Prove $P(k+1)$ using $P(k)$.</li>
+      <li><strong>Conclusion:</strong> "By induction, $P(n)$ holds for all $n \in \mathbb{N}$. ∎"</li>
+    </ol>
+
+    <div class="example">
+      <div class="example-header"><span>Example 1.2.A · Sum of First $n$ Naturals</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Prove $\displaystyle 1 + 2 + \cdots + n = \frac{n(n+1)}{2}$ for all $n \in \mathbb{N}$.</p>
+        <p class="solution-label">Proof by Induction</p>
+        <p><em>Base ($n=1$):</em> LHS $= 1$. RHS $= \frac{1 \cdot 2}{2} = 1$. ✓</p>
+        <p><em>Inductive step:</em> Assume $1 + 2 + \cdots + k = \frac{k(k+1)}{2}$. Then
+        $$ 1 + 2 + \cdots + k + (k+1) = \frac{k(k+1)}{2} + (k+1) = \frac{k(k+1) + 2(k+1)}{2} = \frac{(k+1)(k+2)}{2}. $$
+        This is the formula at $n = k+1$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 1.2.B · Sum of Squares</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Prove $\displaystyle 1^2 + 2^2 + \cdots + n^2 = \frac{n(n+1)(2n+1)}{6}$.</p>
+        <p class="solution-label">Proof</p>
+        <p><em>Base ($n=1$):</em> $1 = \frac{1 \cdot 2 \cdot 3}{6} = 1$. ✓</p>
+        <p><em>Inductive step:</em> Assume the formula for $k$. Then
+        $$ \sum_{j=1}^{k+1} j^2 = \frac{k(k+1)(2k+1)}{6} + (k+1)^2 = \frac{(k+1)\bigl[k(2k+1) + 6(k+1)\bigr]}{6}. $$
+        The bracketed expression is $2k^2 + k + 6k + 6 = 2k^2 + 7k + 6 = (k+2)(2k+3)$. So the sum equals $\frac{(k+1)(k+2)(2k+3)}{6}$, the formula at $n = k+1$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 1.2.C · An Inequality</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Prove $2^n > n$ for all $n \in \mathbb{N}$.</p>
+        <p class="solution-label">Proof</p>
+        <p><em>Base ($n=1$):</em> $2^1 = 2 > 1$. ✓</p>
+        <p><em>Inductive step:</em> Assume $2^k > k$. Then $2^{k+1} = 2 \cdot 2^k > 2k$. We need $2k \geq k+1$, i.e. $k \geq 1$. Since $k \in \mathbb{N}$, this holds. So $2^{k+1} > k + 1$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 1.2.D · Divisibility</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $n^3 - n$ is divisible by $6$ for all $n \in \mathbb{N}$.</p>
+        <p class="solution-label">Proof</p>
+        <p><em>Base ($n=1$):</em> $1 - 1 = 0$, divisible by $6$. ✓</p>
+        <p><em>Step:</em> Assume $6 \mid k^3 - k$. Then
+        $$ (k+1)^3 - (k+1) = k^3 + 3k^2 + 3k + 1 - k - 1 = (k^3 - k) + 3k(k+1). $$
+        The first term is divisible by $6$ by hypothesis. For the second: $k(k+1)$ is a product of consecutive integers, hence even. So $3k(k+1)$ is divisible by $6$. Sum is divisible by $6$. ∎</p>
+      </div>
+    </div>
+
+    <h3 class="subsection">Strong Induction</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 1.2.5</span>
+      <span class="box-title">— Strong Induction</span>
+      <p>Let $S \subseteq \mathbb{N}$ such that $1 \in S$, and for each $k \in \mathbb{N}$:</p>
+      <p style="margin-left:2rem;">$\{1, 2, \ldots, k\} \subseteq S$ implies $k+1 \in S$.</p>
+      <p>Then $S = \mathbb{N}$.</p>
+    </div>
+
+    <p>Strong induction is logically equivalent to ordinary induction but is often more convenient when proving $P(k+1)$ requires looking back further than just $P(k)$. Classic application: every $n \geq 2$ has a prime factorization.</p>
+
+    <h3 class="subsection">Well-Ordering</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem</span>
+      <span class="box-title">— Well-Ordering Principle</span>
+      <p>Every nonempty subset of $\mathbb{N}$ has a least element.</p>
+    </div>
+
+    <p>Equivalent to induction. Often used in "smallest counterexample" proofs.</p>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P5.</span> Prove $\displaystyle 1 + 3 + 5 + \cdots + (2n-1) = n^2$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Base $n=1$: $1 = 1^2$. ✓ Step: $\sum_{j=1}^{k+1}(2j-1) = k^2 + (2(k+1)-1) = k^2 + 2k + 1 = (k+1)^2$. ✓</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P6.</span> Prove $\displaystyle \frac{1}{1 \cdot 2} + \frac{1}{2 \cdot 3} + \cdots + \frac{1}{n(n+1)} = \frac{n}{n+1}$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Base $n=1$: $1/2 = 1/2$. ✓ Step: $\frac{k}{k+1} + \frac{1}{(k+1)(k+2)} = \frac{k(k+2) + 1}{(k+1)(k+2)} = \frac{(k+1)^2}{(k+1)(k+2)} = \frac{k+1}{k+2}$. ✓</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P7.</span> Prove $n! > 2^n$ for all $n \geq 4$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Base $n=4$: $24 > 16$. ✓ Step: assume $k! > 2^k$. Then $(k+1)! = (k+1) \cdot k! > (k+1) \cdot 2^k \geq 2 \cdot 2^k = 2^{k+1}$ (using $k+1 \geq 5 > 2$).</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P8.</span> Show that $5^n - 1$ is divisible by $4$ for every $n \in \mathbb{N}$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Base: $5 - 1 = 4$. Step: $5^{k+1} - 1 = 5 \cdot 5^k - 1 = 5(5^k - 1) + 4$. Both summands divisible by $4$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 1.3 FINITE & INFINITE SETS -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 1.3</span> Finite and Infinite Sets</h2>
+
+    <h3 class="subsection">Cardinality</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition 1.3.1</span>
+      <span class="box-title">— Finite, Infinite</span>
+      <p>A set $S$ is <strong>finite</strong> if either $S = \emptyset$ or there is a bijection from $S$ onto $\{1, 2, \ldots, n\}$ for some $n \in \mathbb{N}$. Otherwise $S$ is <strong>infinite</strong>.</p>
+    </div>
+
+    <div class="box definition">
+      <span class="box-label">Definition 1.3.5</span>
+      <span class="box-title">— Denumerable, Countable</span>
+      <p>A set $S$ is <strong>denumerable</strong> (or <em>countably infinite</em>) if there is a bijection $\mathbb{N} \leftrightarrow S$. A set $S$ is <strong>countable</strong> if it is finite or denumerable. A set is <strong>uncountable</strong> if it is not countable.</p>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Mental Model</span>
+      <p>"Countable" means you can <em>list</em> the elements: $s_1, s_2, s_3, \ldots$ (possibly terminating). The list might go on forever, but every element appears at some finite position.</p>
+    </div>
+
+    <h3 class="subsection">Major Countability Facts</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 1.3.6</span>
+      <span class="box-title">— Subsets of Countable Sets</span>
+      <p>Every subset of a countable set is countable.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 1.3.8</span>
+      <span class="box-title">— Equivalent Characterizations of Countability</span>
+      <p>The following are equivalent for a nonempty set $S$:</p>
+      <ol>
+        <li>$S$ is countable.</li>
+        <li>There exists a surjection $f: \mathbb{N} \to S$.</li>
+        <li>There exists an injection $g: S \to \mathbb{N}$.</li>
+      </ol>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 1.3.10</span>
+      <span class="box-title">— $\mathbb{N} \times \mathbb{N}$ is Countable</span>
+      <p>The Cartesian product $\mathbb{N} \times \mathbb{N}$ is denumerable.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof Idea</span>
+      <p>List the pairs along finite anti-diagonals: $(1,1)$, then $(1,2),(2,1)$, then $(1,3),(2,2),(3,1)$, etc. Every pair appears at some position. Explicit formula: $f(m,n) = \frac{1}{2}(m+n-1)(m+n-2) + m$.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 1.3.11</span>
+      <span class="box-title">— $\mathbb{Q}$ is Countable</span>
+      <p>The rationals $\mathbb{Q}$ are denumerable.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof Idea</span>
+      <p>Each rational $r \in \mathbb{Q}^+$ can be written uniquely as $p/q$ in lowest terms, giving an injection $\mathbb{Q}^+ \to \mathbb{N} \times \mathbb{N}$ via $r \mapsto (p,q)$. So $\mathbb{Q}^+$ is countable. Combine with $\{0\}$ and $\mathbb{Q}^- = -\mathbb{Q}^+$ to conclude $\mathbb{Q}$ is countable.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 1.3.12</span>
+      <span class="box-title">— Countable Union of Countable Sets</span>
+      <p>If $A_1, A_2, A_3, \ldots$ is a countable family of countable sets, then $\bigcup_{n=1}^\infty A_n$ is countable.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.5.5 (preview)</span>
+      <span class="box-title">— $\mathbb{R}$ is Uncountable</span>
+      <p>The set of real numbers $\mathbb{R}$ — even just the interval $[0,1]$ — is uncountable. Proof comes in §2.5.</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 1.3.A · The Even Naturals</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $E = \{2, 4, 6, \ldots\}$ is denumerable.</p>
+        <p class="solution-label">Solution</p>
+        <p>Define $f: \mathbb{N} \to E$ by $f(n) = 2n$. Injective: $2n_1 = 2n_2 \Rightarrow n_1 = n_2$. Surjective: any $2k \in E$ is $f(k)$. Bijection. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 1.3.B · $\mathbb{Z}$ is Countable</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $\mathbb{Z}$ is denumerable.</p>
+        <p class="solution-label">Solution</p>
+        <p>List as $0, 1, -1, 2, -2, 3, -3, \ldots$ Formally:</p>
+        $$ f(n) = \begin{cases} 0 & n=1 \\ n/2 & n \text{ even} \\ -(n-1)/2 & n \text{ odd},\ n \geq 3 \end{cases} $$
+        <p>This is a bijection $\mathbb{N} \to \mathbb{Z}$. ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P9.</span> Show that the set of all finite sequences of $0$'s and $1$'s is countable.
+        <details><summary>Show approach</summary>
+          <div class="answer">Let $S_n$ be the set of binary sequences of length $n$. $|S_n| = 2^n$ (finite). Total = $\bigcup_n S_n$, a countable union of finite sets, hence countable.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P10.</span> If $A, B$ are countable, why is $A \times B$ countable?
+        <details><summary>Show approach</summary>
+          <div class="answer">Inject $A \to \mathbb{N}$ and $B \to \mathbb{N}$, giving an injection $A \times B \to \mathbb{N} \times \mathbb{N}$, which is countable. Subset of countable is countable.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P11.</span> Show that the set of all polynomials with integer coefficients is countable.
+        <details><summary>Show approach</summary>
+          <div class="answer">Polynomials of degree $\leq n$ with integer coefficients are in bijection with $\mathbb{Z}^{n+1}$ (countable, since finite product of countables). Total set is a countable union over $n \in \mathbb{N}$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END CH 1 -->
+
+
+<!-- ============================================================ -->
+<!-- ============== CHAPTER 2: THE REAL NUMBERS ================== -->
+<!-- ============================================================ -->
+<section class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">— Chapter the Second —</div>
+    <h2 class="chapter-title">The Real Numbers</h2>
+    <div class="chapter-tagline">Algebraic, order, and completeness — the trinity that makes $\mathbb{R}$ unique</div>
+  </div>
+
+  <p class="chapter-intro">This is the philosophical heart of the course. The reals $\mathbb{R}$ are not "the rationals plus a few extras" — they are the unique structure satisfying three families of properties. <em>Algebraic</em> (you can add, subtract, multiply, divide). <em>Order</em> (you can compare). And — the magic ingredient — <em>completeness</em>: every nonempty set bounded above has a least upper bound. That last property is what makes calculus possible. Without it, limits, derivatives, and integrals all break.</p>
+
+  <!-- ====================================================== -->
+  <!-- 2.1 ALGEBRAIC AND ORDER PROPERTIES -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 2.1</span> Algebraic and Order Properties</h2>
+
+    <h3 class="subsection">$\mathbb{R}$ is a Field</h3>
+
+    <p>$\mathbb{R}$ has two operations $+$ and $\cdot$ satisfying the <strong>field axioms</strong>:</p>
+
+    <ul>
+      <li><strong>(A1)</strong> $a + b = b + a$ (commutativity of $+$)</li>
+      <li><strong>(A2)</strong> $(a + b) + c = a + (b + c)$ (associativity of $+$)</li>
+      <li><strong>(A3)</strong> $\exists\, 0 \in \mathbb{R}$: $a + 0 = a$ for all $a$ (additive identity)</li>
+      <li><strong>(A4)</strong> For each $a$, $\exists\, (-a)$: $a + (-a) = 0$ (additive inverse)</li>
+      <li><strong>(M1)</strong> $a \cdot b = b \cdot a$</li>
+      <li><strong>(M2)</strong> $(a \cdot b) \cdot c = a \cdot (b \cdot c)$</li>
+      <li><strong>(M3)</strong> $\exists\, 1 \neq 0$: $a \cdot 1 = a$ for all $a$ (multiplicative identity)</li>
+      <li><strong>(M4)</strong> For each $a \neq 0$, $\exists\, 1/a$: $a \cdot (1/a) = 1$</li>
+      <li><strong>(D)</strong> $a \cdot (b + c) = a \cdot b + a \cdot c$ (distributivity)</li>
+    </ul>
+
+    <p>From these axioms, all the usual algebra follows: cancellation laws, $a \cdot 0 = 0$, $-(-a) = a$, $(-1)(-1) = 1$, etc.</p>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.1.2</span>
+      <span class="box-title">— Basic Algebraic Facts</span>
+      <ul>
+        <li>$z + a = a$ implies $z = 0$ (uniqueness of additive identity).</li>
+        <li>$a \cdot 0 = 0$ for every $a$.</li>
+        <li>$(-a)(b) = -(ab)$ and $(-a)(-b) = ab$.</li>
+        <li>If $ab = 0$, then $a = 0$ or $b = 0$.</li>
+      </ul>
+    </div>
+
+    <h3 class="subsection">Irrationality of $\sqrt{2}$</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.1.4</span>
+      <span class="box-title">— $\sqrt{2}$ is Irrational</span>
+      <p>There is no rational number $r$ with $r^2 = 2$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Suppose for contradiction that $r = p/q$ in lowest terms (so $p, q$ have no common factor) with $r^2 = 2$. Then $p^2 = 2q^2$, so $p^2$ is even, hence $p$ is even (if $p$ were odd, $p^2$ would be odd). Write $p = 2m$. Then $4m^2 = 2q^2$, so $q^2 = 2m^2$, making $q^2$ even, hence $q$ even. But then $p$ and $q$ share factor $2$, contradicting "lowest terms." ∎</p>
+    </div>
+
+    <h3 class="subsection">Order Properties</h3>
+
+    <p>$\mathbb{R}$ is <strong>ordered</strong>: there's a subset $\mathbb{P} \subset \mathbb{R}$ ("the positive numbers") satisfying:</p>
+    <ul>
+      <li>If $a, b \in \mathbb{P}$, then $a + b \in \mathbb{P}$ and $ab \in \mathbb{P}$.</li>
+      <li><strong>Trichotomy:</strong> for any $a \in \mathbb{R}$, exactly one of $a \in \mathbb{P}$, $a = 0$, $-a \in \mathbb{P}$ holds.</li>
+    </ul>
+
+    <p>We then write $a < b$ when $b - a \in \mathbb{P}$, and $a \leq b$ when $a < b$ or $a = b$.</p>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.1.7</span>
+      <span class="box-title">— Manipulating Inequalities</span>
+      <p>For $a, b, c, d \in \mathbb{R}$:</p>
+      <ul>
+        <li>If $a < b$ and $b < c$, then $a < c$ (transitivity).</li>
+        <li>If $a < b$, then $a + c < b + c$.</li>
+        <li>If $a < b$ and $c > 0$: $ac < bc$.</li>
+        <li>If $a < b$ and $c < 0$: $ac > bc$ <em>(flip the inequality!)</em>.</li>
+        <li>If $a > 0$, then $1/a > 0$. If $a < 0$, then $1/a < 0$.</li>
+        <li>If $0 < a < b$, then $0 < 1/b < 1/a$.</li>
+      </ul>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.1.8</span>
+      <span class="box-title">— Squares are Nonnegative</span>
+      <p>$a^2 \geq 0$ for every $a \in \mathbb{R}$, with equality iff $a = 0$.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.1.9</span>
+      <span class="box-title">— The "Arbitrarily Small" Argument</span>
+      <p>Let $a \in \mathbb{R}$ satisfy $0 \leq a < \varepsilon$ for every $\varepsilon > 0$. Then $a = 0$.</p>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Why this trick is everywhere</span>
+      <p>The strategy "show $|x - L| < \varepsilon$ for every $\varepsilon > 0$" is the engine of analysis. Theorem 2.1.9 is the punch line: if you've handled all $\varepsilon$, the quantity must be exactly $0$. You'll use this principle in nearly every limit proof.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Suppose $a > 0$. Take $\varepsilon = a/2 > 0$. Then by hypothesis $a < a/2$, so $a/2 < 0$, contradicting $a > 0$. Hence $a = 0$. ∎</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 2.1.A · Order Manipulation</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">If $a, b > 0$, prove $a < b$ iff $a^2 < b^2$.</p>
+        <p class="solution-label">Solution</p>
+        <p>($\Rightarrow$) If $a < b$ and $a, b > 0$: $b^2 - a^2 = (b-a)(b+a)$. Both factors positive, so $b^2 > a^2$.</p>
+        <p>($\Leftarrow$) Conversely, if $a^2 < b^2$: same factorization shows $(b-a)(b+a) > 0$. Since $b+a > 0$, we get $b - a > 0$, i.e. $a < b$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 2.1.B · Using Theorem 2.1.9</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">If $a \in \mathbb{R}$ and $|a| \leq \varepsilon$ for every $\varepsilon > 0$, show $a = 0$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$|a| \geq 0$ always. By Theorem 2.1.9 (applied to $|a|$), $|a| = 0$, hence $a = 0$. ∎</p>
+      </div>
+    </div>
+
+    <h3 class="subsection">Bernoulli's Inequality</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.1.13</span>
+      <span class="box-title">— Bernoulli's Inequality</span>
+      <p>If $x > -1$, then $(1 + x)^n \geq 1 + nx$ for every $n \in \mathbb{N}$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof by Induction</span>
+      <p>Base ($n=1$): $(1+x)^1 = 1 + x = 1 + 1 \cdot x$. ✓ Step: assume $(1+x)^k \geq 1 + kx$. Multiply by $(1+x) > 0$:
+      $$ (1+x)^{k+1} \geq (1 + kx)(1+x) = 1 + (k+1)x + kx^2 \geq 1 + (k+1)x. $$
+      ∎</p>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P12.</span> If $0 \leq a < b$, show $0 \leq a^2 < b^2$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$b^2 - a^2 = (b-a)(b+a)$. $b - a > 0$, $b + a > 0$ (since $b > 0$, possibly $a = 0$). So $b^2 - a^2 > 0$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P13.</span> Prove the AM-GM inequality $\frac{a+b}{2} \geq \sqrt{ab}$ for $a, b \geq 0$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$(\sqrt{a} - \sqrt{b})^2 \geq 0$ expands to $a + b - 2\sqrt{ab} \geq 0$, i.e., $\frac{a+b}{2} \geq \sqrt{ab}$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P14.</span> Show that if $0 < a < 1$, then $a^2 < a$. If $a > 1$, then $a^2 > a$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$a^2 - a = a(a-1)$. Sign depends on signs of $a$ and $a-1$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 2.2 ABSOLUTE VALUE -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 2.2</span> Absolute Value and the Real Line</h2>
+
+    <div class="box definition">
+      <span class="box-label">Definition 2.2.1</span>
+      <span class="box-title">— Absolute Value</span>
+      $$ |a| = \begin{cases} a & \text{if } a \geq 0 \\ -a & \text{if } a < 0 \end{cases} $$
+    </div>
+
+    <p>Equivalent: $|a| = \max(a, -a) = \sqrt{a^2}$.</p>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.2.2</span>
+      <span class="box-title">— Properties of Absolute Value</span>
+      <ul>
+        <li>$|a| \geq 0$, with equality iff $a = 0$.</li>
+        <li>$|-a| = |a|$.</li>
+        <li>$|ab| = |a| \cdot |b|$.</li>
+        <li>For $c \geq 0$: $|a| \leq c \iff -c \leq a \leq c$.</li>
+        <li>$-|a| \leq a \leq |a|$.</li>
+      </ul>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.2.3</span>
+      <span class="box-title">— Triangle Inequality</span>
+      <p>For all $a, b \in \mathbb{R}$:</p>
+      $$ |a + b| \leq |a| + |b|. $$
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>From $-|a| \leq a \leq |a|$ and $-|b| \leq b \leq |b|$, add: $-(|a|+|b|) \leq a + b \leq |a| + |b|$. So $|a+b| \leq |a|+|b|$. ∎</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Corollary 2.2.4</span>
+      <span class="box-title">— Reverse Triangle Inequality</span>
+      $$ \bigl| |a| - |b| \bigr| \leq |a - b|. $$
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>$|a| = |(a-b) + b| \leq |a-b| + |b|$, so $|a| - |b| \leq |a-b|$. By symmetry $|b|-|a| \leq |a-b|$. Combine. ∎</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Generalized Triangle Inequality</span>
+      $$ |a_1 + a_2 + \cdots + a_n| \leq |a_1| + |a_2| + \cdots + |a_n|. $$
+    </div>
+
+    <p>Proved by induction from the basic triangle inequality.</p>
+
+    <h3 class="subsection">Distance and the Real Line</h3>
+
+    <p>We interpret $|a - b|$ as the <strong>distance</strong> between $a$ and $b$ on the real line. So:</p>
+    <ul>
+      <li>$|x - c| < \varepsilon$ means $x$ is within distance $\varepsilon$ of $c$, i.e., $x \in (c - \varepsilon, c + \varepsilon)$.</li>
+      <li>$|x| < \varepsilon$ means $x$ is within distance $\varepsilon$ of $0$.</li>
+    </ul>
+
+    <h3 class="subsection">Neighborhoods</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition 2.2.7</span>
+      <span class="box-title">— $\varepsilon$-Neighborhood</span>
+      <p>For $a \in \mathbb{R}$ and $\varepsilon > 0$, the <strong>$\varepsilon$-neighborhood</strong> of $a$ is</p>
+      $$ V_\varepsilon(a) = \{x \in \mathbb{R} : |x - a| < \varepsilon\} = (a - \varepsilon, a + \varepsilon). $$
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.2.8</span>
+      <p>If $x \in V_\varepsilon(a)$ for every $\varepsilon > 0$, then $x = a$.</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 2.2.A · Solving an Inequality</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Find all $x$ with $|2x - 3| < 5$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$-5 < 2x - 3 < 5$, so $-2 < 2x < 8$, hence $-1 < x < 4$.</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 2.2.B · Triangle Inequality Application</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show: if $|x - 2| < 1/2$, then $|x^2 - 4| < 5/2$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$|x^2 - 4| = |x-2| \cdot |x+2|$. From $|x - 2| < 1/2$: $3/2 < x < 5/2$, so $7/2 < x + 2 < 9/2$, giving $|x+2| < 9/2$. Thus $|x^2 - 4| < (1/2)(9/2) < 5/2$. (Actually $\leq 9/4 < 5/2$.) ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 2.2.C · A Bound Estimate</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">For $x$ satisfying $|x| \leq 2$, find $M > 0$ such that $|x^3 - 2x + 1| \leq M$.</p>
+        <p class="solution-label">Solution</p>
+        <p>By triangle inequality:
+        $$ |x^3 - 2x + 1| \leq |x|^3 + 2|x| + 1 \leq 2^3 + 2(2) + 1 = 13. $$
+        Take $M = 13$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 2.2.D · A Geometric Description</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Describe $\{x : |x - 1| + |x - 5| < 8\}$ geometrically.</p>
+        <p class="solution-label">Solution</p>
+        <p>$|x-1| + |x-5|$ = (distance from $x$ to $1$) + (distance from $x$ to $5$). When $x \in [1, 5]$, this sum equals $4$. When $x > 5$, it equals $2x - 6$; less than $8$ when $x < 7$. When $x < 1$, equals $6 - 2x$; less than $8$ when $x > -1$. Total: $-1 < x < 7$. ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P15.</span> Solve $|x - 1| > |x + 2|$.
+        <details><summary>Show answer</summary>
+          <div class="answer">Square both sides (legal since both nonneg): $(x-1)^2 > (x+2)^2$, expand: $-2x + 1 > 4x + 4$, so $-6x > 3$, $x < -1/2$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P16.</span> Prove $\bigl||a|-|b|\bigr| \leq |a - b|$ (reverse triangle inequality).
+        <details><summary>Show approach</summary>
+          <div class="answer">$|a| = |(a - b) + b| \leq |a-b| + |b|$, so $|a|-|b| \leq |a-b|$. By symmetry $|b|-|a| \leq |a-b|$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P17.</span> If $|x - 3| < 1$, find an upper bound on $|x^2 + 2x|$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$|x| < 4$, so $|x^2 + 2x| \leq |x|^2 + 2|x| < 16 + 8 = 24$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 2.3 COMPLETENESS -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 2.3</span> The Completeness Property of $\mathbb{R}$</h2>
+
+    <h3 class="subsection">Bounds, Suprema, Infima</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition 2.3.1</span>
+      <span class="box-title">— Upper/Lower Bound, Bounded Set</span>
+      <p>Let $S \subseteq \mathbb{R}$ be nonempty.</p>
+      <ul>
+        <li>$u \in \mathbb{R}$ is an <strong>upper bound</strong> of $S$ if $s \leq u$ for all $s \in S$.</li>
+        <li>$\ell \in \mathbb{R}$ is a <strong>lower bound</strong> of $S$ if $\ell \leq s$ for all $s \in S$.</li>
+        <li>$S$ is <strong>bounded above</strong> if it has at least one upper bound, similarly <strong>bounded below</strong>.</li>
+        <li>$S$ is <strong>bounded</strong> if both. Otherwise <strong>unbounded</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="box definition">
+      <span class="box-label">Definition 2.3.2</span>
+      <span class="box-title">— Supremum and Infimum</span>
+      <p>Let $S \subseteq \mathbb{R}$ be nonempty.</p>
+      <ul>
+        <li>$u \in \mathbb{R}$ is the <strong>supremum</strong> $\sup S$ if it is the <em>least upper bound</em>: (a) $u$ is an upper bound, and (b) if $v$ is any other upper bound of $S$, then $u \leq v$.</li>
+        <li>$\ell \in \mathbb{R}$ is the <strong>infimum</strong> $\inf S$ if it is the <em>greatest lower bound</em>: (a) $\ell$ is a lower bound, and (b) if $m$ is any other lower bound of $S$, then $m \leq \ell$.</li>
+      </ul>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">In Plain English</span>
+      <p>$\sup S$ is the smallest number that is $\geq$ every element of $S$. It might or might not be in $S$. If it's in $S$, we also call it the <strong>maximum</strong> $\max S$. Similarly for $\inf$ and $\min$.</p>
+    </div>
+
+    <h3 class="subsection">Examples</h3>
+
+    <div class="example">
+      <div class="example-header"><span>Example 2.3.A · Sup/Inf of an Interval</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Find $\sup$ and $\inf$ for $S_1 = [0, 1]$, $S_2 = (0, 1)$, $S_3 = \{1/n : n \in \mathbb{N}\}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$\sup S_1 = 1 = \max S_1$, $\inf S_1 = 0 = \min S_1$.</p>
+        <p>$\sup S_2 = 1$ (NOT in $S_2$), $\inf S_2 = 0$ (NOT in $S_2$). No max or min.</p>
+        <p>$S_3 = \{1, 1/2, 1/3, \ldots\}$. $\sup S_3 = 1 = \max S_3$. $\inf S_3 = 0$ (not attained — proved using Archimedean property).</p>
+      </div>
+    </div>
+
+    <h3 class="subsection">$\varepsilon$-Characterization</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Lemma 2.3.4</span>
+      <span class="box-title">— $\varepsilon$-Characterization of Sup</span>
+      <p>$u = \sup S$ if and only if:</p>
+      <ol>
+        <li>$s \leq u$ for all $s \in S$, AND</li>
+        <li>For every $\varepsilon > 0$, there exists $s_\varepsilon \in S$ with $s_\varepsilon > u - \varepsilon$.</li>
+      </ol>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">What this is saying</span>
+      <p>(1) means $u$ is an upper bound. (2) means no smaller number is an upper bound: any candidate $u - \varepsilon$ gets <em>beaten</em> by some element of $S$. This $\varepsilon$-characterization is the practical tool — almost every "find the sup" proof uses it.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Analogous Lemma</span>
+      <span class="box-title">— $\varepsilon$-Characterization of Inf</span>
+      <p>$\ell = \inf S$ iff (1) $\ell \leq s$ for all $s \in S$ and (2) for every $\varepsilon > 0$ there exists $s_\varepsilon \in S$ with $s_\varepsilon < \ell + \varepsilon$.</p>
+    </div>
+
+    <h3 class="subsection">The Completeness Axiom</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Axiom 2.3.6</span>
+      <span class="box-title">— Completeness (Supremum) Property of $\mathbb{R}$</span>
+      <p>Every nonempty subset of $\mathbb{R}$ that is bounded above has a supremum in $\mathbb{R}$.</p>
+    </div>
+
+    <p>Equivalently: every nonempty subset bounded below has an infimum (apply sup to $-S = \{-s : s \in S\}$).</p>
+
+    <div class="box warning">
+      <span class="box-label">⚠ This Property FAILS for $\mathbb{Q}$</span>
+      <p>The set $S = \{x \in \mathbb{Q} : x^2 < 2\}$ is bounded above in $\mathbb{Q}$ but has no rational supremum. Within $\mathbb{Q}$, no rational $r$ satisfies all the requirements — there's always a slightly larger rational still in $S$. The "missing" sup is $\sqrt{2} \notin \mathbb{Q}$. This is precisely why we need $\mathbb{R}$.</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 2.3.B · Computing $\sup S$ Rigorously</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Let $S = \{1 - 1/n : n \in \mathbb{N}\}$. Show $\sup S = 1$.</p>
+        <p class="solution-label">Solution</p>
+        <p><em>Step 1 (upper bound):</em> $1 - 1/n < 1$ for every $n \in \mathbb{N}$. ✓</p>
+        <p><em>Step 2 ($\varepsilon$-condition):</em> Given $\varepsilon > 0$, we want $s \in S$ with $s > 1 - \varepsilon$. By the Archimedean property (§2.4), pick $n \in \mathbb{N}$ with $n > 1/\varepsilon$. Then $1/n < \varepsilon$, so $s = 1 - 1/n > 1 - \varepsilon$. ✓</p>
+        <p>By Lemma 2.3.4, $\sup S = 1$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 2.3.C · A Trickier Sup</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Let $A = \{1 - (-1)^n/n : n \in \mathbb{N}\}$. Find $\sup A$ and $\inf A$.</p>
+        <p class="solution-label">Solution</p>
+        <p>For odd $n$: $1 - (-1)/n = 1 + 1/n$. So this contributes $\{2, 4/3, 6/5, \ldots\} = \{1 + 1/(2k-1)\}$.</p>
+        <p>For even $n$: $1 - 1/n$, contributing $\{1/2, 3/4, 5/6, \ldots\}$.</p>
+        <p>$\sup A = 2$ (attained at $n=1$). For inf: even values give $1 - 1/n$ which approach but never reach $1$ from below; minimum even value is $1/2$ at $n=2$. Odd values are all $> 1$. So $\inf A = 1/2 = \min A$. ∎</p>
+      </div>
+    </div>
+
+    <h3 class="subsection">Properties of Sup and Inf</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem</span>
+      <span class="box-title">— Sup/Inf and Containment</span>
+      <p>If $\emptyset \neq A \subseteq B \subseteq \mathbb{R}$ and $B$ is bounded:</p>
+      $$ \inf B \leq \inf A \leq \sup A \leq \sup B. $$
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem</span>
+      <span class="box-title">— Sup of Translated/Scaled Sets</span>
+      <p>For $S \subseteq \mathbb{R}$ bounded, $c \in \mathbb{R}$:</p>
+      <ul>
+        <li>$\sup(c + S) = c + \sup S$ where $c + S = \{c + s : s \in S\}$.</li>
+        <li>If $c > 0$: $\sup(cS) = c \sup S$ where $cS = \{cs : s \in S\}$.</li>
+        <li>If $c < 0$: $\sup(cS) = c \inf S$ <em>(careful: sup turns into inf!)</em></li>
+        <li>$\sup(-S) = -\inf S$.</li>
+      </ul>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P18.</span> Find $\sup S$ and $\inf S$ for $S = \{(-1)^n + 1/n : n \in \mathbb{N}\}$.
+        <details><summary>Show answer</summary>
+          <div class="answer">Odd $n$: $-1 + 1/n$, ranges $0, -2/3, -4/5, \ldots \to -1$. Even $n$: $1 + 1/n$, ranges $3/2, 5/4, \ldots \to 1$. So $\sup S = 3/2$ (at $n=2$), $\inf S = -1$ (not attained).</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P19.</span> If $\sup A = u$ and $\sup B = v$, prove $\sup(A \cup B) = \max(u, v)$.
+        <details><summary>Show approach</summary>
+          <div class="answer">WLOG $u \leq v$. Every element of $A \cup B$ is $\leq v$, so $v$ is upper bound. For $\varepsilon > 0$, pick $b \in B$ with $b > v - \varepsilon$ (using sup of $B$). Then $b \in A \cup B$. So $\sup(A\cup B) = v$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P20.</span> If $A, B$ are nonempty bounded sets and $A + B = \{a + b : a \in A, b \in B\}$, prove $\sup(A + B) = \sup A + \sup B$.
+        <details><summary>Show approach</summary>
+          <div class="answer">For all $a \in A, b \in B$: $a + b \leq \sup A + \sup B$, so $\sup A + \sup B$ is an upper bound for $A+B$. For $\varepsilon > 0$, pick $a > \sup A - \varepsilon/2$ and $b > \sup B - \varepsilon/2$. Then $a + b > \sup A + \sup B - \varepsilon$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 2.4 APPLICATIONS OF THE COMPLETENESS PROPERTY -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 2.4</span> Applications of the Completeness Property</h2>
+
+    <h3 class="subsection">The Archimedean Property</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.4.3</span>
+      <span class="box-title">— Archimedean Property</span>
+      <p>For every $x \in \mathbb{R}$, there exists $n_x \in \mathbb{N}$ with $x < n_x$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Suppose not: $x \geq n$ for all $n \in \mathbb{N}$. Then $\mathbb{N}$ is bounded above by $x$. By completeness, $u = \sup \mathbb{N}$ exists. By the $\varepsilon$-characterization with $\varepsilon = 1$: there's $m \in \mathbb{N}$ with $m > u - 1$, so $m + 1 > u$. But $m + 1 \in \mathbb{N}$, contradicting that $u$ is an upper bound. ∎</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Corollary 2.4.4</span>
+      <span class="box-title">— Equivalent Forms</span>
+      <p>The following are equivalent (and all are true):</p>
+      <ol>
+        <li>For every $x \in \mathbb{R}$, $\exists n \in \mathbb{N}$ with $n > x$.</li>
+        <li>For every $t > 0$, $\exists n \in \mathbb{N}$ with $0 < 1/n < t$.</li>
+        <li>For every $t > 0$, $\exists n \in \mathbb{N}$ with $n - 1 \leq t < n$.</li>
+        <li>$\inf\{1/n : n \in \mathbb{N}\} = 0$.</li>
+      </ol>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Why we'll use this constantly</span>
+      <p>To make $1/n$ smaller than any prescribed positive number $\varepsilon$, just take $n$ large enough. This is the workhorse of every $\varepsilon$-$N$ proof. "$n > 1/\varepsilon$" is the most common phrase you'll write.</p>
+    </div>
+
+    <h3 class="subsection">Existence of $\sqrt{2}$</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.4.7</span>
+      <span class="box-title">— Existence of $\sqrt{2}$</span>
+      <p>There exists a unique positive real number $x$ with $x^2 = 2$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof Sketch</span>
+      <p>Let $S = \{s > 0 : s^2 < 2\}$. $S$ is nonempty ($1 \in S$) and bounded above (any $t \geq 2$ works since $t^2 \geq 4 > 2$). So $x = \sup S$ exists.</p>
+      <p>We show $x^2 = 2$ by ruling out the alternatives:</p>
+      <p><em>Suppose $x^2 < 2$.</em> Find a small $h > 0$ such that $(x+h)^2 < 2$ — then $x + h \in S$, contradicting $x = \sup S$. Choose $h \in (0, 1)$ small. Compute $(x+h)^2 = x^2 + 2xh + h^2 \leq x^2 + h(2x + 1)$. Pick $h < (2 - x^2)/(2x + 1)$. Then $(x+h)^2 < 2$. Contradiction.</p>
+      <p><em>Suppose $x^2 > 2$.</em> Find $h \in (0, x)$ with $(x - h)^2 > 2$, contradicting $x$ being an upper bound (because then $x - h$ is a smaller upper bound). Take $h < (x^2 - 2)/(2x)$. Then $(x-h)^2 \geq x^2 - 2xh > 2$.</p>
+      <p>Hence $x^2 = 2$. Uniqueness: if $y^2 = 2$ and $y > 0$, then $x^2 = y^2$ gives $x = y$. ∎</p>
+    </div>
+
+    <h3 class="subsection">Density of $\mathbb{Q}$</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.4.8</span>
+      <span class="box-title">— Density of $\mathbb{Q}$ in $\mathbb{R}$</span>
+      <p>For any real numbers $x < y$, there exists a rational $r$ with $x < r < y$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>WLOG $x > 0$ (handle $x \leq 0$ by translation). Since $y - x > 0$, by Archimedean property pick $n \in \mathbb{N}$ with $n > 1/(y - x)$, i.e., $1/n < y - x$.</p>
+      <p>Now consider multiples of $1/n$. By Archimedean, pick the smallest $m \in \mathbb{N}$ with $m/n > x$. Then $m/n > x$ but $(m-1)/n \leq x$, so $m/n \leq x + 1/n < x + (y-x) = y$. Hence $x < m/n < y$. ∎</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Corollary 2.4.9</span>
+      <span class="box-title">— Density of Irrationals</span>
+      <p>For any $x < y$, there exists an irrational $z$ with $x < z < y$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Apply density of $\mathbb{Q}$ to $x/\sqrt{2} < y/\sqrt{2}$ to get rational $r$ with $x/\sqrt{2} < r < y/\sqrt{2}$. If $r \neq 0$, then $r\sqrt{2}$ is irrational and $x < r\sqrt{2} < y$. (Tweak if $r = 0$ to find another rational.) ∎</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 2.4.A · Archimedean Application</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $\inf\{1/n^2 : n \in \mathbb{N}\} = 0$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$1/n^2 > 0$ for all $n$, so $0$ is a lower bound. Given $\varepsilon > 0$, by Archimedean pick $n > 1/\sqrt{\varepsilon}$. Then $1/n^2 < \varepsilon$. So no positive number is a lower bound, hence $\inf = 0$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 2.4.B · Existence of $n$-th Roots</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">For $a > 0$ and $n \in \mathbb{N}$, there exists a unique $b > 0$ with $b^n = a$.</p>
+        <p class="solution-label">Solution Idea</p>
+        <p>Same strategy as $\sqrt{2}$: let $S = \{s > 0 : s^n < a\}$, take $b = \sup S$, and rule out $b^n < a$ and $b^n > a$. Uniqueness follows from strict monotonicity of $x \mapsto x^n$ on $(0, \infty)$. ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P21.</span> Show that for every $a, b \in \mathbb{R}$ with $a < b$, there exist infinitely many rationals in $(a,b)$.
+        <details><summary>Show approach</summary>
+          <div class="answer">By density, find $r_1 \in (a, b) \cap \mathbb{Q}$. Then in $(a, r_1)$, find $r_2$. Continue forever.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P22.</span> Show $\inf\{m + 1/n : m, n \in \mathbb{N}\} = 1$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Smallest $m$ is $1$, smallest $1/n$ approaches $0$. Lower bound: $m + 1/n \geq 1 + 1/n > 1$. For $\varepsilon > 0$, take $m = 1$, $n > 1/\varepsilon$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 2.5 INTERVALS -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 2.5</span> Intervals</h2>
+
+    <h3 class="subsection">Types of Intervals</h3>
+
+    <p>For $a < b$:</p>
+    <ul>
+      <li>$(a, b) = \{x : a < x < b\}$ — <strong>open</strong></li>
+      <li>$[a, b] = \{x : a \leq x \leq b\}$ — <strong>closed</strong></li>
+      <li>$[a, b)$ and $(a, b]$ — half-open</li>
+      <li>$(a, \infty), [a, \infty), (-\infty, b), (-\infty, b], (-\infty, \infty) = \mathbb{R}$ — unbounded</li>
+    </ul>
+
+    <p>Length of $[a,b]$ (or $(a,b)$ etc.) is $b - a$.</p>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.5.1</span>
+      <span class="box-title">— Characterization of Intervals</span>
+      <p>$S \subseteq \mathbb{R}$ is an interval if and only if for every $a, b \in S$ with $a < b$, the entire interval $[a, b] \subseteq S$.</p>
+    </div>
+
+    <p>This says: an interval is exactly a "connected" set on the real line.</p>
+
+    <h3 class="subsection">Nested Intervals</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.5.2</span>
+      <span class="box-title">— Nested Intervals Property</span>
+      <p>Let $I_n = [a_n, b_n]$ be a sequence of <em>closed bounded</em> intervals with $I_1 \supseteq I_2 \supseteq I_3 \supseteq \cdots$. Then</p>
+      $$ \bigcap_{n=1}^\infty I_n \neq \emptyset. $$
+      <p>That is, there exists at least one $\xi$ in every $I_n$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Since $I_n \supseteq I_{n+1}$, we have $a_n \leq a_{n+1} \leq b_{n+1} \leq b_n$, so $(a_n)$ is increasing and $(b_n)$ is decreasing, with $a_n \leq b_m$ for all $m, n$. Let $\xi = \sup\{a_n : n \in \mathbb{N}\}$ (exists by completeness, since bounded above by any $b_m$). Then $a_n \leq \xi$ for all $n$. Also, $\xi \leq b_m$ for all $m$ (because each $b_m$ is an upper bound for $\{a_n\}$). So $\xi \in [a_n, b_n] = I_n$ for every $n$. ∎</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.5.3</span>
+      <span class="box-title">— Uniqueness in Nested Intervals</span>
+      <p>If, additionally, $\inf\{b_n - a_n : n \in \mathbb{N}\} = 0$, then $\bigcap I_n$ contains exactly one point.</p>
+    </div>
+
+    <div class="box warning">
+      <span class="box-label">⚠ Both Hypotheses Essential</span>
+      <ul>
+        <li><strong>Open intervals fail:</strong> $\bigcap_n (0, 1/n) = \emptyset$.</li>
+        <li><strong>Unbounded fails:</strong> $\bigcap_n [n, \infty) = \emptyset$.</li>
+        <li>Closed AND bounded — both required.</li>
+      </ul>
+    </div>
+
+    <h3 class="subsection">Uncountability of $\mathbb{R}$</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 2.5.5</span>
+      <span class="box-title">— $[0,1]$ is Uncountable</span>
+      <p>The interval $[0, 1]$ is uncountable. Hence $\mathbb{R}$ is uncountable.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Suppose for contradiction $[0,1]$ is countable: $[0,1] = \{x_1, x_2, x_3, \ldots\}$. We construct a nested sequence of closed intervals avoiding the $x_n$'s:</p>
+      <p>Divide $[0,1]$ into three closed thirds. At least one third doesn't contain $x_1$; call it $I_1$. Divide $I_1$ into three thirds; at least one doesn't contain $x_2$; call it $I_2$. Continue: $I_n$ is a closed subinterval of $I_{n-1}$ not containing $x_n$.</p>
+      <p>By Nested Intervals, $\exists\, \xi \in \bigcap I_n$. But $\xi \neq x_n$ for any $n$ (since $\xi \in I_n$ which excludes $x_n$). So $\xi \in [0,1]$ but $\xi$ is not in our list — contradiction. ∎</p>
+    </div>
+
+    <h3 class="subsection">Binary Representations</h3>
+
+    <p>Every $x \in [0,1]$ has a binary representation $x = \sum_{n=1}^\infty a_n / 2^n$ with $a_n \in \{0, 1\}$. Cantor's <strong>diagonal argument</strong> uses these to give an alternate proof of uncountability of $[0,1]$.</p>
+
+    <div class="example">
+      <div class="example-header"><span>Example 2.5.A · Nested Intervals in Action</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $\bigcap_{n=1}^\infty [0, 1/n] = \{0\}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$0 \in [0, 1/n]$ for every $n$, so $0$ is in the intersection. If $\xi > 0$ were also in the intersection, then $\xi \leq 1/n$ for every $n$, contradicting Archimedean. So intersection $= \{0\}$. (Note lengths $1/n \to 0$, so by Theorem 2.5.3 the intersection is a single point.) ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P23.</span> Show that $\bigcap_{n=1}^\infty (0, 1/n) = \emptyset$ and explain why this doesn't contradict Nested Intervals.
+        <details><summary>Show approach</summary>
+          <div class="answer">If $x > 0$ were in the intersection, then $x < 1/n$ for all $n$, contradicting Archimedean. The intervals are open, not closed, so Theorem 2.5.2 doesn't apply.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P24.</span> Use Nested Intervals to prove the Bolzano-Weierstrass theorem (every bounded sequence has convergent subsequence). Sketch only.
+        <details><summary>Show sketch</summary>
+          <div class="answer">Bisect $[a,b]$ containing the sequence; one half contains infinitely many terms — call it $I_1$. Bisect $I_1$, take half with infinitely many — $I_2$. Continue. Lengths halve, so $\bigcap I_n = \{\xi\}$. Pick subsequence with one term per $I_n$ — converges to $\xi$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END CH 2 -->
+
+<!-- ============================================================ -->
+<!-- ============== CHAPTER 3: SEQUENCES & SERIES ================ -->
+<!-- ============================================================ -->
+<section class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">— Chapter the Third —</div>
+    <h2 class="chapter-title">Sequences and Series</h2>
+    <div class="chapter-tagline">The first true encounter with the limit</div>
+  </div>
+
+  <p class="chapter-intro">A sequence is just a function $\mathbb{N} \to \mathbb{R}$, written $(x_n)$ or $\{x_n\}$. The whole drama is about <em>convergence</em>: does the sequence settle down to a single value? This chapter introduces the $\varepsilon$-$N$ definition (the gateway drug to all of analysis), the major convergence theorems (Squeeze, Monotone Convergence, Bolzano-Weierstrass), Cauchy sequences, divergent and "infinite" limits, and finally infinite series.</p>
+
+  <!-- ====================================================== -->
+  <!-- 3.1 SEQUENCES AND THEIR LIMITS -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 3.1</span> Sequences and Their Limits</h2>
+
+    <h3 class="subsection">Sequences</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition 3.1.1</span>
+      <span class="box-title">— Sequence</span>
+      <p>A <strong>sequence</strong> in $\mathbb{R}$ is a function $X: \mathbb{N} \to \mathbb{R}$. We write $X = (x_n) = (x_1, x_2, x_3, \ldots)$ where $x_n = X(n)$ is the <strong>$n$-th term</strong>.</p>
+    </div>
+
+    <p>Examples: $(1/n) = (1, 1/2, 1/3, \ldots)$. Or $((-1)^n) = (-1, 1, -1, 1, \ldots)$. Or recursively: $x_1 = 1$, $x_{n+1} = \sqrt{2 + x_n}$.</p>
+
+    <h3 class="subsection">Convergence — the $\varepsilon$-$N$ Definition</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition 3.1.3</span>
+      <span class="box-title">— Convergence</span>
+      <p>A sequence $(x_n)$ <strong>converges</strong> to $x \in \mathbb{R}$ — written $\lim x_n = x$, $x_n \to x$, or $\lim_{n \to \infty} x_n = x$ — if:</p>
+      $$ \forall\, \varepsilon > 0,\ \exists\, N \in \mathbb{N},\ \forall\, n \geq N,\ |x_n - x| < \varepsilon. $$
+      <p>If no such $x$ exists, the sequence <strong>diverges</strong>.</p>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Reading $\varepsilon$-$N$</span>
+      <p>"For any tolerance $\varepsilon > 0$, no matter how small, we can find a cut-off index $N$ such that <em>beyond that index</em>, every term of the sequence stays within $\varepsilon$ of $x$." Picture a horizontal strip $(x - \varepsilon, x + \varepsilon)$ around $x$ on the $y$-axis. Eventually all dots $(n, x_n)$ lie inside this strip. Tightening $\varepsilon$ usually forces a larger $N$.</p>
+    </div>
+
+    <p>Equivalent formulation: $x_n \to x$ iff for every $\varepsilon > 0$, the set $\{n : x_n \notin V_\varepsilon(x)\}$ is finite.</p>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.1.4</span>
+      <span class="box-title">— Uniqueness of Limits</span>
+      <p>A sequence in $\mathbb{R}$ has at most one limit.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Suppose $x_n \to x$ and $x_n \to x'$ with $x \neq x'$. Set $\varepsilon = |x - x'|/2 > 0$. By convergence: $\exists N_1$ with $|x_n - x| < \varepsilon$ for $n \geq N_1$, and $\exists N_2$ with $|x_n - x'| < \varepsilon$ for $n \geq N_2$. For $n \geq \max(N_1, N_2)$:
+      $$ |x - x'| \leq |x - x_n| + |x_n - x'| < 2\varepsilon = |x - x'|, $$
+      contradiction. ∎</p>
+    </div>
+
+    <h3 class="subsection">The Standard Game Plan</h3>
+
+    <p>To prove $\lim x_n = x$ from the definition:</p>
+    <ol>
+      <li>Compute (or estimate) $|x_n - x|$ and bound it by something simpler, like $C/n$ or $C/n^2$.</li>
+      <li>Given $\varepsilon > 0$, use Archimedean to pick $N$ making the bound $< \varepsilon$.</li>
+      <li>Verify and conclude.</li>
+    </ol>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.1.A · The Bedrock Limit</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Prove $\lim (1/n) = 0$.</p>
+        <p class="solution-label">Proof</p>
+        <p>$|1/n - 0| = 1/n$. Given $\varepsilon > 0$, by Archimedean property pick $N \in \mathbb{N}$ with $N > 1/\varepsilon$. Then for $n \geq N$: $1/n \leq 1/N < \varepsilon$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.1.B · A Constant Sequence</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">If $x_n = c$ for all $n$, show $x_n \to c$.</p>
+        <p class="solution-label">Proof</p>
+        <p>For any $\varepsilon > 0$, $|x_n - c| = 0 < \varepsilon$ for all $n$. Take $N = 1$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.1.C · A Rational Sequence</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Prove $\displaystyle \lim \frac{2n+1}{n+3} = 2$.</p>
+        <p class="solution-label">Proof</p>
+        <p>$\displaystyle\left|\frac{2n+1}{n+3} - 2\right| = \left|\frac{2n+1 - 2(n+3)}{n+3}\right| = \frac{5}{n+3} < \frac{5}{n}$.</p>
+        <p>Given $\varepsilon > 0$, pick $N > 5/\varepsilon$. For $n \geq N$: $5/n \leq 5/N < \varepsilon$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.1.D · A Quadratic Denominator</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Prove $\displaystyle \lim \frac{n}{n^2 + 1} = 0$.</p>
+        <p class="solution-label">Proof</p>
+        <p>$\left|\frac{n}{n^2+1}\right| = \frac{n}{n^2 + 1} \leq \frac{n}{n^2} = \frac{1}{n}$.</p>
+        <p>Given $\varepsilon > 0$, pick $N > 1/\varepsilon$. For $n \geq N$: bound $\leq 1/n < \varepsilon$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.1.E · Showing Divergence</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $((-1)^n)$ does not converge.</p>
+        <p class="solution-label">Proof</p>
+        <p>Suppose $(-1)^n \to L$ for some $L$. Take $\varepsilon = 1/2$. Then $\exists N$: for $n \geq N$, $|(-1)^n - L| < 1/2$. But for $n \geq N$, $(-1)^n$ takes both values $1$ and $-1$. So $|1 - L| < 1/2$ AND $|-1 - L| < 1/2$. By triangle: $2 = |1 - (-1)| \leq |1 - L| + |L - (-1)| < 1$. Contradiction. ∎</p>
+      </div>
+    </div>
+
+    <h3 class="subsection">Tail of a Sequence</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.1.9</span>
+      <span class="box-title">— Tails Don't Affect Convergence</span>
+      <p>For any $m \in \mathbb{N}$, the "$m$-tail" $(x_{m+n})_{n=1}^\infty$ converges to $x$ iff $(x_n)$ converges to $x$. In other words, finitely many initial terms don't affect convergence.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.1.10</span>
+      <span class="box-title">— Comparison Convergence</span>
+      <p>If $(a_n)$ is a sequence of nonnegative reals with $a_n \to 0$, and $|x_n - x| \leq C \cdot a_n$ for some constant $C > 0$ and all $n \geq N_0$, then $x_n \to x$.</p>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Why this is useful</span>
+      <p>Once you've proven a few benchmark limits (like $1/n \to 0$), you can prove a host of others by comparison without redoing $\varepsilon$-$N$ from scratch.</p>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P25.</span> Prove $\displaystyle \lim \frac{1}{\sqrt{n}} = 0$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$1/\sqrt{n} < \varepsilon$ iff $n > 1/\varepsilon^2$. Pick $N > 1/\varepsilon^2$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P26.</span> Prove $\displaystyle \lim \frac{3n+5}{n+1} = 3$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$\left|\frac{3n+5}{n+1} - 3\right| = \frac{2}{n+1} < \frac{2}{n}$. Pick $N > 2/\varepsilon$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P27.</span> Show $\displaystyle \lim \frac{n^2}{n^2 + n} = 1$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$\left|\frac{n^2}{n^2+n} - 1\right| = \frac{n}{n^2+n} = \frac{1}{n+1} < \frac{1}{n}$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 3.2 LIMIT THEOREMS -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 3.2</span> Limit Theorems</h2>
+
+    <div class="box definition">
+      <span class="box-label">Definition 3.2.1</span>
+      <span class="box-title">— Bounded Sequence</span>
+      <p>A sequence $(x_n)$ is <strong>bounded</strong> if there exists $M > 0$ with $|x_n| \leq M$ for all $n$.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.2.2</span>
+      <span class="box-title">— Convergent ⇒ Bounded</span>
+      <p>Every convergent sequence is bounded.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Say $x_n \to x$. With $\varepsilon = 1$: $\exists N$ s.t. $n \geq N$ implies $|x_n - x| < 1$, so $|x_n| < |x| + 1$. Set $M = \max(|x_1|, \ldots, |x_{N-1}|, |x| + 1)$. Then $|x_n| \leq M$ for all $n$. ∎</p>
+    </div>
+
+    <p><strong>Contrapositive:</strong> An unbounded sequence cannot converge. Quick way to detect divergence.</p>
+
+    <h3 class="subsection">Algebra of Limits</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.2.3</span>
+      <span class="box-title">— Algebra of Limits</span>
+      <p>Suppose $\lim x_n = x$ and $\lim y_n = y$. Then:</p>
+      <ul>
+        <li>$\lim (x_n + y_n) = x + y$</li>
+        <li>$\lim (x_n - y_n) = x - y$</li>
+        <li>$\lim (x_n \cdot y_n) = x \cdot y$</li>
+        <li>$\lim (c \cdot x_n) = c \cdot x$ for any constant $c \in \mathbb{R}$</li>
+        <li>$\lim (x_n / y_n) = x / y$, provided $y \neq 0$ and $y_n \neq 0$ for all $n$</li>
+      </ul>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof of Sum (sketch)</span>
+      <p>$|(x_n + y_n) - (x + y)| \leq |x_n - x| + |y_n - y|$. Given $\varepsilon$, pick $N_1$ with $|x_n - x| < \varepsilon/2$ for $n \geq N_1$, and similarly $N_2$. Take $N = \max(N_1, N_2)$. ∎</p>
+    </div>
+
+    <h3 class="subsection">Order and Limits</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.2.4</span>
+      <span class="box-title">— Limits Preserve Inequalities</span>
+      <p>If $x_n \to x$ and $x_n \geq 0$ for all $n$, then $x \geq 0$.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.2.5</span>
+      <span class="box-title">— Limit Sandwich (Order)</span>
+      <p>If $x_n \to x$, $y_n \to y$, and $x_n \leq y_n$ for all $n$, then $x \leq y$.</p>
+    </div>
+
+    <div class="box warning">
+      <span class="box-label">⚠ Strict Inequalities Don't Pass</span>
+      <p>$x_n < y_n$ for all $n$ does NOT imply $\lim x_n < \lim y_n$. Example: $x_n = 0$, $y_n = 1/n$. Both have limit $0$. Strict inequality is lost in the limit.</p>
+    </div>
+
+    <h3 class="subsection">Squeeze Theorem</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.2.7</span>
+      <span class="box-title">— Squeeze Theorem</span>
+      <p>If $x_n \leq y_n \leq z_n$ for all $n$ (or eventually), and $\lim x_n = \lim z_n = L$, then $\lim y_n = L$.</p>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Why we love the squeeze</span>
+      <p>It lets you compute limits without messy direct estimates. Sandwich your sequence between two simpler ones with the same limit, and you're done. Especially useful for sequences with oscillating numerators (like $\sin(n)/n$).</p>
+    </div>
+
+    <h3 class="subsection">Important Standard Limits</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.2.10</span>
+      <span class="box-title">— Famous Limits</span>
+      <ul>
+        <li>$\lim \frac{1}{n^p} = 0$ for $p > 0$</li>
+        <li>$\lim b^n = 0$ if $|b| < 1$</li>
+        <li>$\lim n^{1/n} = 1$</li>
+        <li>$\lim c^{1/n} = 1$ for $c > 0$</li>
+      </ul>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.2.A · Algebra of Limits</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Find $\displaystyle \lim \frac{3n^2 - n + 5}{2n^2 + 7n + 1}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>Divide numerator and denominator by $n^2$:
+        $$ \lim \frac{3 - 1/n + 5/n^2}{2 + 7/n + 1/n^2}. $$
+        Using algebra of limits (and $1/n, 1/n^2 \to 0$), the limit is $\frac{3 - 0 + 0}{2 + 0 + 0} = \frac{3}{2}$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.2.B · Squeeze in Action</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Find $\lim \frac{\sin n}{n}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$|\sin n| \leq 1$, so $-\frac{1}{n} \leq \frac{\sin n}{n} \leq \frac{1}{n}$. Both bounds tend to $0$. By Squeeze, limit is $0$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.2.C · Conjugate Trick</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Find $\lim (\sqrt{n+1} - \sqrt{n})$.</p>
+        <p class="solution-label">Solution</p>
+        <p>Multiply by conjugate:
+        $$ \sqrt{n+1} - \sqrt{n} = \frac{(\sqrt{n+1} - \sqrt{n})(\sqrt{n+1} + \sqrt{n})}{\sqrt{n+1} + \sqrt{n}} = \frac{1}{\sqrt{n+1} + \sqrt{n}}. $$
+        Denominator $\to \infty$, so the limit is $0$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.2.D · Geometric Decay</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">If $0 < b < 1$, show $b^n \to 0$.</p>
+        <p class="solution-label">Solution</p>
+        <p>Write $b = 1/(1+a)$ with $a = (1-b)/b > 0$. By Bernoulli: $(1+a)^n \geq 1 + na > na$. So $b^n = 1/(1+a)^n < 1/(na)$. Given $\varepsilon > 0$, pick $N > 1/(a\varepsilon)$; then $b^n < \varepsilon$ for $n \geq N$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.2.E · The Ratio Test (Preview)</span><span>★★★</span></div>
+      <div class="example-body">
+        <p class="problem">Find $\lim \frac{n}{2^n}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>Let $x_n = n/2^n$. Compute the ratio:
+        $$ \frac{x_{n+1}}{x_n} = \frac{n+1}{2(n)} \to \frac{1}{2}. $$
+        For large $n$, ratio $< 3/4$. So eventually $x_{n+1} < (3/4) x_n$, giving $x_n \leq C(3/4)^n$, which $\to 0$. By comparison, $x_n \to 0$. ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P28.</span> Find $\displaystyle \lim \frac{n^2 + 3n + 1}{2n^2 - n}$.
+        <details><summary>Show answer</summary>
+          <div class="answer">Divide by $n^2$: $\frac{1 + 3/n + 1/n^2}{2 - 1/n} \to \frac{1}{2}$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P29.</span> Compute $\displaystyle \lim \frac{(-1)^n n}{n^2 + 1}$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$\left|\frac{(-1)^n n}{n^2+1}\right| = \frac{n}{n^2+1} \leq \frac{1}{n} \to 0$. By squeeze, limit is $0$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P30.</span> Find $\lim (\sqrt{n^2 + n} - n)$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Conjugate: $\frac{n}{\sqrt{n^2+n}+n} = \frac{1}{\sqrt{1+1/n}+1} \to \frac{1}{2}$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P31.</span> Show $\lim \frac{2^n}{n!} = 0$.
+        <details><summary>Show approach</summary>
+          <div class="answer">For $n \geq 4$: $\frac{2^n}{n!} = \frac{2}{1}\cdot\frac{2}{2}\cdot\frac{2}{3}\cdot\frac{2}{4}\cdots\frac{2}{n} < \frac{8}{3} \cdot (1/2)^{n-3}$ (each factor $\leq 1/2$ for $k \geq 4$). Compare to geometric.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 3.3 MONOTONE SEQUENCES -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 3.3</span> Monotone Sequences</h2>
+
+    <div class="box definition">
+      <span class="box-label">Definition 3.3.1</span>
+      <span class="box-title">— Monotone Sequences</span>
+      <p>A sequence $(x_n)$ is:</p>
+      <ul>
+        <li><strong>Increasing</strong> if $x_n \leq x_{n+1}$ for all $n$.</li>
+        <li><strong>Strictly increasing</strong> if $x_n < x_{n+1}$ for all $n$.</li>
+        <li><strong>Decreasing</strong> if $x_n \geq x_{n+1}$ for all $n$.</li>
+        <li><strong>Strictly decreasing</strong> if $x_n > x_{n+1}$ for all $n$.</li>
+        <li><strong>Monotone</strong> if it is increasing or decreasing.</li>
+      </ul>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.3.2</span>
+      <span class="box-title">— Monotone Convergence Theorem (MCT)</span>
+      <p>A monotone sequence converges <strong>if and only if</strong> it is bounded. Furthermore:</p>
+      <ul>
+        <li>If $(x_n)$ is increasing and bounded above: $\lim x_n = \sup\{x_n : n \in \mathbb{N}\}$.</li>
+        <li>If $(x_n)$ is decreasing and bounded below: $\lim x_n = \inf\{x_n : n \in \mathbb{N}\}$.</li>
+      </ul>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof (increasing case)</span>
+      <p>Let $S = \{x_n : n \in \mathbb{N}\}$, bounded above. Let $x = \sup S$ (exists by completeness). Given $\varepsilon > 0$, by $\varepsilon$-characterization, $\exists N$ with $x_N > x - \varepsilon$. Since increasing, $n \geq N$ implies $x_n \geq x_N > x - \varepsilon$. Also $x_n \leq x$. So $|x_n - x| < \varepsilon$. ∎</p>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Why MCT is so useful</span>
+      <p>You don't need to know the limit to prove convergence — just monotonicity + boundedness. This is huge: many recursively-defined sequences are tackled this way. (Once we know the limit exists, we can find it by taking limits in the recursion.)</p>
+    </div>
+
+    <h3 class="subsection">Examples of MCT</h3>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.3.A · A Sum-Defined Sequence</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $x_n = 1 + \frac{1}{2^2} + \frac{1}{3^2} + \cdots + \frac{1}{n^2}$ converges.</p>
+        <p class="solution-label">Solution</p>
+        <p>Increasing: $x_{n+1} - x_n = 1/(n+1)^2 > 0$. ✓</p>
+        <p>Bounded: For $k \geq 2$, $\frac{1}{k^2} < \frac{1}{k(k-1)} = \frac{1}{k-1} - \frac{1}{k}$ (telescoping). So
+        $$ x_n < 1 + \sum_{k=2}^{n}\left(\frac{1}{k-1} - \frac{1}{k}\right) = 1 + 1 - \frac{1}{n} < 2. $$
+        ✓ By MCT, $(x_n)$ converges. (The limit is $\pi^2/6$, but we don't need this.) ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.3.B · Recursive Sequence (Classic)</span><span>★★★</span></div>
+      <div class="example-body">
+        <p class="problem">Let $x_1 = 1$ and $x_{n+1} = \sqrt{2 + x_n}$. Show $(x_n)$ converges and find $\lim x_n$.</p>
+        <p class="solution-label">Solution</p>
+        <p><em>Step 1: bounded above by $2$ (induction).</em> Base: $x_1 = 1 \leq 2$. ✓ Step: if $x_n \leq 2$, $x_{n+1} = \sqrt{2+x_n} \leq \sqrt{4} = 2$. ✓</p>
+        <p><em>Step 2: increasing (induction).</em> $x_{n+1}^2 - x_n^2 = (2 + x_n) - x_n^2 = -(x_n - 2)(x_n + 1) \geq 0$ when $x_n \leq 2$. Since $x_n, x_{n+1} > 0$, this gives $x_{n+1} \geq x_n$. ✓</p>
+        <p><em>Step 3: limit.</em> By MCT, $L = \lim x_n$ exists. Take limits in recursion:
+        $$ L = \sqrt{2 + L} \implies L^2 = 2 + L \implies L = 2 \text{ or } L = -1. $$
+        Since $x_n > 0$, $L \geq 0$, so $L = 2$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.3.C · The Babylonian Method (Sqrt)</span><span>★★★</span></div>
+      <div class="example-body">
+        <p class="problem">Let $a > 0$. Define $x_1 > 0$ and $x_{n+1} = \frac{1}{2}\left(x_n + \frac{a}{x_n}\right)$. Show $x_n \to \sqrt{a}$.</p>
+        <p class="solution-label">Solution</p>
+        <p><em>Bounded below by $\sqrt{a}$ (for $n \geq 2$).</em> By AM-GM:
+        $$ x_{n+1} = \frac{x_n + a/x_n}{2} \geq \sqrt{x_n \cdot a/x_n} = \sqrt{a}. $$
+        So $x_n \geq \sqrt{a}$ for $n \geq 2$.</p>
+        <p><em>Decreasing for $n \geq 2$.</em> $x_n - x_{n+1} = x_n - \frac{1}{2}(x_n + a/x_n) = \frac{x_n^2 - a}{2x_n}$. Since $x_n \geq \sqrt{a}$, numerator $\geq 0$, so $x_n \geq x_{n+1}$.</p>
+        <p>By MCT, $L = \lim x_n$ exists. From the recursion: $L = \frac{1}{2}(L + a/L)$, giving $L^2 = a$, so $L = \sqrt{a}$. ∎</p>
+      </div>
+    </div>
+
+    <h3 class="subsection">Euler's Number $e$</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.3.6</span>
+      <p>The sequence $e_n = (1 + 1/n)^n$ is increasing and bounded above by $3$. Hence $\lim e_n$ exists. We <em>define</em> $e := \lim_{n \to \infty} (1 + 1/n)^n$. Approximately $e \approx 2.71828$.</p>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P32.</span> Let $x_1 = 2$, $x_{n+1} = \frac{1}{2}(x_n + 6/x_n)$. Show convergence and find limit.
+        <details><summary>Show approach</summary>
+          <div class="answer">By AM-GM, $x_{n+1} \geq \sqrt{6}$ for $n \geq 1$. Decreasing: $x_n - x_{n+1} = (x_n^2 - 6)/(2x_n) \geq 0$. By MCT, $L$ exists. From $L = \frac{1}{2}(L + 6/L)$: $L = \sqrt{6}$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P33.</span> Let $x_1 = 1$, $x_{n+1} = \frac{x_n}{2} + 1$. Find the limit.
+        <details><summary>Show approach</summary>
+          <div class="answer">Bounded above by $2$ (induction: $x_{n+1} \leq 1 + 1 = 2$). Increasing: $x_{n+1} - x_n = 1 - x_n/2 \geq 0$ since $x_n \leq 2$. MCT: $L = L/2 + 1$, so $L = 2$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P34.</span> Show $x_n = \frac{1}{n+1} + \frac{1}{n+2} + \cdots + \frac{1}{2n}$ converges.
+        <details><summary>Show approach</summary>
+          <div class="answer">Increasing: $x_{n+1} - x_n = \frac{1}{2n+1} + \frac{1}{2n+2} - \frac{1}{n+1} = \frac{1}{2n+1} - \frac{1}{2n+2} > 0$. Bounded above: $x_n \leq n \cdot \frac{1}{n+1} < 1$. (Limit is $\ln 2$.)</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 3.4 SUBSEQUENCES & BW -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 3.4</span> Subsequences and the Bolzano-Weierstrass Theorem</h2>
+
+    <div class="box definition">
+      <span class="box-label">Definition 3.4.1</span>
+      <span class="box-title">— Subsequence</span>
+      <p>If $(x_n)$ is a sequence and $n_1 < n_2 < n_3 < \cdots$ are positive integers, then $(x_{n_k})_{k=1}^\infty$ is a <strong>subsequence</strong> of $(x_n)$.</p>
+    </div>
+
+    <p>Subsequences keep the order but skip terms. Example: from $(x_n) = (1, -1, 1, -1, \ldots)$, the even-indexed subsequence $(x_{2k}) = (-1, -1, -1, \ldots)$.</p>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.4.2</span>
+      <span class="box-title">— Convergent ⇒ Subsequences Converge</span>
+      <p>If $(x_n)$ converges to $x$, then every subsequence $(x_{n_k})$ also converges to $x$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Given $\varepsilon > 0$, $\exists N$: $n \geq N$ implies $|x_n - x| < \varepsilon$. Since $n_k \geq k$ (subscripts are strictly increasing), for $k \geq N$ we have $n_k \geq N$, so $|x_{n_k} - x| < \varepsilon$. ∎</p>
+    </div>
+
+    <h3 class="subsection">Divergence Tests via Subsequences</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.4.5</span>
+      <span class="box-title">— Divergence Criteria</span>
+      <p>A sequence $(x_n)$ DIVERGES (or fails to converge to $x$) if any of the following holds:</p>
+      <ol>
+        <li>$(x_n)$ has a subsequence that doesn't converge.</li>
+        <li>$(x_n)$ has two subsequences with different limits.</li>
+        <li>$(x_n)$ is unbounded.</li>
+      </ol>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.4.A · Classic Divergence</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $((-1)^n)$ diverges via subsequences.</p>
+        <p class="solution-label">Solution</p>
+        <p>$x_{2k} = 1 \to 1$ and $x_{2k-1} = -1 \to -1$. Two subsequences with different limits, so $(x_n)$ diverges. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.4.B · A Trickier Divergence</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $x_n = \cos(n\pi/2)$ diverges.</p>
+        <p class="solution-label">Solution</p>
+        <p>The sequence cycles: $0, -1, 0, 1, 0, -1, \ldots$ The subsequence indexed by $4k$ gives $\cos(2k\pi) = 1$. The subsequence indexed by $4k+2$ gives $\cos((2k+1)\pi) = -1$. Different limits ⇒ diverges. ∎</p>
+      </div>
+    </div>
+
+    <h3 class="subsection">Monotone Subsequence Theorem</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.4.7</span>
+      <span class="box-title">— Monotone Subsequence Theorem</span>
+      <p>If $(x_n)$ is any sequence of real numbers, there is a monotone subsequence of $(x_n)$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof Idea (Peak Argument)</span>
+      <p>Call $x_m$ a <em>peak</em> if $x_m \geq x_n$ for all $n \geq m$.</p>
+      <ul>
+        <li><em>Case 1:</em> Infinitely many peaks. List them by indices: $x_{m_1}, x_{m_2}, \ldots$ — automatically a decreasing subsequence.</li>
+        <li><em>Case 2:</em> Finitely many peaks. Past the last peak, no term is a peak: starting from any $n$ past, there's $n' > n$ with $x_{n'} > x_n$. Build an increasing subsequence.</li>
+      </ul>
+    </div>
+
+    <h3 class="subsection">Bolzano-Weierstrass</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.4.8</span>
+      <span class="box-title">— Bolzano-Weierstrass Theorem</span>
+      <p>Every bounded sequence in $\mathbb{R}$ has a convergent subsequence.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>By Theorem 3.4.7, the bounded sequence has a monotone subsequence. The subsequence is also bounded. By MCT, it converges. ∎</p>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Why BW is so important</span>
+      <p>The bridge between boundedness and convergence: even if the whole sequence oscillates wildly, you can always extract a "good" piece. This is the engine behind compactness arguments in $\mathbb{R}$ and the proofs of the Boundedness and Extreme Value Theorems for continuous functions.</p>
+    </div>
+
+    <h3 class="subsection">A Useful Equivalence</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.4.9</span>
+      <p>$x_n \to x$ if and only if every subsequence of $(x_n)$ has a sub-subsequence converging to $x$.</p>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P35.</span> Show $((-1)^n + 1/n)$ diverges using subsequences.
+        <details><summary>Show approach</summary>
+          <div class="answer">Even subsequence $\to 1$; odd $\to -1$. Different limits.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P36.</span> If $(x_n)$ is bounded and every convergent subsequence has limit $L$, show $x_n \to L$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Suppose not. Then $\exists \varepsilon > 0$ and subseq $x_{n_k}$ with $|x_{n_k} - L| \geq \varepsilon$. By BW, this subseq has a convergent sub-subseq with limit $L'$. Then $|L' - L| \geq \varepsilon \neq 0$, contradicting hypothesis.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 3.5 CAUCHY -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 3.5</span> The Cauchy Criterion</h2>
+
+    <div class="box definition">
+      <span class="box-label">Definition 3.5.1</span>
+      <span class="box-title">— Cauchy Sequence</span>
+      <p>A sequence $(x_n)$ is <strong>Cauchy</strong> if</p>
+      $$ \forall\, \varepsilon > 0,\ \exists\, N \in \mathbb{N},\ \forall\, n, m \geq N,\ |x_n - x_m| < \varepsilon. $$
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Cauchy vs. Convergent</span>
+      <p>A convergent sequence has terms close to a single point $L$. A Cauchy sequence has terms close <em>to each other</em>. In $\mathbb{R}$ these are equivalent — but you don't need to know the limit to verify Cauchy-ness.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Lemma 3.5.3</span>
+      <span class="box-title">— Convergent ⇒ Cauchy</span>
+      <p>If $(x_n)$ converges to $x$, then $(x_n)$ is Cauchy.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Given $\varepsilon > 0$, $\exists N$: $n \geq N \Rightarrow |x_n - x| < \varepsilon/2$. For $n, m \geq N$: $|x_n - x_m| \leq |x_n - x| + |x - x_m| < \varepsilon$. ∎</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Lemma 3.5.4</span>
+      <span class="box-title">— Cauchy ⇒ Bounded</span>
+      <p>Every Cauchy sequence is bounded.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.5.5</span>
+      <span class="box-title">— Cauchy Convergence Criterion</span>
+      <p>A sequence in $\mathbb{R}$ converges if and only if it is Cauchy.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof of Cauchy ⇒ Convergent</span>
+      <p>Cauchy sequence $(x_n)$ is bounded. By Bolzano-Weierstrass, some subseq $x_{n_k} \to x$. Show $x_n \to x$: given $\varepsilon$, pick $N$ from Cauchy condition with $\varepsilon/2$, and pick $K \geq N$ with $|x_{n_K} - x| < \varepsilon/2$. Then $n \geq N$:
+      $$|x_n - x| \leq |x_n - x_{n_K}| + |x_{n_K} - x| < \varepsilon. $$
+      ∎</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.5.A · Cauchy Verification</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $x_n = 1 + 1/2 + 1/4 + \cdots + 1/2^{n-1}$ is Cauchy.</p>
+        <p class="solution-label">Solution</p>
+        <p>For $n > m$:
+        $$ |x_n - x_m| = \frac{1}{2^m} + \frac{1}{2^{m+1}} + \cdots + \frac{1}{2^{n-1}} < \frac{1}{2^{m-1}}. $$
+        Given $\varepsilon$, pick $N$ with $1/2^{N-1} < \varepsilon$ (i.e., $N > \log_2(1/\varepsilon) + 1$). Then $n,m \geq N$: $|x_n - x_m| < \varepsilon$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.5.B · Contractive Sequence</span><span>★★★</span></div>
+      <div class="example-body">
+        <p class="problem">Suppose $|x_{n+2} - x_{n+1}| \leq C |x_{n+1} - x_n|$ for $0 < C < 1$. Show $(x_n)$ is Cauchy (hence converges).</p>
+        <p class="solution-label">Solution</p>
+        <p>By induction, $|x_{n+1} - x_n| \leq C^{n-1} |x_2 - x_1|$. For $n > m$:
+        $$ |x_n - x_m| \leq \sum_{k=m}^{n-1} |x_{k+1} - x_k| \leq |x_2 - x_1| \sum_{k=m}^{n-1} C^{k-1} \leq |x_2 - x_1| \cdot \frac{C^{m-1}}{1 - C}. $$
+        Since $C^{m-1} \to 0$, given $\varepsilon$ we pick $N$ to make this $< \varepsilon$. ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P37.</span> Show that $x_n = \sum_{k=1}^n \frac{1}{k!}$ is Cauchy.
+        <details><summary>Show approach</summary>
+          <div class="answer">For $n > m$: $|x_n - x_m| = \sum_{k=m+1}^n 1/k! < \sum_{k=m+1}^n 1/2^{k-1} < 1/2^{m-1}$. Pick $N$ accordingly.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P38.</span> Show that the harmonic sequence $h_n = 1 + 1/2 + 1/3 + \cdots + 1/n$ is NOT Cauchy.
+        <details><summary>Show approach</summary>
+          <div class="answer">$h_{2n} - h_n = \frac{1}{n+1} + \cdots + \frac{1}{2n} \geq n \cdot \frac{1}{2n} = 1/2$. So with $\varepsilon = 1/2$, the Cauchy condition fails.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 3.6 PROPERLY DIVERGENT -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 3.6</span> Properly Divergent Sequences</h2>
+
+    <p>"Going to infinity" — a special kind of divergence we still want to track.</p>
+
+    <div class="box definition">
+      <span class="box-label">Definition 3.6.1</span>
+      <span class="box-title">— Properly Divergent (Tends to $\pm\infty$)</span>
+      <p>$(x_n)$ <strong>tends to $+\infty$</strong>, written $\lim x_n = +\infty$ or $x_n \to +\infty$, if</p>
+      $$ \forall\, \alpha \in \mathbb{R},\ \exists\, N \in \mathbb{N},\ \forall\, n \geq N,\ x_n > \alpha. $$
+      <p>Similarly, $\lim x_n = -\infty$ if for every $\beta \in \mathbb{R}$, $\exists N$: $n \geq N \Rightarrow x_n < \beta$.</p>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">In Plain English</span>
+      <p>For any "target" $\alpha$, eventually all terms are above $\alpha$. The sequence climbs forever. NOT the same as "no finite limit" — diverges by oscillation (like $(-1)^n$) is different.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.6.3</span>
+      <span class="box-title">— Monotone &amp; Unbounded ⇒ Tends to $\pm\infty$</span>
+      <p>An unbounded monotone sequence is properly divergent:</p>
+      <ul>
+        <li>Increasing &amp; unbounded above ⇒ $\lim x_n = +\infty$.</li>
+        <li>Decreasing &amp; unbounded below ⇒ $\lim x_n = -\infty$.</li>
+      </ul>
+    </div>
+
+    <h3 class="subsection">Comparison Theorems</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.6.4</span>
+      <span class="box-title">— Comparison Test for Infinity</span>
+      <p>If $x_n \leq y_n$ for all $n \geq n_0$:</p>
+      <ul>
+        <li>$\lim x_n = +\infty$ ⇒ $\lim y_n = +\infty$.</li>
+        <li>$\lim y_n = -\infty$ ⇒ $\lim x_n = -\infty$.</li>
+      </ul>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.6.5</span>
+      <span class="box-title">— Limit Comparison</span>
+      <p>If $x_n, y_n > 0$ and $\lim (x_n / y_n) = L > 0$, then $\lim x_n = +\infty$ iff $\lim y_n = +\infty$.</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.6.A · Standard Divergent Sequences</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $\lim n = +\infty$ and $\lim n^2 = +\infty$.</p>
+        <p class="solution-label">Solution</p>
+        <p>For $n$: given $\alpha$, by Archimedean pick $N > \alpha$. For $n^2$: pick $N > \sqrt{|\alpha|}$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.6.B · Geometric Growth</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">If $b > 1$, show $\lim b^n = +\infty$.</p>
+        <p class="solution-label">Solution</p>
+        <p>Write $b = 1 + a$ with $a > 0$. By Bernoulli: $b^n \geq 1 + na$. Given $\alpha$, pick $N > (\alpha-1)/a$. ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P39.</span> Show $\lim \sqrt{n} = +\infty$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Given $\alpha > 0$, pick $N > \alpha^2$. Then $n \geq N$ gives $\sqrt{n} \geq \sqrt{N} > \alpha$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P40.</span> Determine $\lim \frac{n^2 + 1}{n}$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$\frac{n^2 + 1}{n} = n + 1/n \geq n$, and $\lim n = \infty$, so by comparison limit is $+\infty$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 3.7 SERIES -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 3.7</span> Introduction to Infinite Series</h2>
+
+    <div class="box definition">
+      <span class="box-label">Definition 3.7.1</span>
+      <span class="box-title">— Infinite Series</span>
+      <p>For a sequence $(x_n)$, the <strong>infinite series</strong> $\sum_{n=1}^\infty x_n$ is the sequence of <strong>partial sums</strong>:</p>
+      $$ s_n = x_1 + x_2 + \cdots + x_n. $$
+      <p>If $(s_n)$ converges to $S$, we say the series converges and write $\sum_{n=1}^\infty x_n = S$. Otherwise, the series diverges.</p>
+    </div>
+
+    <h3 class="subsection">Geometric Series</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.7.2</span>
+      <span class="box-title">— Geometric Series</span>
+      <p>If $|r| < 1$: $\displaystyle \sum_{n=0}^\infty r^n = \frac{1}{1-r}$.</p>
+      <p>If $|r| \geq 1$: the series diverges.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>$s_n = 1 + r + r^2 + \cdots + r^n = \frac{1 - r^{n+1}}{1 - r}$ (for $r \neq 1$). If $|r| < 1$, $r^{n+1} \to 0$ so $s_n \to \frac{1}{1-r}$. If $|r| \geq 1$, $|r|^{n+1} \not\to 0$, so $s_n$ doesn't converge. ∎</p>
+    </div>
+
+    <h3 class="subsection">Necessary Condition: $n$-th Term Test</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.7.3</span>
+      <span class="box-title">— $n$-th Term Test</span>
+      <p>If $\sum x_n$ converges, then $\lim x_n = 0$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>$s_n - s_{n-1} = x_n$. If $s_n \to S$, then $s_{n-1} \to S$ too, so $x_n \to 0$. ∎</p>
+    </div>
+
+    <div class="box warning">
+      <span class="box-label">⚠ Critical Caveat</span>
+      <p>This is ONLY a divergence test (in contrapositive form). $x_n \to 0$ does NOT imply convergence of $\sum x_n$. The harmonic series $\sum 1/n$ diverges even though $1/n \to 0$.</p>
+    </div>
+
+    <h3 class="subsection">Cauchy Criterion for Series</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.7.4</span>
+      <span class="box-title">— Cauchy Criterion for Series</span>
+      <p>$\sum x_n$ converges iff for every $\varepsilon > 0$, there exists $N$ such that for $n > m \geq N$:</p>
+      $$ |s_n - s_m| = |x_{m+1} + x_{m+2} + \cdots + x_n| < \varepsilon. $$
+    </div>
+
+    <h3 class="subsection">Series with Positive Terms</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.7.5</span>
+      <p>If $x_n \geq 0$, then $\sum x_n$ converges iff its partial sums $(s_n)$ are bounded.</p>
+    </div>
+
+    <p>(Because partial sums are increasing — apply MCT.)</p>
+
+    <h3 class="subsection">The $p$-Series</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.7.6</span>
+      <span class="box-title">— The $p$-Series</span>
+      <p>$\displaystyle \sum_{n=1}^\infty \frac{1}{n^p}$ converges iff $p > 1$.</p>
+    </div>
+
+    <p>In particular, harmonic series ($p=1$) diverges; $\sum 1/n^2$ converges (to $\pi^2/6$); $\sum 1/\sqrt{n}$ diverges.</p>
+
+    <h3 class="subsection">Comparison Tests</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.7.7</span>
+      <span class="box-title">— Direct Comparison Test</span>
+      <p>Suppose $0 \leq x_n \leq y_n$ for all $n \geq N_0$.</p>
+      <ul>
+        <li>If $\sum y_n$ converges, then $\sum x_n$ converges.</li>
+        <li>If $\sum x_n$ diverges, then $\sum y_n$ diverges.</li>
+      </ul>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 3.7.8</span>
+      <span class="box-title">— Limit Comparison Test</span>
+      <p>If $x_n, y_n > 0$ and $\lim x_n/y_n = L \in (0, \infty)$, then $\sum x_n$ and $\sum y_n$ both converge or both diverge.</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.7.A · Comparison Test</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Determine whether $\sum \frac{1}{n^2 + n}$ converges.</p>
+        <p class="solution-label">Solution</p>
+        <p>$\frac{1}{n^2 + n} \leq \frac{1}{n^2}$. Since $\sum 1/n^2$ converges (p-series, $p=2$), so does our series. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.7.B · Limit Comparison</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Determine whether $\sum \frac{n+3}{n^3 + n^2 + 1}$ converges.</p>
+        <p class="solution-label">Solution</p>
+        <p>Compare with $\sum 1/n^2$. Ratio:
+        $$ \frac{(n+3)/(n^3+n^2+1)}{1/n^2} = \frac{n^2(n+3)}{n^3 + n^2 + 1} \to 1. $$
+        Since $\sum 1/n^2$ converges and ratio limit is $1$ (positive, finite), our series converges. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 3.7.C · Geometric Series</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Compute $\sum_{n=0}^\infty (3/4)^n$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$|3/4| < 1$. Sum $= \frac{1}{1 - 3/4} = 4$. ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P41.</span> Determine convergence of $\sum \frac{1}{2^n + 1}$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Compare with $\sum 1/2^n$ (geometric, converges). $\frac{1}{2^n+1} < \frac{1}{2^n}$. Converges.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P42.</span> Determine convergence of $\sum \frac{1}{\sqrt{n} + 1}$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Compare to $\sum 1/\sqrt{n}$ (p-series with $p = 1/2 \leq 1$, diverges). Limit comparison: $\frac{1/(\sqrt{n}+1)}{1/\sqrt{n}} \to 1$. Diverges.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P43.</span> Compute $\sum_{n=1}^\infty \frac{1}{n(n+1)}$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Telescope: $\frac{1}{n(n+1)} = \frac{1}{n} - \frac{1}{n+1}$. Partial sum $s_n = 1 - 1/(n+1) \to 1$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END CH 3 -->
+
+<!-- ============================================================ -->
+<!-- ============== CHAPTER 4: LIMITS OF FUNCTIONS =============== -->
+<!-- ============================================================ -->
+<section class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">— Chapter the Fourth —</div>
+    <h2 class="chapter-title">Limits of Functions</h2>
+    <div class="chapter-tagline">From sequences to functions — the $\varepsilon$-$\delta$ leap</div>
+  </div>
+
+  <p class="chapter-intro">In Chapter 3 we studied sequences — functions $\mathbb{N} \to \mathbb{R}$. Now we generalize to functions $f: A \to \mathbb{R}$ where $A \subseteq \mathbb{R}$. The notion of "limit" becomes richer: we ask what $f(x)$ does as $x$ approaches some target $c$, where $c$ may or may not be in the domain. The definition we use is the famous $\varepsilon$-$\delta$ formulation. There's an equivalent sequential characterization that lets us re-use everything we proved in Chapter 3 — a beautiful payoff.</p>
+
+  <!-- ====================================================== -->
+  <!-- 4.1 LIMITS -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 4.1</span> Limits of Functions</h2>
+
+    <h3 class="subsection">Cluster Points</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition 4.1.1</span>
+      <span class="box-title">— Cluster Point</span>
+      <p>$c \in \mathbb{R}$ is a <strong>cluster point</strong> of $A \subseteq \mathbb{R}$ if for every $\delta > 0$, the punctured neighborhood $(c - \delta, c + \delta) \setminus \{c\}$ contains at least one point of $A$.</p>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Why we need this</span>
+      <p>For "$\lim_{x \to c} f(x)$" to make sense, we need points of the domain arbitrarily close to $c$ (other than $c$ itself). Note: $c$ doesn't have to be in $A$. Example: $0$ is a cluster point of $(0, 1)$ even though $0 \notin (0,1)$. And $5$ is NOT a cluster point of $\mathbb{N}$ — too isolated.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 4.1.2</span>
+      <span class="box-title">— Sequential Characterization of Cluster Points</span>
+      <p>$c$ is a cluster point of $A$ iff there exists a sequence $(a_n)$ in $A$ with $a_n \neq c$ for all $n$ and $a_n \to c$.</p>
+    </div>
+
+    <h3 class="subsection">The Definition of a Limit</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition 4.1.4</span>
+      <span class="box-title">— Limit of a Function ($\varepsilon$-$\delta$)</span>
+      <p>Let $A \subseteq \mathbb{R}$, $f: A \to \mathbb{R}$, and $c$ a cluster point of $A$. We say $\lim_{x \to c} f(x) = L$ if</p>
+      $$ \forall\, \varepsilon > 0,\ \exists\, \delta > 0,\ \forall\, x \in A,\ 0 < |x - c| < \delta \implies |f(x) - L| < \varepsilon. $$
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">The Geometric Picture</span>
+      <p>You give me a target band of width $2\varepsilon$ around $L$ on the $y$-axis. I respond with a punctured interval of width $2\delta$ around $c$ on the $x$-axis. My promise: every $x$ in my interval (except possibly $c$ itself) maps into your band. Tighter $\varepsilon$ usually requires tighter $\delta$.</p>
+    </div>
+
+    <p>Notice the crucial $0 < |x - c|$: we never evaluate $f$ at $c$. The value $f(c)$ — even if defined — plays no role in the limit.</p>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 4.1.5</span>
+      <span class="box-title">— Uniqueness</span>
+      <p>If $\lim_{x \to c} f(x)$ exists, it is unique.</p>
+    </div>
+
+    <h3 class="subsection">The Sequential Criterion (key bridge)</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 4.1.8</span>
+      <span class="box-title">— Sequential Criterion for Limits</span>
+      <p>$\lim_{x \to c} f(x) = L$ if and only if for every sequence $(x_n)$ in $A$ with $x_n \neq c$ and $x_n \to c$, we have $f(x_n) \to L$.</p>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Why this is golden</span>
+      <p>This converts function limits into sequence limits, which means every theorem from Chapter 3 (algebra of limits, squeeze, etc.) immediately yields a function-limit version. It's also a standard divergence tool: find two sequences $\to c$ along which $f$ has different limits — done.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 4.1.9</span>
+      <span class="box-title">— Divergence Criteria</span>
+      <p>$\lim_{x \to c} f(x)$ does NOT exist (or fails to equal $L$) if any of:</p>
+      <ol>
+        <li>There's a sequence $x_n \to c$, $x_n \neq c$, $x_n \in A$, but $(f(x_n))$ doesn't converge to $L$.</li>
+        <li>Two such sequences with different limits of $(f(x_n))$.</li>
+      </ol>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 4.1.A · A Linear Function</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $\lim_{x \to 2} (3x + 1) = 7$.</p>
+        <p class="solution-label">Proof</p>
+        <p>$|3x + 1 - 7| = 3|x - 2|$. Given $\varepsilon > 0$, take $\delta = \varepsilon/3$. Then $0 < |x - 2| < \delta$ gives $|3x + 1 - 7| = 3|x-2| < 3\delta = \varepsilon$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 4.1.B · A Quadratic</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $\lim_{x \to 3} x^2 = 9$.</p>
+        <p class="solution-label">Proof</p>
+        <p>$|x^2 - 9| = |x - 3| \cdot |x + 3|$. We need to bound $|x+3|$. Force $\delta \leq 1$: then $|x - 3| < 1$ gives $2 < x < 4$, so $|x+3| < 7$. Then $|x^2 - 9| < 7|x-3|$. To get $< \varepsilon$, take $|x - 3| < \varepsilon/7$. So $\delta = \min(1, \varepsilon/7)$. ∎</p>
+        <p class="solution-label">The "preliminary $\delta$" technique</p>
+        <p>This trick — first restrict $\delta \leq 1$ to bound the problematic factor, then refine — is standard. Watch for it in any polynomial limit.</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 4.1.C · A Reciprocal</span><span>★★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $\lim_{x \to 2} 1/x = 1/2$.</p>
+        <p class="solution-label">Proof</p>
+        <p>$|1/x - 1/2| = \frac{|2 - x|}{2|x|} = \frac{|x-2|}{2|x|}$. Bound $1/|x|$: force $\delta \leq 1$, so $1 < x < 3$, giving $1/|x| < 1$. Then $|1/x - 1/2| < |x-2|/2$. To get $< \varepsilon$: $|x-2| < 2\varepsilon$. So $\delta = \min(1, 2\varepsilon)$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 4.1.D · A Sequential Divergence</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $\lim_{x \to 0} \sin(1/x)$ does not exist.</p>
+        <p class="solution-label">Proof</p>
+        <p>Take $x_n = 1/(n\pi)$, then $\sin(1/x_n) = \sin(n\pi) = 0$. So $f(x_n) \to 0$.</p>
+        <p>Take $y_n = 1/(\pi/2 + 2n\pi)$, then $\sin(1/y_n) = \sin(\pi/2 + 2n\pi) = 1$. So $f(y_n) \to 1$.</p>
+        <p>Two sequences with different $f$-limits. By divergence criterion, the limit doesn't exist. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 4.1.E · A Squeeze for Functions</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $\lim_{x \to 0} x \sin(1/x) = 0$.</p>
+        <p class="solution-label">Proof</p>
+        <p>$|x \sin(1/x)| \leq |x|$. Given $\varepsilon$, take $\delta = \varepsilon$. Then $0 < |x| < \delta$ gives $|x \sin(1/x)| \leq |x| < \varepsilon$. ∎</p>
+        <p>Notice: even though $\sin(1/x)$ has no limit at $0$, multiplying by $x$ "tames" it.</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P44.</span> Prove $\lim_{x \to 1} (2x - 5) = -3$ via $\varepsilon$-$\delta$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$|2x - 5 - (-3)| = 2|x-1|$. Take $\delta = \varepsilon/2$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P45.</span> Prove $\lim_{x \to 4} \sqrt{x} = 2$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$|\sqrt{x} - 2| = |x-4|/(\sqrt{x}+2) \leq |x-4|/2$. Take $\delta = 2\varepsilon$ (also need $x \geq 0$).</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P46.</span> Show $\lim_{x \to 0} \cos(1/x)$ does not exist.
+        <details><summary>Show approach</summary>
+          <div class="answer">$x_n = 1/(2n\pi) \to 0$, $\cos(1/x_n) = 1$. $y_n = 1/(\pi + 2n\pi) \to 0$, $\cos(1/y_n) = -1$. Different limits.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P47.</span> Use sequential criterion to show $\lim_{x \to 2} x^2 = 4$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Any $x_n \to 2$ with $x_n \neq 2$ gives $x_n^2 \to 4$ by algebra of limits. ∎</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 4.2 LIMIT THEOREMS -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 4.2</span> Limit Theorems</h2>
+
+    <h3 class="subsection">Local Boundedness</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 4.2.2</span>
+      <span class="box-title">— Limit Implies Local Boundedness</span>
+      <p>If $\lim_{x \to c} f(x) = L$, then there exist $M > 0$ and $\delta > 0$ such that $|f(x)| \leq M$ for all $x \in A$ with $0 < |x - c| < \delta$.</p>
+    </div>
+
+    <h3 class="subsection">Algebra of Limits for Functions</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 4.2.4</span>
+      <span class="box-title">— Algebra of Limits</span>
+      <p>If $\lim_{x \to c} f(x) = L$ and $\lim_{x \to c} g(x) = M$, then:</p>
+      <ul>
+        <li>$\lim_{x \to c} (f + g)(x) = L + M$</li>
+        <li>$\lim_{x \to c} (f - g)(x) = L - M$</li>
+        <li>$\lim_{x \to c} (f \cdot g)(x) = L \cdot M$</li>
+        <li>$\lim_{x \to c} (b f)(x) = b L$ for $b \in \mathbb{R}$</li>
+        <li>$\lim_{x \to c} (f/g)(x) = L/M$, provided $M \neq 0$ and $g(x) \neq 0$ near $c$</li>
+      </ul>
+    </div>
+
+    <div class="tip">Easy proof: invoke the sequential criterion and use Chapter 3's algebra of limits.</div>
+
+    <h3 class="subsection">Order and the Squeeze</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 4.2.6</span>
+      <span class="box-title">— Sign of a Limit</span>
+      <p>If $\lim_{x \to c} f(x) = L > 0$, then there's $\delta > 0$ with $f(x) > L/2 > 0$ for $0 < |x-c| < \delta$.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 4.2.7</span>
+      <span class="box-title">— Squeeze Theorem for Functions</span>
+      <p>If $f(x) \leq g(x) \leq h(x)$ for all $x$ near $c$ (excluding $c$), and $\lim_{x \to c} f = \lim_{x \to c} h = L$, then $\lim_{x \to c} g(x) = L$.</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 4.2.A · Algebra of Limits</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Compute $\lim_{x \to 2} \frac{x^2 - 4}{x - 2}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>For $x \neq 2$: $\frac{x^2 - 4}{x - 2} = x + 2$. So $\lim_{x \to 2} (x + 2) = 4$ (by algebra). ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 4.2.B · Squeeze on $\sin$</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $\lim_{x \to 0} x^2 \sin(1/x^2) = 0$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$-x^2 \leq x^2 \sin(1/x^2) \leq x^2$, and both bounds $\to 0$ as $x \to 0$. By Squeeze, limit is $0$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 4.2.C · Conjugate Trick</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Compute $\lim_{x \to 0} \frac{\sqrt{1+x} - 1}{x}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>Multiply by $\frac{\sqrt{1+x} + 1}{\sqrt{1+x} + 1}$:
+        $$ \frac{\sqrt{1+x}-1}{x} \cdot \frac{\sqrt{1+x}+1}{\sqrt{1+x}+1} = \frac{x}{x(\sqrt{1+x}+1)} = \frac{1}{\sqrt{1+x}+1} \to \frac{1}{2}. $$ ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P48.</span> Compute $\lim_{x \to 1} \frac{x^3 - 1}{x - 1}$.
+        <details><summary>Show answer</summary>
+          <div class="answer">$\frac{x^3-1}{x-1} = x^2 + x + 1 \to 3$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P49.</span> Show $\lim_{x \to 0} x \cos(1/x) = 0$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$|x \cos(1/x)| \leq |x|$; squeeze.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P50.</span> Compute $\lim_{x \to 0}\frac{\sqrt{x+1}-\sqrt{1-x}}{x}$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Conjugate: numerator times $\sqrt{x+1}+\sqrt{1-x}$ over itself gives $\frac{2x}{x(\sqrt{x+1}+\sqrt{1-x})} \to \frac{2}{2} = 1$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 4.3 EXTENSIONS -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 4.3</span> One-Sided and Infinite Limits</h2>
+
+    <h3 class="subsection">One-Sided Limits</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition 4.3.1</span>
+      <span class="box-title">— Right-Hand Limit</span>
+      <p>$\lim_{x \to c^+} f(x) = L$ if $\forall \varepsilon > 0$, $\exists \delta > 0$: $c < x < c + \delta$, $x \in A$ implies $|f(x) - L| < \varepsilon$.</p>
+      <p>Similarly $\lim_{x \to c^-} f(x) = L$ for left-hand: $c - \delta < x < c$.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 4.3.3</span>
+      <p>$\lim_{x \to c} f(x) = L$ iff $\lim_{x \to c^+} f(x) = L = \lim_{x \to c^-} f(x)$.</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 4.3.A · The Sign Function</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Let $\text{sgn}(x) = x/|x|$ for $x \neq 0$. Compute one-sided limits at $0$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$\lim_{x \to 0^+} \text{sgn}(x) = 1$. $\lim_{x \to 0^-} \text{sgn}(x) = -1$. Two-sided limit doesn't exist. ∎</p>
+      </div>
+    </div>
+
+    <h3 class="subsection">Infinite Limits</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition 4.3.5</span>
+      <span class="box-title">— $f \to \infty$ as $x \to c$</span>
+      <p>$\lim_{x \to c} f(x) = +\infty$ if $\forall \alpha \in \mathbb{R}$, $\exists \delta > 0$: $0 < |x - c| < \delta$, $x \in A$ implies $f(x) > \alpha$. Similarly for $-\infty$.</p>
+    </div>
+
+    <h3 class="subsection">Limits at Infinity</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition 4.3.10</span>
+      <p>$\lim_{x \to +\infty} f(x) = L$ if $\forall \varepsilon > 0$, $\exists K \in \mathbb{R}$: $x > K$, $x \in A$ implies $|f(x) - L| < \varepsilon$. Similarly $x \to -\infty$.</p>
+      <p>$\lim_{x \to +\infty} f(x) = +\infty$ if $\forall \alpha$, $\exists K$: $x > K$ implies $f(x) > \alpha$.</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 4.3.B · A Variety</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Compute (a) $\lim_{x \to 0} 1/x^2$, (b) $\lim_{x \to \infty} \frac{2x+1}{x+3}$, (c) $\lim_{x \to 0^+} 1/x$.</p>
+        <p class="solution-label">Solutions</p>
+        <p><strong>(a)</strong> $1/x^2 \to +\infty$ (always positive, blows up).</p>
+        <p><strong>(b)</strong> $\frac{2x+1}{x+3} = \frac{2 + 1/x}{1 + 3/x} \to 2$ as $x \to \infty$.</p>
+        <p><strong>(c)</strong> As $x \to 0^+$, $1/x \to +\infty$.</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P51.</span> Compute $\lim_{x \to \infty} \frac{x^2 - 1}{x^2 + 1}$.
+        <details><summary>Show answer</summary>
+          <div class="answer">Divide by $x^2$: $\frac{1 - 1/x^2}{1 + 1/x^2} \to 1$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P52.</span> Determine $\lim_{x \to 1^+} \frac{1}{x-1}$ and $\lim_{x \to 1^-} \frac{1}{x-1}$.
+        <details><summary>Show answers</summary>
+          <div class="answer">From right: $x-1 \to 0^+$ so $1/(x-1) \to +\infty$. From left: $x-1 \to 0^-$ so $1/(x-1) \to -\infty$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END CH 4 -->
+
+<!-- ============================================================ -->
+<!-- ============== CHAPTER 5: CONTINUOUS FUNCTIONS ============== -->
+<!-- ============================================================ -->
+<section class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">— Chapter the Fifth —</div>
+    <h2 class="chapter-title">Continuous Functions</h2>
+    <div class="chapter-tagline">"No surprises, no jumps" — and the deep theorems that follow</div>
+  </div>
+
+  <p class="chapter-intro">Continuity is the property of a function that makes its graph "no jumps" — but more importantly, it's the property that makes calculus work. Three giants of the chapter — the Boundedness Theorem, the Extreme Value Theorem, and the Intermediate Value Theorem — all say something profound: continuity on a closed bounded interval forces the function to be exceedingly well-behaved. The chapter ends with uniform continuity, a refined notion that will matter when we talk about integration.</p>
+
+  <!-- ====================================================== -->
+  <!-- 5.1 CONTINUOUS FUNCTIONS -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 5.1</span> Continuous Functions</h2>
+
+    <div class="box definition">
+      <span class="box-label">Definition 5.1.1</span>
+      <span class="box-title">— Continuity at a Point</span>
+      <p>$f: A \to \mathbb{R}$ is <strong>continuous at $c \in A$</strong> if</p>
+      $$ \forall\, \varepsilon > 0,\ \exists\, \delta > 0,\ \forall\, x \in A,\ |x - c| < \delta \implies |f(x) - f(c)| < \varepsilon. $$
+      <p>$f$ is <strong>continuous on $A$</strong> if continuous at every point of $A$.</p>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Limit vs. Continuity</span>
+      <p>If $c$ is a cluster point in $A$, continuity at $c$ is equivalent to $\lim_{x \to c} f(x) = f(c)$. The difference: in the limit, we excluded $x = c$; here we don't, but $|x-c| = 0$ trivially makes $|f(x)-f(c)| = 0 < \varepsilon$. If $c$ is an isolated point of $A$, $f$ is automatically continuous there.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 5.1.3</span>
+      <span class="box-title">— Sequential Criterion for Continuity</span>
+      <p>$f$ is continuous at $c$ iff for every sequence $(x_n)$ in $A$ with $x_n \to c$, we have $f(x_n) \to f(c)$.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 5.1.4</span>
+      <span class="box-title">— Discontinuity Criterion</span>
+      <p>$f$ is discontinuous at $c$ iff there's a sequence $(x_n)$ in $A$ with $x_n \to c$ but $f(x_n) \not\to f(c)$.</p>
+    </div>
+
+    <h3 class="subsection">Examples and Non-Examples</h3>
+
+    <div class="example">
+      <div class="example-header"><span>Example 5.1.A · Polynomials are Continuous</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $f(x) = x^2$ is continuous at every $c \in \mathbb{R}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$|x^2 - c^2| = |x - c||x + c|$. Force $\delta \leq 1$: then $|x| \leq |c| + 1$, so $|x + c| \leq 2|c| + 1$. Then $|x^2 - c^2| \leq (2|c|+1)|x-c|$. Take $\delta = \min(1, \varepsilon/(2|c|+1))$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 5.1.B · The Dirichlet Function</span><span>★★★</span></div>
+      <div class="example-body">
+        <p class="problem">Define $f: \mathbb{R} \to \mathbb{R}$ by $f(x) = 1$ if $x \in \mathbb{Q}$, $f(x) = 0$ otherwise. Show $f$ is discontinuous at every $c$.</p>
+        <p class="solution-label">Solution</p>
+        <p><em>Case $c \in \mathbb{Q}$:</em> by density of irrationals, find $y_n \to c$ with $y_n$ irrational. Then $f(y_n) = 0 \not\to 1 = f(c)$. Discontinuous.</p>
+        <p><em>Case $c$ irrational:</em> by density of rationals, find $r_n \to c$ rational. Then $f(r_n) = 1 \not\to 0 = f(c)$. Discontinuous. ∎</p>
+        <p>The Dirichlet function is so wild that its graph cannot be drawn in any meaningful sense.</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 5.1.C · Removable Discontinuity</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Let $f(x) = (x^2 - 1)/(x - 1)$ for $x \neq 1$, $f(1) = 5$. Is $f$ continuous at $1$?</p>
+        <p class="solution-label">Solution</p>
+        <p>For $x \neq 1$, $f(x) = x + 1$, so $\lim_{x \to 1} f(x) = 2$. But $f(1) = 5 \neq 2$. So $f$ NOT continuous at $1$. (Redefining $f(1) = 2$ would "remove" the discontinuity.) ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 5.1.D · A Lipschitz Function</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $f(x) = \sin x$ is continuous on $\mathbb{R}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>Use $|\sin x - \sin c| \leq |x - c|$ (a standard estimate from trig). Take $\delta = \varepsilon$. ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P53.</span> Show $f(x) = |x|$ is continuous at every $c$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Reverse triangle: $||x|-|c|| \leq |x-c|$. Take $\delta = \varepsilon$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P54.</span> Show $f(x) = \sqrt{x}$ on $[0, \infty)$ is continuous at every $c$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$|\sqrt{x} - \sqrt{c}| = |x-c|/(\sqrt{x}+\sqrt{c}) \leq |x-c|/\sqrt{c}$ (for $c > 0$). Take $\delta = \varepsilon\sqrt{c}$. At $c = 0$: $|\sqrt{x}| < \varepsilon$ iff $x < \varepsilon^2$, take $\delta = \varepsilon^2$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 5.2 COMBINATIONS -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 5.2</span> Combinations of Continuous Functions</h2>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 5.2.1</span>
+      <span class="box-title">— Algebra of Continuous Functions</span>
+      <p>If $f, g: A \to \mathbb{R}$ are continuous at $c \in A$, so are:</p>
+      <ul>
+        <li>$f + g$, $f - g$, $f \cdot g$, $bf$ for any $b \in \mathbb{R}$</li>
+        <li>$f/g$, provided $g(c) \neq 0$</li>
+      </ul>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 5.2.4</span>
+      <span class="box-title">— Polynomials, Rational Functions</span>
+      <ul>
+        <li>Every polynomial $p(x)$ is continuous on $\mathbb{R}$.</li>
+        <li>Every rational function $p(x)/q(x)$ is continuous wherever $q(x) \neq 0$.</li>
+      </ul>
+    </div>
+
+    <h3 class="subsection">Continuity of $|f|$ and $\sqrt{f}$</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 5.2.5</span>
+      <p>If $f$ is continuous at $c$, so is $|f|$. If additionally $f \geq 0$, so is $\sqrt{f}$.</p>
+    </div>
+
+    <h3 class="subsection">Composition</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 5.2.6</span>
+      <span class="box-title">— Composition of Continuous Functions</span>
+      <p>If $g: A \to B$ is continuous at $c \in A$, and $f: B \to \mathbb{R}$ is continuous at $g(c) \in B$, then $f \circ g$ is continuous at $c$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof Sketch</span>
+      <p>Given $\varepsilon > 0$, $f$ continuous at $g(c)$ gives $\eta > 0$: $|y - g(c)| < \eta \Rightarrow |f(y) - f(g(c))| < \varepsilon$. $g$ continuous at $c$ gives $\delta > 0$: $|x - c| < \delta \Rightarrow |g(x) - g(c)| < \eta$. Chaining: $|x - c| < \delta \Rightarrow |f(g(x)) - f(g(c))| < \varepsilon$. ∎</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 5.2.A · Composition</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $h(x) = \sin(x^2 + 1)$ is continuous on $\mathbb{R}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$g(x) = x^2 + 1$ is continuous (polynomial). $f(y) = \sin y$ is continuous. Composition $h = f \circ g$ is continuous. ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P55.</span> Why is $f(x) = |x^2 - 4|$ continuous on $\mathbb{R}$?
+        <details><summary>Show approach</summary>
+          <div class="answer">Polynomial $x^2 - 4$ continuous; $|\cdot|$ continuous; composition.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P56.</span> Explain why $f(x) = \frac{1}{x^2 + 1}$ is continuous on $\mathbb{R}$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Rational; denominator never zero. Continuous everywhere.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 5.3 CONTINUITY ON CLOSED BOUNDED INTERVALS -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 5.3</span> Continuity on Closed Bounded Intervals</h2>
+
+    <p>This section contains three of the most important theorems of single-variable real analysis. All three rely critically on $[a, b]$ being closed AND bounded.</p>
+
+    <div class="box definition">
+      <span class="box-label">Definition 5.3.1</span>
+      <p>$f: A \to \mathbb{R}$ is <strong>bounded on $A$</strong> if there's $M > 0$ with $|f(x)| \leq M$ for all $x \in A$.</p>
+    </div>
+
+    <h3 class="subsection">Theorem 1: Boundedness</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 5.3.2</span>
+      <span class="box-title">— Boundedness Theorem</span>
+      <p>If $f: [a, b] \to \mathbb{R}$ is continuous, then $f$ is bounded on $[a, b]$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Suppose for contradiction $f$ is unbounded. Then for each $n \in \mathbb{N}$, $\exists x_n \in [a,b]$ with $|f(x_n)| > n$. Since $(x_n) \subset [a,b]$ is bounded, by Bolzano-Weierstrass there's a subseq $x_{n_k} \to x \in [a,b]$. By continuity, $f(x_{n_k}) \to f(x)$, so $(f(x_{n_k}))$ is bounded — contradicting $|f(x_{n_k})| > n_k \to \infty$. ∎</p>
+    </div>
+
+    <h3 class="subsection">Theorem 2: Extreme Value</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 5.3.4</span>
+      <span class="box-title">— Extreme Value Theorem (EVT)</span>
+      <p>If $f: [a, b] \to \mathbb{R}$ is continuous, then $f$ attains its max and min: there exist $x^*, x_* \in [a, b]$ with</p>
+      $$ f(x_*) \leq f(x) \leq f(x^*) \quad \text{for all } x \in [a, b]. $$
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof Sketch</span>
+      <p>By Boundedness, $S = f([a,b])$ is bounded. Let $M = \sup S$. By $\varepsilon$-characterization: $\exists x_n \in [a,b]$ with $f(x_n) > M - 1/n$. By BW, $x_{n_k} \to x^*$. Continuity: $f(x_{n_k}) \to f(x^*)$. Squeeze gives $f(x^*) = M$. Similarly for min. ∎</p>
+    </div>
+
+    <div class="box warning">
+      <span class="box-label">⚠ Both Hypotheses Necessary</span>
+      <ul>
+        <li>$f(x) = x$ on $(0, 1)$ — continuous but no max/min on the open interval.</li>
+        <li>$f(x) = x$ on $[0, \infty)$ — closed but unbounded; no max.</li>
+        <li>$f(x) = 1/x$ on $(0, 1]$ — not bounded; no max.</li>
+      </ul>
+    </div>
+
+    <h3 class="subsection">Theorem 3: Intermediate Value</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 5.3.5 (Bolzano)</span>
+      <span class="box-title">— Location of Roots</span>
+      <p>If $f: [a, b] \to \mathbb{R}$ is continuous and $f(a) < 0 < f(b)$ (or vice versa), then $\exists c \in (a, b)$ with $f(c) = 0$.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 5.3.7</span>
+      <span class="box-title">— Intermediate Value Theorem (IVT)</span>
+      <p>If $f: [a, b] \to \mathbb{R}$ is continuous and $k$ is any value strictly between $f(a)$ and $f(b)$, then $\exists c \in (a, b)$ with $f(c) = k$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof Idea (Bisection)</span>
+      <p>Set $g(x) = f(x) - k$. Then $g(a)$ and $g(b)$ have opposite signs. Bisect $[a, b]$. Pick the half where $g$ changes sign. Repeat. By Nested Intervals, the intervals shrink to a point $c$ with $g(c) = 0$, i.e., $f(c) = k$. ∎</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 5.3.10</span>
+      <span class="box-title">— Continuous Image of an Interval is an Interval</span>
+      <p>If $I$ is an interval and $f: I \to \mathbb{R}$ is continuous, then $f(I)$ is an interval. If $I$ is closed and bounded, so is $f(I)$.</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 5.3.A · IVT for Roots</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $x^3 - 6x + 1 = 0$ has a solution in $(0, 1)$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$f(x) = x^3 - 6x + 1$ is a polynomial, continuous. $f(0) = 1 > 0$, $f(1) = 1 - 6 + 1 = -4 < 0$. By IVT, $\exists c \in (0, 1)$ with $f(c) = 0$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 5.3.B · Fixed Point</span><span>★★★</span></div>
+      <div class="example-body">
+        <p class="problem">Suppose $f: [0, 1] \to [0, 1]$ is continuous. Show $\exists c \in [0, 1]$ with $f(c) = c$.</p>
+        <p class="solution-label">Solution</p>
+        <p>Let $g(x) = f(x) - x$, continuous on $[0,1]$. $g(0) = f(0) \geq 0$, $g(1) = f(1) - 1 \leq 0$. If equality holds at either endpoint, that's our fixed point. Otherwise $g(0) > 0$ and $g(1) < 0$, so by IVT $\exists c \in (0,1)$ with $g(c) = 0$, i.e., $f(c) = c$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 5.3.C · Existence of $n$-th roots</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show that for $a > 0$ and $n \in \mathbb{N}$, $\exists b > 0$ with $b^n = a$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$f(x) = x^n$ is continuous on $[0, a+1]$. $f(0) = 0 < a$, $f(a+1) = (a+1)^n \geq a+1 > a$. IVT gives $b \in (0, a+1)$ with $b^n = a$. ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P57.</span> Show that $\cos x = x$ has a solution in $[0, 1]$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$g(x) = \cos x - x$. $g(0) = 1 > 0$, $g(1) = \cos 1 - 1 < 0$ (since $\cos 1 < 1$). IVT.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P58.</span> Why does $f(x) = 1/x$ on $(0, 1)$ NOT contradict the Boundedness Theorem?
+        <details><summary>Show approach</summary>
+          <div class="answer">Domain $(0,1)$ is not closed. Hypothesis fails.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P59.</span> Use IVT to show every odd-degree polynomial has a real root.
+        <details><summary>Show approach</summary>
+          <div class="answer">$p(x) = a_n x^n + \cdots + a_0$ with $n$ odd, $a_n > 0$ WLOG. $p(x) \to \infty$ as $x \to \infty$, $p(x) \to -\infty$ as $x \to -\infty$. So $p$ takes both positive and negative values. By IVT (on a large interval $[-M, M]$), $p$ takes value $0$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 5.4 UNIFORM CONTINUITY -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 5.4</span> Uniform Continuity</h2>
+
+    <div class="box definition">
+      <span class="box-label">Definition 5.4.1</span>
+      <span class="box-title">— Uniform Continuity</span>
+      <p>$f: A \to \mathbb{R}$ is <strong>uniformly continuous on $A$</strong> if</p>
+      $$ \forall\, \varepsilon > 0,\ \exists\, \delta > 0,\ \forall\, x, u \in A,\ |x - u| < \delta \implies |f(x) - f(u)| < \varepsilon. $$
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Continuity vs. Uniform Continuity — the key distinction</span>
+      <p><strong>Pointwise continuity:</strong> for each $c$, given $\varepsilon$, find $\delta = \delta(\varepsilon, c)$ — $\delta$ may depend on $c$.</p>
+      <p><strong>Uniform continuity:</strong> $\delta = \delta(\varepsilon)$ alone — one $\delta$ works for ALL points simultaneously. Quantifier order moves: "$\forall \varepsilon\ \exists \delta\ \forall x, u$" instead of "$\forall \varepsilon\ \forall c\ \exists \delta\ \forall x$."</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 5.4.A · A Function That's Continuous But Not Uniformly</span><span>★★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $f(x) = 1/x$ is continuous on $(0, 1)$ but NOT uniformly continuous there.</p>
+        <p class="solution-label">Solution</p>
+        <p>Continuous: rational, denominator nonzero on $(0,1)$. ✓</p>
+        <p>NOT uniformly continuous: take $x_n = 1/n$, $u_n = 1/(n+1)$. Then $|x_n - u_n| = 1/(n(n+1)) \to 0$, but $|f(x_n) - f(u_n)| = |n - (n+1)| = 1$, never small. So no single $\delta$ works for $\varepsilon = 1$. ∎</p>
+      </div>
+    </div>
+
+    <h3 class="subsection">Nonuniform Continuity Criterion</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 5.4.2</span>
+      <span class="box-title">— Nonuniform Continuity Criterion</span>
+      <p>$f$ is NOT uniformly continuous on $A$ iff there's $\varepsilon_0 > 0$ and sequences $(x_n), (u_n) \subset A$ with $|x_n - u_n| \to 0$ but $|f(x_n) - f(u_n)| \geq \varepsilon_0$.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 5.4.3</span>
+      <span class="box-title">— Uniform Continuity on Closed Bounded Interval</span>
+      <p>If $f: [a, b] \to \mathbb{R}$ is continuous, then $f$ is uniformly continuous on $[a, b]$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof Sketch</span>
+      <p>Suppose not. By Nonuniform Criterion, find $\varepsilon_0 > 0$, $(x_n), (u_n) \subset [a,b]$ with $|x_n - u_n| \to 0$, $|f(x_n) - f(u_n)| \geq \varepsilon_0$. By BW, subseq $x_{n_k} \to z \in [a,b]$. Then $u_{n_k} \to z$ too (since $|x_{n_k} - u_{n_k}| \to 0$). By continuity, $f(x_{n_k}) - f(u_{n_k}) \to f(z) - f(z) = 0$ — contradicting $\geq \varepsilon_0$. ∎</p>
+    </div>
+
+    <h3 class="subsection">Lipschitz Functions</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition 5.4.4</span>
+      <span class="box-title">— Lipschitz Function</span>
+      <p>$f: A \to \mathbb{R}$ is <strong>Lipschitz</strong> on $A$ if there's $K > 0$ with</p>
+      $$ |f(x) - f(u)| \leq K|x - u| \quad \forall x, u \in A. $$
+      <p>$K$ is a <strong>Lipschitz constant</strong>.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 5.4.5</span>
+      <p>Lipschitz $\Rightarrow$ uniformly continuous.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Given $\varepsilon$, take $\delta = \varepsilon/K$. ∎</p>
+    </div>
+
+    <div class="box warning">
+      <span class="box-label">⚠ Converse FAILS</span>
+      <p>$f(x) = \sqrt{x}$ on $[0, 1]$ is uniformly continuous (since continuous on closed bounded interval) but NOT Lipschitz: near $0$, slope $\to \infty$. So uniformly continuous but not Lipschitz.</p>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 5.4.B · Showing Uniform Continuity</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $f(x) = x^2$ on $[0, 5]$ is uniformly continuous.</p>
+        <p class="solution-label">Solution</p>
+        <p>$|x^2 - u^2| = |x-u||x+u| \leq 10|x-u|$ on $[0, 5]$. Lipschitz with $K = 10$, hence uniformly continuous. (Or invoke Theorem 5.4.3.) ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 5.4.C · Showing Failure</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $f(x) = x^2$ is NOT uniformly continuous on all of $\mathbb{R}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>Take $x_n = n$, $u_n = n + 1/n$. $|x_n - u_n| = 1/n \to 0$. But $|f(x_n) - f(u_n)| = |n^2 - (n + 1/n)^2| = 2 + 1/n^2 \geq 2$. By Nonuniform Criterion, not uniformly continuous. ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P60.</span> Show $f(x) = \sin x$ is uniformly continuous on $\mathbb{R}$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Lipschitz with $K = 1$: $|\sin x - \sin u| \leq |x - u|$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P61.</span> Show $f(x) = 1/x$ is uniformly continuous on $[1, \infty)$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$|1/x - 1/u| = |x-u|/(xu) \leq |x-u|$ on $[1,\infty)$. Lipschitz with $K=1$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P62.</span> Is $f(x) = \sqrt{x}$ uniformly continuous on $[0, \infty)$?
+        <details><summary>Show approach</summary>
+          <div class="answer">Yes. On $[0, 1]$: closed bounded, continuous, so UC. On $[1, \infty)$: Lipschitz since $|\sqrt{x}-\sqrt{u}| = |x-u|/(\sqrt{x}+\sqrt{u}) \leq |x-u|/2$. Glue together.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END CH 5 -->
+
+<!-- ============================================================ -->
+<!-- ============== CHAPTER 6: DIFFERENTIATION =================== -->
+<!-- ============================================================ -->
+<section class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">— Chapter the Sixth —</div>
+    <h2 class="chapter-title">Differentiation</h2>
+    <div class="chapter-tagline">Through Section 6.3 — Derivatives, MVT, and L'Hôpital</div>
+  </div>
+
+  <p class="chapter-intro">The derivative is the instantaneous rate of change. In this chapter, we make that idea rigorous (it's a limit), establish the algebraic rules (product, quotient, chain), and prove the central theorems: the Interior Extremum Theorem, Rolle's Theorem, the Mean Value Theorem, and (in §6.3) the Cauchy MVT and L'Hôpital's Rule. The MVT is the workhorse — it converts statements about instantaneous behavior (the derivative) into statements about average behavior (slopes between two points), and that's where most applications live.</p>
+
+  <!-- ====================================================== -->
+  <!-- 6.1 THE DERIVATIVE -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 6.1</span> The Derivative</h2>
+
+    <div class="box definition">
+      <span class="box-label">Definition 6.1.1</span>
+      <span class="box-title">— Derivative</span>
+      <p>Let $I \subseteq \mathbb{R}$ be an interval, $f: I \to \mathbb{R}$, $c \in I$. $f$ is <strong>differentiable at $c$</strong> if</p>
+      $$ f'(c) := \lim_{x \to c} \frac{f(x) - f(c)}{x - c} $$
+      <p>exists. Equivalently (substituting $h = x - c$):</p>
+      $$ f'(c) = \lim_{h \to 0} \frac{f(c + h) - f(c)}{h}. $$
+      <p>If $f'(c)$ exists for every $c \in I$, $f$ is <strong>differentiable on $I$</strong>, with derivative function $f'$.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 6.1.2</span>
+      <span class="box-title">— Differentiable ⇒ Continuous</span>
+      <p>If $f$ is differentiable at $c$, then $f$ is continuous at $c$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>For $x \neq c$: $f(x) - f(c) = \frac{f(x) - f(c)}{x - c} \cdot (x - c)$. As $x \to c$: first factor $\to f'(c)$, second $\to 0$. So $f(x) - f(c) \to 0$, i.e., $f(x) \to f(c)$. ∎</p>
+    </div>
+
+    <div class="box warning">
+      <span class="box-label">⚠ Converse Fails</span>
+      <p>$f(x) = |x|$ is continuous at $0$ but not differentiable there: left limit of $f(x)/x$ is $-1$, right limit is $1$. Different one-sided limits.</p>
+    </div>
+
+    <h3 class="subsection">Algebraic Rules</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 6.1.3</span>
+      <span class="box-title">— Differentiation Rules</span>
+      <p>If $f, g$ differentiable at $c$:</p>
+      <ul>
+        <li>$(f \pm g)'(c) = f'(c) \pm g'(c)$</li>
+        <li>$(\alpha f)'(c) = \alpha f'(c)$</li>
+        <li><strong>Product:</strong> $(fg)'(c) = f'(c) g(c) + f(c) g'(c)$</li>
+        <li><strong>Quotient:</strong> If $g(c) \neq 0$: $(f/g)'(c) = \frac{f'(c) g(c) - f(c) g'(c)}{g(c)^2}$</li>
+      </ul>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof of Product Rule</span>
+      <p>$\frac{f(x)g(x) - f(c)g(c)}{x-c} = \frac{f(x) - f(c)}{x-c}g(x) + f(c)\frac{g(x) - g(c)}{x-c}$. Take $x \to c$: first term $\to f'(c) g(c)$ (continuity), second $\to f(c) g'(c)$. ∎</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 6.1.6</span>
+      <span class="box-title">— Chain Rule</span>
+      <p>If $g$ is differentiable at $c$ and $f$ is differentiable at $g(c)$, then $f \circ g$ is differentiable at $c$ with</p>
+      $$ (f \circ g)'(c) = f'(g(c)) \cdot g'(c). $$
+    </div>
+
+    <h3 class="subsection">Caratheodory's Lemma (key tool)</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 6.1.5</span>
+      <span class="box-title">— Caratheodory's Theorem</span>
+      <p>$f$ is differentiable at $c$ iff there's a function $\phi: I \to \mathbb{R}$, continuous at $c$, with $f(x) - f(c) = \phi(x)(x - c)$ for all $x \in I$. Then $\phi(c) = f'(c)$.</p>
+    </div>
+
+    <p>This is what makes the proof of the Chain Rule clean — no division by potentially-zero quantities.</p>
+
+    <h3 class="subsection">Worked Examples</h3>
+
+    <div class="example">
+      <div class="example-header"><span>Example 6.1.A · From the Definition</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">Find $f'(c)$ for $f(x) = x^2$ from the definition.</p>
+        <p class="solution-label">Solution</p>
+        <p>$\frac{x^2 - c^2}{x - c} = x + c \to 2c$. So $f'(c) = 2c$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 6.1.B · Power Rule</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $\frac{d}{dx}(x^n) = n x^{n-1}$ for $n \in \mathbb{N}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>Use $x^n - c^n = (x - c)(x^{n-1} + x^{n-2} c + \cdots + c^{n-1})$. So $\frac{x^n - c^n}{x - c} = x^{n-1} + x^{n-2}c + \cdots + c^{n-1}$. As $x \to c$: $n c^{n-1}$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 6.1.C · A Non-differentiability</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $f(x) = |x|$ is not differentiable at $0$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$\frac{|h|}{h} = 1$ for $h > 0$, $-1$ for $h < 0$. Different one-sided limits, so the limit doesn't exist. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 6.1.D · A Tricky Case</span><span>★★★</span></div>
+      <div class="example-body">
+        <p class="problem">Define $f(x) = x^2 \sin(1/x)$ for $x \neq 0$, $f(0) = 0$. Compute $f'(0)$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$\frac{f(h) - f(0)}{h} = h \sin(1/h)$. $|h \sin(1/h)| \leq |h| \to 0$. So $f'(0) = 0$. ∎</p>
+        <p>Note: for $x \neq 0$, $f'(x) = 2x \sin(1/x) - \cos(1/x)$, which has no limit at $0$. So $f$ is differentiable everywhere but $f'$ is not continuous at $0$.</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P63.</span> Find $f'(c)$ for $f(x) = 1/x$ from the definition (assume $c \neq 0$).
+        <details><summary>Show approach</summary>
+          <div class="answer">$\frac{1/x - 1/c}{x - c} = \frac{c-x}{cx(x-c)} = -\frac{1}{cx} \to -1/c^2$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P64.</span> Use the chain rule: differentiate $h(x) = (x^2 + 1)^{10}$.
+        <details><summary>Show answer</summary>
+          <div class="answer">$h'(x) = 10(x^2+1)^9 \cdot 2x = 20x(x^2+1)^9$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P65.</span> Show $f(x) = x|x|$ is differentiable everywhere; find $f'$.
+        <details><summary>Show approach</summary>
+          <div class="answer">For $x > 0$: $f(x) = x^2$, $f'(x) = 2x$. For $x < 0$: $f(x) = -x^2$, $f'(x) = -2x$. At $0$: $\frac{f(h)}{h} = |h| \to 0$. So $f'(0) = 0$. Hence $f'(x) = 2|x|$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 6.2 MVT -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 6.2</span> The Mean Value Theorem</h2>
+
+    <h3 class="subsection">Interior Extremum</h3>
+
+    <div class="box definition">
+      <span class="box-label">Definition</span>
+      <p>$f$ has a <strong>relative maximum</strong> at $c$ if there's $\delta > 0$ such that $f(x) \leq f(c)$ for all $x \in (c - \delta, c + \delta) \cap I$. Similarly for relative min.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 6.2.1</span>
+      <span class="box-title">— Interior Extremum Theorem</span>
+      <p>If $c$ is an interior point of $I$ where $f$ has a relative extremum and $f'(c)$ exists, then $f'(c) = 0$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Suppose relative max. For $x > c$ near $c$: $\frac{f(x) - f(c)}{x - c} \leq 0$, so $f'(c) \leq 0$. For $x < c$ near $c$: $\frac{f(x) - f(c)}{x-c} \geq 0$, so $f'(c) \geq 0$. Hence $f'(c) = 0$. ∎</p>
+    </div>
+
+    <div class="box warning">
+      <span class="box-label">⚠ Caveats</span>
+      <ul>
+        <li>"Interior" essential — extremum at an endpoint may not have $f' = 0$.</li>
+        <li>$f' = 0$ doesn't guarantee an extremum (e.g., $x^3$ at $0$).</li>
+      </ul>
+    </div>
+
+    <h3 class="subsection">Rolle's Theorem</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 6.2.3</span>
+      <span class="box-title">— Rolle's Theorem</span>
+      <p>If $f: [a, b] \to \mathbb{R}$ is continuous on $[a,b]$, differentiable on $(a, b)$, and $f(a) = f(b)$, then $\exists c \in (a, b)$ with $f'(c) = 0$.</p>
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>By EVT, $f$ attains max $M$ and min $m$ on $[a, b]$. If $M = m$, $f$ is constant, $f' \equiv 0$. Otherwise at least one of max/min is in $(a, b)$ (interior). Apply Interior Extremum Theorem there. ∎</p>
+    </div>
+
+    <h3 class="subsection">Mean Value Theorem</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 6.2.4</span>
+      <span class="box-title">— Mean Value Theorem (MVT)</span>
+      <p>If $f: [a, b] \to \mathbb{R}$ is continuous on $[a,b]$ and differentiable on $(a, b)$, then $\exists c \in (a, b)$ with</p>
+      $$ f'(c) = \frac{f(b) - f(a)}{b - a}. $$
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Apply Rolle's to $g(x) = f(x) - f(a) - \frac{f(b) - f(a)}{b - a}(x - a)$. We have $g(a) = g(b) = 0$, $g$ continuous and differentiable on relevant pieces. Rolle gives $c$ with $g'(c) = 0$, i.e., $f'(c) = (f(b)-f(a))/(b-a)$. ∎</p>
+    </div>
+
+    <div class="box intuition">
+      <span class="box-label">Geometric Picture</span>
+      <p>The slope between the endpoints equals the instantaneous slope at some interior point. Tilt your head — somewhere the tangent is parallel to the chord.</p>
+    </div>
+
+    <h3 class="subsection">Consequences</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 6.2.5</span>
+      <span class="box-title">— Zero Derivative ⇒ Constant</span>
+      <p>If $f$ is continuous on $[a,b]$, differentiable on $(a,b)$, and $f'(x) = 0$ for all $x \in (a, b)$, then $f$ is constant on $[a, b]$.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Corollary 6.2.6</span>
+      <span class="box-title">— Same Derivative ⇒ Differ by Constant</span>
+      <p>If $f, g$ have $f' = g'$ on $(a, b)$, then $f - g$ is constant on $[a, b]$.</p>
+    </div>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 6.2.7</span>
+      <span class="box-title">— Monotonicity Tests</span>
+      <p>Let $f$ be continuous on $[a,b]$, differentiable on $(a, b)$.</p>
+      <ul>
+        <li>$f' \geq 0$ on $(a,b)$ ⇔ $f$ increasing on $[a, b]$.</li>
+        <li>$f' \leq 0$ on $(a,b)$ ⇔ $f$ decreasing.</li>
+        <li>$f' > 0$ on $(a,b)$ ⇒ $f$ strictly increasing.</li>
+      </ul>
+    </div>
+
+    <h3 class="subsection">Worked Examples</h3>
+
+    <div class="example">
+      <div class="example-header"><span>Example 6.2.A · MVT to Estimate</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $|\sin x - \sin y| \leq |x - y|$ for all $x, y$.</p>
+        <p class="solution-label">Solution</p>
+        <p>If $x = y$, trivial. Otherwise WLOG $x < y$. Apply MVT to $\sin$ on $[x, y]$: $\exists c$ with $\sin y - \sin x = \cos(c)(y - x)$. So $|\sin y - \sin x| = |\cos c||y-x| \leq |y - x|$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 6.2.B · Useful Inequality</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $e^x \geq 1 + x$ for all $x \geq 0$.</p>
+        <p class="solution-label">Solution</p>
+        <p>Let $f(x) = e^x - 1 - x$. $f(0) = 0$, $f'(x) = e^x - 1 \geq 0$ for $x \geq 0$. So $f$ increasing on $[0, \infty)$, and $f(0) = 0$, so $f(x) \geq 0$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 6.2.C · Counting Roots</span><span>★★★</span></div>
+      <div class="example-body">
+        <p class="problem">Show $p(x) = x^3 - 3x + 1$ has exactly three real roots.</p>
+        <p class="solution-label">Solution</p>
+        <p><em>Existence (IVT):</em> $p(-2) = -1 < 0$, $p(0) = 1 > 0$, $p(1) = -1 < 0$, $p(2) = 3 > 0$. Three sign changes, so three roots in $(-2, -0.001)$, $(0, 1)$, $(1, 2)$.</p>
+        <p><em>At most three:</em> $p'(x) = 3x^2 - 3 = 3(x-1)(x+1)$. So $p'$ has two real zeros. By Rolle, between any two roots of $p$ lies a root of $p'$. So $p$ has at most three real roots. ∎</p>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P66.</span> Use MVT to show $|\cos x - \cos y| \leq |x - y|$.
+        <details><summary>Show approach</summary>
+          <div class="answer">MVT applied to $\cos$: $\cos y - \cos x = -\sin(c)(y-x)$, $|\sin c| \leq 1$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P67.</span> Show $\ln(1 + x) < x$ for $x > 0$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$f(x) = x - \ln(1+x)$. $f(0) = 0$. $f'(x) = 1 - 1/(1+x) = x/(1+x) > 0$ for $x > 0$. Increasing, so $f(x) > 0$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P68.</span> If $f$ is differentiable on $(a, b)$ and $f'$ is bounded by $M$, show $f$ is Lipschitz with constant $M$.
+        <details><summary>Show approach</summary>
+          <div class="answer">For any $x, y \in (a,b)$ apply MVT: $|f(x) - f(y)| = |f'(c)||x-y| \leq M|x-y|$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 6.3 L'HOPITAL -->
+  <!-- ====================================================== -->
+  <div class="section">
+    <h2 class="section-title"><span class="marker">§ 6.3</span> L'Hôpital's Rule</h2>
+
+    <h3 class="subsection">Cauchy's Mean Value Theorem</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 6.3.2</span>
+      <span class="box-title">— Cauchy Mean Value Theorem</span>
+      <p>Let $f, g: [a, b] \to \mathbb{R}$ continuous on $[a,b]$, differentiable on $(a, b)$. Then $\exists c \in (a, b)$ with</p>
+      $$ \bigl(f(b) - f(a)\bigr) g'(c) = \bigl(g(b) - g(a)\bigr) f'(c). $$
+      <p>If additionally $g'(x) \neq 0$ on $(a, b)$ (and so $g(b) \neq g(a)$):</p>
+      $$ \frac{f(b) - f(a)}{g(b) - g(a)} = \frac{f'(c)}{g'(c)}. $$
+    </div>
+
+    <div class="box proof">
+      <span class="box-label">Proof</span>
+      <p>Apply Rolle to $h(x) = (f(b) - f(a))(g(x) - g(a)) - (g(b) - g(a))(f(x) - f(a))$. ∎</p>
+    </div>
+
+    <h3 class="subsection">L'Hôpital's Rule (0/0 form)</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 6.3.3</span>
+      <span class="box-title">— L'Hôpital's Rule, 0/0</span>
+      <p>Let $f, g$ be differentiable on $(a, b)$, $g'(x) \neq 0$ on $(a, b)$. If $\lim_{x \to a^+} f(x) = 0 = \lim_{x \to a^+} g(x)$ and $\lim_{x \to a^+} f'(x)/g'(x) = L \in \mathbb{R} \cup \{\pm\infty\}$, then</p>
+      $$ \lim_{x \to a^+} \frac{f(x)}{g(x)} = L. $$
+      <p>Same for $x \to a^-$, $x \to a$, $x \to \pm\infty$.</p>
+    </div>
+
+    <h3 class="subsection">L'Hôpital's Rule ($\infty/\infty$ form)</h3>
+
+    <div class="box theorem">
+      <span class="box-label">Theorem 6.3.5</span>
+      <p>Same as above but with $\lim f = \lim g = \infty$ instead of $= 0$.</p>
+    </div>
+
+    <div class="box warning">
+      <span class="box-label">⚠ Common Mistakes</span>
+      <ul>
+        <li>L'Hôpital applies ONLY to $0/0$ or $\infty/\infty$. Don't apply to $1/0$ or $\infty/0$.</li>
+        <li>You differentiate numerator and denominator <em>separately</em>, not via quotient rule.</li>
+        <li>If $\lim f'/g'$ doesn't exist, the rule is silent — the original limit may still exist.</li>
+        <li>Sometimes you need to apply the rule twice. But if the indeterminate form keeps repeating, try a different approach.</li>
+      </ul>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 6.3.A · A Standard Limit</span><span>★</span></div>
+      <div class="example-body">
+        <p class="problem">$\lim_{x \to 0} \frac{\sin x}{x}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$0/0$ form. By L'Hôpital: $\lim \frac{\cos x}{1} = 1$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 6.3.B · Repeated Application</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">$\lim_{x \to 0} \frac{1 - \cos x}{x^2}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$0/0$. L'Hôpital: $\lim \frac{\sin x}{2x}$ — still $0/0$. Apply again: $\lim \frac{\cos x}{2} = 1/2$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 6.3.C · $\infty/\infty$</span><span>★★</span></div>
+      <div class="example-body">
+        <p class="problem">$\lim_{x \to \infty} \frac{\ln x}{x}$.</p>
+        <p class="solution-label">Solution</p>
+        <p>$\infty/\infty$. L'Hôpital: $\lim \frac{1/x}{1} = 0$. ∎</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header"><span>Example 6.3.D · Trick — convert to a quotient</span><span>★★★</span></div>
+      <div class="example-body">
+        <p class="problem">$\lim_{x \to 0^+} x \ln x$.</p>
+        <p class="solution-label">Solution</p>
+        <p>Form is $0 \cdot (-\infty)$. Rewrite: $x \ln x = \frac{\ln x}{1/x}$, now $-\infty / \infty$. L'Hôpital: $\lim \frac{1/x}{-1/x^2} = \lim (-x) = 0$. ∎</p>
+      </div>
+    </div>
+
+    <h3 class="subsection">Taylor's Theorem (preview from §6.4)</h3>
+
+    <p>Although officially Taylor's Theorem appears in §6.4, your final ends at §6.3 inclusive. The fundamentals you should still know:</p>
+
+    <div class="box theorem">
+      <span class="box-label">Taylor's Theorem (Lagrange Form, basic statement)</span>
+      <p>If $f$ has $n+1$ derivatives on an open interval containing $a$ and $x$, then</p>
+      $$ f(x) = \sum_{k=0}^n \frac{f^{(k)}(a)}{k!}(x - a)^k + R_n(x), $$
+      <p>where the remainder is</p>
+      $$ R_n(x) = \frac{f^{(n+1)}(c)}{(n+1)!}(x - a)^{n+1} $$
+      <p>for some $c$ between $a$ and $x$.</p>
+    </div>
+
+    <p>This generalizes the MVT (the case $n = 0$ gives MVT). It's the basis of all Taylor-series approximations.</p>
+
+    <div class="practice">
+      <div class="practice-item">
+        <span class="q-num">P69.</span> Compute $\lim_{x \to 0} \frac{e^x - 1 - x}{x^2}$.
+        <details><summary>Show approach</summary>
+          <div class="answer">$0/0$. L'Hôpital: $\lim \frac{e^x - 1}{2x}$, still $0/0$. Again: $\lim \frac{e^x}{2} = 1/2$.</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P70.</span> Compute $\lim_{x \to 0} \frac{\tan x - x}{x^3}$.
+        <details><summary>Show approach</summary>
+          <div class="answer">L'Hôpital thrice: $\frac{\sec^2 x - 1}{3x^2} \to \frac{2\sec^2 x \tan x}{6x} \to \frac{2(\sec^4 x + 2\sec^2 x \tan^2 x)}{6} \to 1/3$ at $x = 0$. (Or use Taylor.)</div>
+        </details>
+      </div>
+      <div class="practice-item">
+        <span class="q-num">P71.</span> Compute $\lim_{x \to \infty} x^{1/x}$.
+        <details><summary>Show approach</summary>
+          <div class="answer">Take log: $\ln(x^{1/x}) = (\ln x)/x \to 0$ (by L'Hôpital). So $x^{1/x} \to e^0 = 1$.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END CH 6 -->
+
+<!-- ============================================================ -->
+<!-- ============== FINAL EXAM TACTICS / CHEAT =================== -->
+<!-- ============================================================ -->
+<section class="chapter" id="cheat">
+  <div class="chapter-header">
+    <div class="chapter-num">— Coda —</div>
+    <h2 class="chapter-title">Final Exam Tactics</h2>
+    <div class="chapter-tagline">Definitions, theorems, and proof-strategy playbook</div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="marker">★ I</span> Definitions to Know Cold</h2>
+
+    <p>If asked to <em>state</em> a definition, you must give it word-perfect (or close). Drill these:</p>
+
+    <div class="box definition">
+      <span class="box-label">$\sup S$</span>
+      <p>$u = \sup S$ iff (1) $s \leq u$ for all $s \in S$, and (2) $\forall \varepsilon > 0$, $\exists s \in S$ with $s > u - \varepsilon$.</p>
+    </div>
+
+    <div class="box definition">
+      <span class="box-label">$\lim x_n = L$</span>
+      <p>$\forall \varepsilon > 0\ \exists N \in \mathbb{N}\ \forall n \geq N: |x_n - L| < \varepsilon$.</p>
+    </div>
+
+    <div class="box definition">
+      <span class="box-label">Cauchy sequence</span>
+      <p>$\forall \varepsilon > 0\ \exists N\ \forall n, m \geq N: |x_n - x_m| < \varepsilon$.</p>
+    </div>
+
+    <div class="box definition">
+      <span class="box-label">$\lim_{x \to c} f(x) = L$</span>
+      <p>$\forall \varepsilon > 0\ \exists \delta > 0\ \forall x \in A: 0 < |x - c| < \delta \Rightarrow |f(x) - L| < \varepsilon$.</p>
+    </div>
+
+    <div class="box definition">
+      <span class="box-label">$f$ continuous at $c$</span>
+      <p>$\forall \varepsilon > 0\ \exists \delta > 0\ \forall x \in A: |x - c| < \delta \Rightarrow |f(x) - f(c)| < \varepsilon$.</p>
+    </div>
+
+    <div class="box definition">
+      <span class="box-label">$f$ uniformly continuous on $A$</span>
+      <p>$\forall \varepsilon > 0\ \exists \delta > 0\ \forall x, u \in A: |x - u| < \delta \Rightarrow |f(x) - f(u)| < \varepsilon$.</p>
+    </div>
+
+    <div class="box definition">
+      <span class="box-label">$f'(c)$</span>
+      <p>$\displaystyle f'(c) = \lim_{x \to c} \frac{f(x) - f(c)}{x - c}$ (assuming the limit exists).</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="marker">★ II</span> Theorems by Name</h2>
+
+    <ul class="facts">
+      <li><strong>Completeness Axiom:</strong> Every nonempty subset of $\mathbb{R}$ bounded above has a sup.</li>
+      <li><strong>Archimedean Property:</strong> $\forall x \in \mathbb{R}\ \exists n \in \mathbb{N}: n > x$.</li>
+      <li><strong>Density of $\mathbb{Q}$:</strong> Between any two reals, there's a rational (and an irrational).</li>
+      <li><strong>Nested Intervals:</strong> $\bigcap I_n \neq \emptyset$ for nested closed bounded intervals.</li>
+      <li><strong>$\mathbb{R}$ uncountable:</strong> $[0,1]$ cannot be listed as a sequence.</li>
+      <li><strong>Triangle Inequality:</strong> $|a + b| \leq |a| + |b|$.</li>
+      <li><strong>Algebra of Limits:</strong> sums, products, quotients of limits behave correctly.</li>
+      <li><strong>Squeeze Theorem:</strong> sandwiched between same limit ⇒ same limit.</li>
+      <li><strong>MCT (Monotone Convergence):</strong> bounded monotone ⇒ convergent.</li>
+      <li><strong>Bolzano-Weierstrass:</strong> bounded sequence has convergent subsequence.</li>
+      <li><strong>Cauchy Criterion:</strong> $(x_n)$ converges in $\mathbb{R}$ iff Cauchy.</li>
+      <li><strong>Boundedness Theorem:</strong> continuous on $[a,b]$ ⇒ bounded.</li>
+      <li><strong>Extreme Value Theorem:</strong> continuous on $[a,b]$ ⇒ attains max & min.</li>
+      <li><strong>Intermediate Value Theorem:</strong> continuous, takes values $f(a), f(b)$, takes everything between.</li>
+      <li><strong>Uniform Continuity Theorem:</strong> continuous on $[a,b]$ ⇒ uniformly continuous.</li>
+      <li><strong>Differentiable ⇒ Continuous:</strong> at any point.</li>
+      <li><strong>Interior Extremum Theorem:</strong> derivative vanishes at interior extrema.</li>
+      <li><strong>Rolle's Theorem:</strong> $f(a) = f(b)$ + assumptions ⇒ $f'(c) = 0$.</li>
+      <li><strong>Mean Value Theorem:</strong> $\exists c$ with $f'(c) = (f(b)-f(a))/(b-a)$.</li>
+      <li><strong>Cauchy MVT:</strong> generalized MVT for ratios.</li>
+      <li><strong>L'Hôpital's Rule:</strong> $0/0$ or $\infty/\infty$ ⇒ replace with derivatives' ratio.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="marker">★ III</span> When-to-use-What Playbook</h2>
+
+    <h4 class="minihead">Limit of a sequence — direct $\varepsilon$-$N$:</h4>
+    <p>Bound $|x_n - L|$ by $C/n$, $C/n^p$, or similar. Use Archimedean to pick $N$.</p>
+
+    <h4 class="minihead">Limit of a sequence — algebra of limits:</h4>
+    <p>Divide by highest power. Use known building blocks ($1/n \to 0$, etc.).</p>
+
+    <h4 class="minihead">Show a sequence converges without knowing the limit:</h4>
+    <p>MCT (monotone + bounded). Or Cauchy. For recursions: prove monotone + bounded by induction.</p>
+
+    <h4 class="minihead">Show a sequence diverges:</h4>
+    <p>(1) Show unbounded. (2) Show two subsequences with different limits. (3) Negate Cauchy.</p>
+
+    <h4 class="minihead">Limit of a function — sequential criterion:</h4>
+    <p>Best for showing nonexistence: pick two sequences with different $f$-limits.</p>
+
+    <h4 class="minihead">Continuity proofs:</h4>
+    <p>Either $\varepsilon$-$\delta$ direct, or sequential (any $x_n \to c \Rightarrow f(x_n) \to f(c)$). Or quote algebra/composition theorems.</p>
+
+    <h4 class="minihead">"Show this equation has a solution":</h4>
+    <p>IVT! Define $f$, check continuity, find sign change.</p>
+
+    <h4 class="minihead">"Show this function attains its max":</h4>
+    <p>EVT — but check closed AND bounded interval AND continuity.</p>
+
+    <h4 class="minihead">"Show this inequality":</h4>
+    <p>MVT or monotonicity. Define $g(x) = $ LHS $-$ RHS; show $g(0) = 0$ and $g'(x) \geq 0$.</p>
+
+    <h4 class="minihead">Compute a tricky limit:</h4>
+    <p>L'Hôpital (only $0/0$ or $\infty/\infty$). Else, conjugate trick, factor, or rewrite.</p>
+
+    <h4 class="minihead">Uniform vs pointwise continuity:</h4>
+    <p>If domain is closed and bounded interval: continuous ⇒ uniformly continuous (Theorem 5.4.3). Otherwise, prove Lipschitz, or apply Nonuniform Continuity Criterion to disprove.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title"><span class="marker">★ IV</span> Last-Minute Things to Memorize</h2>
+
+    <ul class="facts">
+      <li>$\lim 1/n^p = 0$ for $p > 0$; $\lim b^n = 0$ if $|b| < 1$; $\lim n^{1/n} = 1$; $\lim c^{1/n} = 1$ for $c > 0$.</li>
+      <li>Geometric series: $\sum r^n = 1/(1-r)$ if $|r| < 1$, diverges if $|r| \geq 1$.</li>
+      <li>$p$-series: $\sum 1/n^p$ converges iff $p > 1$.</li>
+      <li>Harmonic series $\sum 1/n$ DIVERGES (despite $1/n \to 0$).</li>
+      <li>$n$-th term test: $\sum x_n$ converges $\Rightarrow$ $x_n \to 0$ (NOT a convergence test!).</li>
+      <li>"Bounded $\not\Rightarrow$ Convergent" — example: $(-1)^n$.</li>
+      <li>"Continuous $\not\Rightarrow$ Differentiable" — example: $|x|$ at $0$.</li>
+      <li>"Continuous $\not\Rightarrow$ Uniformly Continuous" on open/unbounded domains: $1/x$ on $(0,1)$, $x^2$ on $\mathbb{R}$.</li>
+      <li>For recursions $x_{n+1} = f(x_n)$ converging to $L$: $L$ satisfies $L = f(L)$.</li>
+    </ul>
+
+    <div class="tip">When stuck, write down the definition. Almost every analysis problem yields to "what does this mean exactly?" and unfolding the definition.</div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="ornament">
+    <span class="line"></span>
+    <span class="symbol">❦</span>
+    <span class="line"></span>
+  </div>
+  <p class="closing"><em>"Mathematics, rightly viewed, possesses not only truth, but supreme beauty."</em></p>
+  <p style="font-size:0.95rem; opacity:0.75;">— Bertrand Russell</p>
+  <div class="ornament">
+    <span class="line"></span>
+    <span class="symbol">✶</span>
+    <span class="line"></span>
+  </div>
+  <p style="margin-top:1rem;"><em>Now go destroy that final.</em></p>
+  <p class="signoff">MA 341 · Bartle &amp; Sherbert · Ch. 1 — 6.3</p>
+</footer>
+
+</body>
+</html>
