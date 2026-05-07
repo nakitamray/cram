@@ -41,8 +41,10 @@ code.i { font-family: 'Courier New', monospace; font-size: 0.9em; background: rg
 .callout { border-left: 4px solid #c0492a; background: rgba(212, 168, 45, 0.1); padding: 12px 16px; margin: 14px 0; }
 .callout.warn { border-left-color: #c0492a; background: rgba(192, 73, 42, 0.08); }
 .callout.tip { border-left-color: #4a6b3a; background: rgba(74, 107, 58, 0.08); }
+.callout.deep { border-left-color: #2c3e6c; background: rgba(44, 62, 108, 0.08); }
 .callout-label { font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #c0492a; font-weight: bold; margin-bottom: 4px; }
 .callout.tip .callout-label { color: #4a6b3a; }
+.callout.deep .callout-label { color: #2c3e6c; }
 .steps { background: rgba(0,0,0,0.04); padding: 16px 20px; margin: 14px 0; border: 1px solid rgba(0,0,0,0.1); }
 .steps h6 { font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; color: #2c3e6c; }
 .steps ol { counter-reset: step; list-style: none; margin: 0; padding: 0; }
@@ -90,6 +92,52 @@ footer .b { font-family: Georgia, serif; font-size: 22px; color: #d4a82d; letter
 
 <article class="lecture" id="L12">
 <div class="lec-header"><div class="num">LECTURE 12 · MIDTERM 1 REVIEW + MALLOC</div><h3>Returning Memory, malloc / calloc / free</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">How malloc actually works</div>
+malloc is NOT a system call. It's a user-space library function (in libc) that maintains a pool of memory obtained from the OS. The OS allocations come via:
+<ul>
+<li><strong>brk / sbrk</strong> — extends the program's "data segment" (the heap break). Used for small/medium allocations.</li>
+<li><strong>mmap</strong> — maps a fresh region of pages directly. Typically used for allocations &gt;128 KB.</li>
+</ul>
+Each malloc'd block has a small <strong>HEADER</strong> (typically 8-16 bytes) recording its size and free/used status. That's how free knows how much to release without you telling it. The pointer malloc returns is just past this header — so subtracting a few bytes from your pointer would let you see the size (don't actually do this).
+</div>
+
+<div class="callout deep">
+<div class="callout-label">The free list — why repeated malloc/free is fast</div>
+After you free a block, the allocator doesn't return memory to the OS — it puts the block on a "free list." The next malloc of compatible size REUSES that block. This is why malloc/free in a tight loop is fast (after the first allocation): you're just shuffling pointers in the allocator's bookkeeping. It's only slow when the allocator has to ask the OS for more, or when fragmentation forces it to walk a long free list.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Fragmentation — the hidden enemy</div>
+After many allocations of varying sizes, the heap can look like: USED-FREE(8)-USED-FREE(16)-USED-FREE(8)-USED. You have 32 bytes free total, but a request for 24 contiguous bytes FAILS. This is <strong>external fragmentation</strong>. <strong>Internal fragmentation</strong> is the wasted space inside a block (allocators round up to powers of 2 or to alignment boundaries). Long-running programs with diverse allocation patterns can degrade due to fragmentation even without leaks.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Why malloc returns void* and not int*</div>
+malloc doesn't know what you'll store. By returning <code class="i">void *</code>, it commits to no specific type. C's implicit pointer conversion lets <code class="i">int *p = malloc(...)</code> work without a cast. (C++ requires the cast — that's why C and C++ idioms differ here. In C, casting is considered bad form because it can hide bugs like forgetting to <code class="i">#include &lt;stdlib.h&gt;</code>.)
+</div>
+
+<div class="callout deep">
+<div class="callout-label">malloc(0) — implementation-defined</div>
+The C standard allows <code class="i">malloc(0)</code> to return either NULL or a unique non-NULL pointer that you can't dereference but you can pass to free. Don't rely on either behavior. If your code might compute a size of 0, check before calling malloc.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">realloc — the third allocation function</div>
+<pre class="code"><span class="kw">void</span> *realloc(<span class="kw">void</span> *p, <span class="kw">size_t</span> new_size);</pre>
+Tries to resize an existing allocation. May:
+<ul>
+<li>Return the SAME pointer (block resized in place)</li>
+<li>Return a NEW pointer with contents copied (old block freed)</li>
+<li>Return NULL on failure (and the OLD pointer is still valid — don't lose it!)</li>
+</ul>
+Common bug: <code class="i">p = realloc(p, n)</code> — if realloc returns NULL, you've lost the original p, leaking it. Safe pattern: <code class="i">tmp = realloc(p, n); if (tmp) p = tmp;</code>
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. The Stack-Local Pointer Trap</h4>
@@ -251,6 +299,56 @@ p = NULL;   <span class="cmt">// always do this</span></pre>
 
 <article class="lecture" id="L13">
 <div class="lec-header"><div class="num">LECTURE 13 · LINKED LISTS</div><h3>Singly-Linked Lists — Build, Traverse, Delete</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">Linked list vs array — when to choose which</div>
+<table class="t">
+<tr><th>Operation</th><th>Array</th><th>Linked List</th></tr>
+<tr><td>Random access (arr[i])</td><td>O(1)</td><td>O(n)</td></tr>
+<tr><td>Insert at front</td><td>O(n) — shift everything</td><td>O(1)</td></tr>
+<tr><td>Insert at end (with tail)</td><td>O(1) amortized</td><td>O(1)</td></tr>
+<tr><td>Insert in middle</td><td>O(n) — shift</td><td>O(1) given the node, O(n) to find</td></tr>
+<tr><td>Delete</td><td>O(n)</td><td>O(1) given prev pointer</td></tr>
+<tr><td>Cache locality</td><td>Excellent (contiguous)</td><td>Terrible (scattered)</td></tr>
+<tr><td>Memory per element</td><td>Just data</td><td>Data + pointer (8 bytes overhead each)</td></tr>
+</table>
+In modern hardware, cache locality often dominates. An array linear scan is FASTER than a linked-list scan even though both are O(n) — because the CPU prefetches the next array element while reading the current one. Lists scatter all over memory and cause cache misses on every step.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Why use linked lists at all?</div>
+Despite the cache penalty, linked lists win when:
+<ul>
+<li>You need cheap O(1) inserts/deletes at known positions (e.g. LRU cache)</li>
+<li>The collection grows unpredictably and you can't reallocate cheaply</li>
+<li>You need stable pointers — adding to a list never invalidates references to existing nodes (arrays might if they realloc)</li>
+<li>You're implementing other data structures (queues, stacks, hash table chains)</li>
+</ul>
+The Linux kernel's task list, free memory list, and many internal structures use linked lists.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Sentinel nodes — eliminating special cases</div>
+Many "list with no nodes" edge cases vanish if you keep a permanent dummy <strong>sentinel</strong> head node that contains no data. The list is "empty" when <code class="i">sentinel-&gt;next == NULL</code> instead of <code class="i">head == NULL</code>. Insert and delete don't need to special-case the head. Linux's circular doubly-linked lists use this technique heavily.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Why self-referential structs need pointers, not values</div>
+<pre class="code"><span class="kw">struct</span> node {
+    <span class="kw">int</span> data;
+    <span class="kw">struct</span> node next;   <span class="cmt">// COMPILE ERROR</span>
+};</pre>
+For C to compute the struct's size, it would need: size(node) = sizeof(int) + sizeof(node) — infinite recursion. A pointer is a fixed size (8 bytes on x86_64) regardless of what it points to, so <code class="i">struct node *next</code> works.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Floyd's cycle detection — the "tortoise and hare"</div>
+A subtle bug: a malformed linked list with a cycle (some node's next points back into the list) makes traversal an infinite loop. Detect with two pointers, slow advancing 1 step, fast advancing 2 steps. If they ever meet, there's a cycle. If fast hits NULL first, no cycle. O(n) time, O(1) space — better than tracking visited nodes.
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. The node structure</h4>
@@ -443,6 +541,59 @@ After <code class="i">free(p)</code>, reading <code class="i">p-&gt;next</code> 
 
 <article class="lecture" id="L14">
 <div class="lec-header"><div class="num">LECTURE 14 · DOUBLY-LINKED LISTS</div><h3>Doubly-Linked Lists, Valgrind, the Custom CS240 Allocator</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">What valgrind actually does</div>
+valgrind is a <strong>dynamic binary instrumentation</strong> framework. It runs your program inside a synthetic CPU that intercepts every memory operation. Memcheck (the default tool) tracks:
+<ul>
+<li>Which bytes are allocated and which are free</li>
+<li>Which bytes are initialized vs uninitialized (per-bit shadow memory!)</li>
+<li>Which freed blocks have been reused</li>
+</ul>
+Cost: programs run 10-50x slower under valgrind. But you get exact reports of: invalid reads/writes, use-after-free, double-frees, leaks, uninitialized reads, mismatched malloc/free pairings.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Address Sanitizer — the modern alternative</div>
+Modern gcc/clang have <code class="i">-fsanitize=address</code> (ASan) which is similar to valgrind but compile-time-instrumented. It's MUCH faster (2-3x slowdown vs 10-50x) and catches the same bug classes. Production-quality projects often use ASan in CI. valgrind is still better for: programs you can't recompile, kernel-style debugging, and detecting some advanced races. For CS 240, valgrind is what's available.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Reading valgrind output — what each part means</div>
+<pre class="code">==12345== Invalid read of size 4
+==12345==    at 0x4005A2: main (file.c:12)
+==12345==  Address 0x520ABCD is 0 bytes after a block of size 40 alloc'd
+==12345==    at 0x4C2BB8F: malloc (vg_replace_malloc.c:299)
+==12345==    by 0x40058A: main (file.c:8)</pre>
+<ul>
+<li>"Invalid read of size 4" — you tried to read 4 bytes from forbidden memory</li>
+<li>"at 0x... main (file.c:12)" — at line 12 of file.c (in main), the read happened</li>
+<li>"is 0 bytes after a block of size 40" — you went exactly past the end of a 40-byte block</li>
+<li>"alloc'd at file.c:8" — the block was malloc'd at line 8</li>
+</ul>
+This means: you malloc'd 40 bytes (10 ints), then read arr[10] — one past the end.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Memory leaks vs definite leaks vs possibly lost</div>
+valgrind classifies leaks into 4 categories at exit:
+<ul>
+<li><strong>definitely lost</strong> — no pointer reaches this block (real leak, fix it)</li>
+<li><strong>indirectly lost</strong> — a leaked block's contents include pointers to other blocks</li>
+<li><strong>possibly lost</strong> — a pointer to the middle of the block exists; could be a leak or could be intentional</li>
+<li><strong>still reachable</strong> — pointers exist but you didn't free before exit; not technically a bug but bad style</li>
+</ul>
+The CS 240 custom malloc focuses on definite leaks and double-frees.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Why check valgrind even when your tests pass</div>
+A program can have memory bugs that don't manifest as visible failures. Reading uninitialized memory may "happen" to give the right answer this run. Buffer overruns may corrupt only memory that's about to be overwritten anyway. Then a TINY change (different optimization, different OS, different malloc implementation) suddenly exposes the bug in production. valgrind/ASan catches these latent bugs proactively.
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. Why doubly-linked?</h4>
@@ -597,6 +748,69 @@ $ valgrind --leak-check=full ./my_prog</pre>
 
 <article class="lecture" id="L15">
 <div class="lec-header"><div class="num">LECTURE 15 · POINTERS TO POINTERS</div><h3>Double-Pointers, Internal Pointers, the Many Faces of Zero</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">When you actually need T**</div>
+You need a double-pointer parameter when the function must change WHICH OBJECT the caller's pointer points to. Three common cases:
+<ul>
+<li><strong>Setting a caller's pointer to NULL</strong> — e.g., my_close(FILE **)</li>
+<li><strong>Returning a freshly-allocated pointer</strong> — e.g., create_thing(thing_t **out) instead of returning the pointer</li>
+<li><strong>Modifying the head of a linked list</strong> — prepend/delete-head changes which node IS the head</li>
+</ul>
+If you're only modifying what the pointer POINTS AT (not the pointer's value), <code class="i">T*</code> is enough. Rule of thumb: count the asterisks needed to reach the thing you're changing.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Why use T** instead of returning T*</div>
+Two equivalent designs for "create a new linked list and give it to the caller":
+<pre class="code"><span class="cmt">// Design A: return value</span>
+node_t *create_list(<span class="kw">int</span> v) {
+    node_t *n = malloc(<span class="kw">sizeof</span>(*n));
+    <span class="kw">if</span> (!n) <span class="kw">return</span> NULL;
+    n-&gt;data = v; n-&gt;next = NULL;
+    <span class="kw">return</span> n;
+}
+
+<span class="cmt">// Design B: out-parameter</span>
+<span class="kw">int</span> create_list(<span class="kw">int</span> v, node_t **out) {
+    *out = malloc(<span class="kw">sizeof</span>(node_t));
+    <span class="kw">if</span> (!*out) <span class="kw">return</span> <span class="num">-1</span>;
+    (*out)-&gt;data = v; (*out)-&gt;next = NULL;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+Design B leaves the return value free for an error code (POSIX style). Both are common in C codebases.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Internal pointer struct = "shallow vs deep" copy problem</div>
+When a struct contains pointers, struct assignment (<code class="i">b = a</code>) copies the pointer values — both structs now point to the same memory. This is a SHALLOW copy. Consequences:
+<ul>
+<li>Modifying through a-&gt;name also affects b-&gt;name</li>
+<li>free(a-&gt;name) followed by free(b-&gt;name) is a double-free</li>
+<li>If a-&gt;name is later reallocated to a new buffer, b-&gt;name dangles</li>
+</ul>
+For a true "duplicate" you need a DEEP COPY: malloc new buffers and strcpy/memcpy the contents.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">qsort uses void**? Sort of</div>
+qsort's signature is <code class="i">void qsort(void *base, size_t n, size_t size, int (*cmp)(const void *, const void *))</code>. Inside qsort, when it compares two elements, it passes pointers to those elements — but the elements themselves might be pointers (if you're sorting an array of strings, i.e. <code class="i">char **</code>). So inside YOUR comparator, the args are <code class="i">const void *</code> that you cast to <code class="i">char **</code> and dereference: <code class="i">strcmp(*(char**)a, *(char**)b)</code>. This is the canonical "double pointer in real code" example.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">The many faces of zero — what's actually equal to what</div>
+<ul>
+<li><code class="i">0</code>, <code class="i">0x0</code>, <code class="i">0L</code>, <code class="i">0LL</code>, <code class="i">''</code> — all integer constants representing zero</li>
+<li><code class="i">0.0</code> — different from integer zero in floating-point comparison contexts (and IEEE has <code class="i">-0.0</code> too)</li>
+<li><code class="i">NULL</code> — typically <code class="i">((void*)0)</code>; tests equal to integer 0 BUT use NULL with pointers for clarity</li>
+<li><code class="i">false</code> from &lt;stdbool.h&gt; — defined as 0 but communicates intent</li>
+</ul>
+In C, integer 0 in a pointer context becomes a "null pointer constant". This is why <code class="i">if (p == 0)</code>, <code class="i">if (p == NULL)</code>, and <code class="i">if (!p)</code> all work identically for pointers.
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. Why double-pointers?</h4>
@@ -761,6 +975,70 @@ free(s);</pre></div></div>
 
 <article class="lecture" id="L16">
 <div class="lec-header"><div class="num">LECTURE 16 · FUNCTION POINTERS + RECURSION</div><h3>Function Pointers &amp; Recursion</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">Function pointer syntax — read it inside out</div>
+The declaration <code class="i">int (*ptr)(int, int)</code> looks weird. Read it methodically:
+<ol>
+<li>Find the variable name: <code class="i">ptr</code></li>
+<li>Look at what's directly attached: <code class="i">(*ptr)</code> — "ptr is a pointer"</li>
+<li>Then what follows: <code class="i">(int, int)</code> — "...to a function taking two ints"</li>
+<li>Then the leftmost type: <code class="i">int</code> — "...returning int"</li>
+</ol>
+Compare with <code class="i">int *ptr(int, int)</code> — without parens, this is "ptr is a function returning <code class="i">int *</code>". Parens around <code class="i">*ptr</code> are essential.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Why is ptr(args) and (*ptr)(args) both legal?</div>
+For function pointers, dereferencing happens automatically when you call. Both forms compile and produce the same code:
+<pre class="code">ptr(<span class="num">3</span>, <span class="num">4</span>);     <span class="cmt">// implicit dereference</span>
+(*ptr)(<span class="num">3</span>, <span class="num">4</span>); <span class="cmt">// explicit, K&amp;R style</span></pre>
+Likewise, <code class="i">ptr = add</code> and <code class="i">ptr = &amp;add</code> are equivalent — function names decay to function pointers in expressions, similar to arrays.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">qsort and bsearch — callbacks in the standard library</div>
+<pre class="code"><span class="kw">int</span> compare(<span class="kw">const void</span> *a, <span class="kw">const void</span> *b) {
+    <span class="kw">int</span> ia = *(<span class="kw">const int</span> *)a;
+    <span class="kw">int</span> ib = *(<span class="kw">const int</span> *)b;
+    <span class="kw">return</span> (ia &gt; ib) - (ia &lt; ib);
+}
+qsort(arr, n, <span class="kw">sizeof</span>(<span class="kw">int</span>), compare);</pre>
+The trick "(ia &gt; ib) - (ia &lt; ib)" returns -1, 0, or 1 without overflow issues that <code class="i">return ia - ib</code> can cause when ia and ib differ by more than INT_MAX (overflow → wrong sign).
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Recursion depth — the stack overflow risk</div>
+Each recursive call adds a stack frame. The default Linux user stack is 8 MB. With ~100 bytes per frame (small function, few locals), that's ~80,000 calls deep before crash. Fibonacci, factorial, and balanced-tree traversals are fine; processing a million-node linked list recursively WILL stack-overflow. <code class="i">ulimit -s</code> shows your current stack limit; you can also write recursive algorithms iteratively using your own stack on the heap.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Tail recursion — when the compiler can transform it</div>
+A "tail call" is when the recursive call is the LAST thing the function does (no work after the call returns):
+<pre class="code"><span class="cmt">// Tail recursive — compiler may optimize to a loop</span>
+<span class="kw">int</span> fact_tail(<span class="kw">int</span> n, <span class="kw">int</span> acc) {
+    <span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> acc;
+    <span class="kw">return</span> fact_tail(n - <span class="num">1</span>, acc * n);
+}
+
+<span class="cmt">// NOT tail — multiplication happens after the recursive call returns</span>
+<span class="kw">int</span> fact(<span class="kw">int</span> n) {
+    <span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> <span class="num">1</span>;
+    <span class="kw">return</span> n * fact(n - <span class="num">1</span>);
+}</pre>
+With -O2, gcc can transform tail-recursive functions into loops, eliminating stack frames. C does not GUARANTEE this optimization (unlike Scheme), but it usually happens.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">String literals — the read-only segment</div>
+<pre class="code"><span class="kw">char</span> *s1 = <span class="str">"Hello"</span>;     <span class="cmt">// pointer to text/rodata segment</span>
+<span class="kw">char</span> s2[] = <span class="str">"Hello"</span>;     <span class="cmt">// stack-allocated COPY of "Hello"</span></pre>
+For s1, "Hello" lives in the .rodata section of the executable, which is loaded into a read-only memory page. Writing through s1 causes a SIGSEGV (Linux) — not because of a NULL deref, but because of the read-only page protection. Modern compilers may even merge identical literals: two different functions writing <code class="i">"Hello"</code> may share the same address.
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. Functions are addresses</h4>
@@ -945,6 +1223,76 @@ A char* initialized to a string literal points to memory that may be in a read-o
 
 <article class="lecture" id="L17">
 <div class="lec-header"><div class="num">LECTURE 17 · BINARY TREES</div><h3>Binary Trees, Insert/Find, Traversal, Dynamic 2D Arrays</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">BST balance — why naive insertion can degenerate</div>
+A binary search tree's performance depends on its HEIGHT. A balanced tree of n nodes has height O(log n) → O(log n) operations. But naive insertion of sorted data creates a degenerate "list-like" tree of height n → O(n) operations.
+<pre class="code"><span class="cmt">// Insert 1, 2, 3, 4 into a BST in order:</span>
+1
+   2
+       3
+           4
+<span class="cmt">// Find(4) takes 4 steps. Same as a linked list.</span></pre>
+Self-balancing trees (AVL, red-black, B-trees) keep height O(log n) regardless of insertion order. The C++ std::map and Java TreeMap use red-black trees. CS 240's BST is the "naive" version — fine for the concept, but real code uses balanced variants.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Tree deletion — the three cases</div>
+Inserting into a BST is straightforward. Deleting is famously tricky because you might remove an internal node:
+<ul>
+<li><strong>Leaf node</strong> (no children) — just delete</li>
+<li><strong>One child</strong> — replace deleted node with its child</li>
+<li><strong>Two children</strong> — replace with the IN-ORDER SUCCESSOR (smallest in right subtree) OR predecessor (largest in left subtree), then delete that</li>
+</ul>
+The third case is the tricky one: you have to find the successor (the leftmost node of the right subtree), copy its data into the slot you're "deleting," then actually remove the successor (which has at most one child).
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Recursive vs iterative tree operations</div>
+Recursive tree code is shorter and clearer but uses stack proportional to tree height. For a balanced tree of n nodes, that's O(log n) — totally fine. For a degenerate BST or a linked list, recursion can stack-overflow. Iterative versions use an explicit stack on the heap (or a parent pointer in each node), trading code complexity for safety.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Row-major vs column-major — why C and Fortran differ</div>
+C lays out 2D arrays in <strong>row-major</strong>: <code class="i">int a[3][4]</code> stores all 4 of row 0, then all 4 of row 1, then row 2. This is why <code class="i">a[i][j]</code> = <code class="i">*(&amp;a[0][0] + i*cols + j)</code> — you skip <code class="i">i</code> full rows then <code class="i">j</code> elements.
+
+Fortran (and Matlab, R) use <strong>column-major</strong>: column 0, column 1, etc. This affects performance: iterate matrices in the order matching layout to maximize cache hits. In C, prefer <code class="i">for i { for j { a[i][j] } }</code>. The reverse loops the same matrix but causes a cache miss every iteration on big matrices.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Two ways to allocate a dynamic 2D array — and why they differ</div>
+<pre class="code"><span class="cmt">// Method 1: Flat (one malloc)</span>
+<span class="kw">int</span> *flat = malloc(rows * cols * <span class="kw">sizeof</span>(<span class="kw">int</span>));
+flat[i * cols + j] = v;          <span class="cmt">// manual indexing</span>
+
+<span class="cmt">// Method 2: Array of pointers (rows+1 mallocs)</span>
+<span class="kw">int</span> **arr = malloc(rows * <span class="kw">sizeof</span>(<span class="kw">int</span> *));
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; rows; i++)
+    arr[i] = malloc(cols * <span class="kw">sizeof</span>(<span class="kw">int</span>));
+arr[i][j] = v;                    <span class="cmt">// natural syntax</span></pre>
+Trade-offs:
+<ul>
+<li>Flat: one allocation, contiguous (cache-friendly), but uglier indexing</li>
+<li>Array of pointers: natural syntax, allows ragged rows (different lengths), but rows are scattered → worse cache, more allocations to free</li>
+</ul>
+For dense numeric work, prefer flat. For text or "ragged 2D" data, prefer array of pointers.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Tree applications you've used today</div>
+<ul>
+<li>File systems — directories form a tree (with hard links making it a DAG)</li>
+<li>HTML/XML DOM — every web page</li>
+<li>Database B-trees and B+-trees — billions of rows, log_N access</li>
+<li>Compilers' abstract syntax trees</li>
+<li>Game decision trees, AI search</li>
+<li>Heap (a near-complete binary tree) — priority queues, heap-sort</li>
+</ul>
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. The tree node</h4>
@@ -1152,6 +1500,75 @@ A char* initialized to a string literal points to memory that may be in a read-o
 
 <article class="lecture" id="L18">
 <div class="lec-header"><div class="num">LECTURE 18 · TYPES, QUALIFIERS, STORAGE CLASSES</div><h3>The Type System</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">Why C type sizes vary — the "data models"</div>
+<table class="t">
+<tr><th>Model</th><th>int</th><th>long</th><th>ptr</th><th>Used by</th></tr>
+<tr><td>ILP32</td><td>4</td><td>4</td><td>4</td><td>32-bit Linux/Windows</td></tr>
+<tr><td>LLP64</td><td>4</td><td>4</td><td>8</td><td>64-bit Windows</td></tr>
+<tr><td>LP64</td><td>4</td><td>8</td><td>8</td><td>64-bit Linux/macOS/BSD</td></tr>
+</table>
+This is why portable code uses <code class="i">int32_t</code>, <code class="i">int64_t</code> (from &lt;stdint.h&gt;) when exact width matters, or <code class="i">size_t</code> for sizes. Hardcoding sizes (or assuming long is 8 bytes everywhere) breaks Windows ports.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">const-correctness as a contract</div>
+const isn't just for safety — it documents intent. <code class="i">int strlen(const char *s)</code> tells callers: "I won't modify your string." Without const, callers can't tell whether passing a string literal (read-only) is safe. const propagates: if a function parameter is const, every function it calls with that pointer must also accept const. This is why C standard library uses const aggressively in string and memory functions.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">volatile is NOT for thread synchronization</div>
+A common mistake: using volatile to share variables between threads. <strong>volatile is the wrong tool.</strong> It tells the compiler not to cache reads in registers, but it doesn't:
+<ul>
+<li>Prevent CPU reordering of memory accesses</li>
+<li>Provide atomic read/write</li>
+<li>Establish happens-before relationships</li>
+</ul>
+For threading, use <code class="i">_Atomic</code> (C11), pthread mutexes, or memory barriers. volatile is for hardware registers, signal handlers, and setjmp/longjmp — places where the value can change outside the program's flow.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Reading complex const declarations — right-to-left</div>
+<pre class="code"><span class="kw">const int</span> *p;             <span class="cmt">// p: pointer to const int</span>
+<span class="kw">int const</span> *p;             <span class="cmt">// SAME — order doesn't matter for the type</span>
+<span class="kw">int</span> *<span class="kw">const</span> p;             <span class="cmt">// p: const pointer to int</span>
+<span class="kw">const int</span> *<span class="kw">const</span> p;       <span class="cmt">// p: const pointer to const int</span>
+<span class="kw">const int</span> **q;            <span class="cmt">// q: pointer to (pointer to const int)</span>
+<span class="kw">const int</span> *<span class="kw">const</span> *r;       <span class="cmt">// r: pointer to (const pointer to const int)</span></pre>
+Rule: const applies to whatever is IMMEDIATELY to its left, unless const is at the start of the type. Walk right-to-left, replacing <code class="i">*</code> with "pointer to" and stopping at each const.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">static at file scope vs static local — same word, different meanings</div>
+<table class="t">
+<tr><th>Where</th><th>What it does</th></tr>
+<tr><td>static at file scope</td><td>Internal LINKAGE — symbol not visible outside this .c file</td></tr>
+<tr><td>static inside a function</td><td>Static STORAGE DURATION — variable persists across calls</td></tr>
+<tr><td>static struct member</td><td>Not allowed in C (this is a C++ thing)</td></tr>
+</table>
+Both meanings are about "permanent" but at different levels. The keyword is overloaded.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">extern arrays of unknown size</div>
+You can declare an extern array without specifying the size:
+<pre class="code"><span class="cmt">/* defs.c */</span>
+<span class="kw">int</span> data[] = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>};
+
+<span class="cmt">/* main.c */</span>
+<span class="kw">extern int</span> data[];   <span class="cmt">// size unknown here</span></pre>
+You can use data[i] but not <code class="i">sizeof(data)</code> in main.c — the compiler doesn't know its true size. To get the count, also declare a separate <code class="i">extern int data_count;</code>.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">register — historical, mostly ignored today</div>
+<code class="i">register int x;</code> originally hinted to keep x in a CPU register. Modern compilers ignore this hint and make their own register allocation decisions. The keyword still has one effect: you can't take the address (<code class="i">&amp;x</code>) of a register variable. C++ even deprecated register entirely. Don't use it.
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. First-class types (built into C)</h4>
@@ -1315,6 +1732,93 @@ A char* initialized to a string literal points to memory that may be in a read-o
 
 <article class="lecture" id="L19">
 <div class="lec-header"><div class="num">LECTURE 19 · PREPROCESSOR + CASTS + VOID + CALLBACKS</div><h3>The C Preprocessor &amp; More</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">The preprocessor is a separate language</div>
+The C preprocessor is not part of C the language — it's a TEXT TRANSFORMATION layer that runs first. It doesn't understand types, scope, or syntax. It only understands:
+<ul>
+<li>Lines starting with <code class="i">#</code> (directives)</li>
+<li>Identifier replacement (<code class="i">#define</code>)</li>
+<li>File inclusion (<code class="i">#include</code>)</li>
+<li>Conditional sections (<code class="i">#if</code>/<code class="i">#ifdef</code>)</li>
+</ul>
+This is why preprocessor errors are often confusing — the compiler sees the post-expansion text, but the error references generated code you didn't write. Use <code class="i">gcc -E file.c</code> to see what the compiler actually sees.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Why macros are dangerous — multiple evaluation</div>
+<pre class="code"><span class="pp">#define MAX(a,b) ((a) &gt; (b) ? (a) : (b))</span>
+
+<span class="kw">int</span> x = <span class="num">5</span>;
+<span class="kw">int</span> y = MAX(x++, <span class="num">10</span>);   <span class="cmt">// expands to: ((x++) &gt; (10) ? (x++) : (10))</span>
+<span class="cmt">// x is incremented TWICE if x++ &gt; 10!</span></pre>
+Functions evaluate arguments exactly once; macros expand textually, so any side effect in an argument runs as many times as the argument appears in the macro body. Modern code prefers <code class="i">static inline</code> functions for type safety:
+<pre class="code"><span class="kw">static inline int</span> max(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="kw">return</span> a &gt; b ? a : b;
+}</pre>
+But macros are unavoidable for: type-generic operations, conditional compilation, and constants used in array sizes / case labels.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Stringification # and concatenation ##</div>
+<pre class="code"><span class="pp">#define STR(x) #x</span>             <span class="cmt">// turn x into a string literal</span>
+<span class="pp">#define CONCAT(a,b) a##b</span>      <span class="cmt">// paste tokens together</span>
+
+STR(hello)        <span class="cmt">// expands to "hello"</span>
+CONCAT(my_, var)  <span class="cmt">// expands to my_var</span>
+
+<span class="cmt">// Real use — debug print:</span>
+<span class="pp">#define DBG(x) printf(#x " = %d
+", x)</span>
+DBG(count);  <span class="cmt">// becomes: printf("count" " = %d
+", count);</span></pre>
+Adjacent string literals concatenate, so <code class="i">"count" " = %d
+"</code> becomes <code class="i">"count = %d
+"</code> — useful tool for debug macros.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Why "do { } while (0)" wrapping</div>
+<pre class="code"><span class="cmt">// BAD: missing braces</span>
+<span class="pp">#define LOG(s) printf("%s
+", s); fflush(stdout)</span>
+
+<span class="kw">if</span> (verbose) LOG(<span class="str">"hi"</span>);   <span class="cmt">// expands to:</span>
+<span class="cmt">// if (verbose) printf("%s
+", "hi"); fflush(stdout);</span>
+<span class="cmt">// fflush is OUTSIDE the if!</span>
+
+<span class="cmt">// GOOD: do/while wrapper</span>
+<span class="pp">#define LOG(s) do { printf("%s
+", s); fflush(stdout); } while (0)</span>
+
+<span class="kw">if</span> (verbose) LOG(<span class="str">"hi"</span>);   <span class="cmt">// works correctly</span></pre>
+The trailing semicolon you write becomes the do-while terminator. Plain <code class="i">{ }</code> braces would leave a stray semicolon dangling, breaking <code class="i">if/else</code> chains.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Casting truncates, doesn't round</div>
+<pre class="code"><span class="kw">double</span> y = <span class="num">3.7</span>;
+<span class="kw">int</span> i = (<span class="kw">int</span>) y;        <span class="cmt">// 3, NOT 4</span>
+<span class="kw">double</span> z = <span class="num">-3.7</span>;
+<span class="kw">int</span> j = (<span class="kw">int</span>) z;        <span class="cmt">// -3, NOT -4 (truncates toward zero)</span></pre>
+For rounding, use functions in &lt;math.h&gt;: <code class="i">round()</code>, <code class="i">floor()</code>, <code class="i">ceil()</code>. Casting between unrelated pointer types is also UB unless you go through char* or use a union — strict aliasing rules.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">void * — the C "any pointer" but with caveats</div>
+<code class="i">void *</code> is the universal pointer type. You can convert any pointer to <code class="i">void *</code> and back without explicit cast (in C). But:
+<ul>
+<li>You can't dereference a <code class="i">void *</code> directly — no type info</li>
+<li>You can't do pointer arithmetic on <code class="i">void *</code> in standard C (gcc allows it as an extension, treating it as <code class="i">char *</code>)</li>
+<li>Function pointers are NOT compatible with <code class="i">void *</code> (different size/representation possible) — though this works on most modern systems</li>
+</ul>
+The standard library uses <code class="i">void *</code> everywhere: malloc, memcpy, qsort callbacks. It's the C answer to "generics."
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. The preprocessor — what it is</h4>
@@ -1501,6 +2005,92 @@ walk_list(head, add_data, &amp;total);</pre>
 
 <article class="lecture" id="L20">
 <div class="lec-header"><div class="num">LECTURE 20 · MIDTERM 2 REVIEW</div><h3>Synthesis: pointers, malloc, structures, lists, trees, callbacks, preprocessor</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">Common sources of "weird crashes"</div>
+A pattern checklist for when your C program is crashing:
+<ol>
+<li><strong>Stack buffer overflow</strong> — strncpy without forcing \0, scanf without width, fixed-size buffer with variable input</li>
+<li><strong>Heap buffer overflow</strong> — wrote past end of malloc'd block</li>
+<li><strong>Use-after-free</strong> — accessing pointer after free()</li>
+<li><strong>Double-free</strong> — calling free twice on same pointer</li>
+<li><strong>Uninitialized pointer</strong> — int *p; *p = 5;</li>
+<li><strong>NULL deref</strong> — malloc returned NULL but you didn't check</li>
+<li><strong>Off-by-one</strong> — loop condition <code class="i">&lt;= n</code> instead of <code class="i">&lt; n</code></li>
+<li><strong>Returning local pointer</strong> — int *f() { int x; return &amp;x; }</li>
+<li><strong>Stack overflow</strong> — runaway recursion or huge local array</li>
+<li><strong>Type-punning UB</strong> — casting unrelated pointer types and dereferencing</li>
+</ol>
+valgrind catches 1-7. ASan and stack canaries catch 1-2 and 9. Static analyzers (clang-tidy, scan-build) catch many at compile time.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Pointer arithmetic — what's actually happening</div>
+<pre class="code"><span class="kw">int</span> arr[<span class="num">10</span>];
+<span class="kw">int</span> *p = arr;
+p++;</pre>
+The compiler sees <code class="i">p++</code> on an <code class="i">int *</code> and generates <code class="i">add p, sizeof(int)</code> — typically <code class="i">add p, 4</code>. The "scaling by element size" is automatic; the SAME C source produces different machine code for <code class="i">int *</code> (add 4) vs <code class="i">long *</code> (add 8) vs <code class="i">struct foo *</code> (add sizeof(struct foo)). This is why <code class="i">void *</code> arithmetic is non-standard: the compiler doesn't know what scale to use.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">The "dangling else" and other parsing pitfalls</div>
+<pre class="code"><span class="kw">if</span> (x) <span class="kw">if</span> (y) foo();
+<span class="kw">else</span> bar();   <span class="cmt">// which if does this else attach to?</span></pre>
+Answer: the INNER if. C uses "longest match" — <code class="i">else</code> binds to the nearest unmatched <code class="i">if</code>. Always brace your conditionals to remove ambiguity:
+<pre class="code"><span class="kw">if</span> (x) {
+    <span class="kw">if</span> (y) foo();
+    <span class="kw">else</span> bar();
+}</pre>
+</div>
+
+<div class="callout deep">
+<div class="callout-label">switch fall-through — feature, not bug</div>
+<pre class="code"><span class="kw">switch</span> (c) {
+    <span class="kw">case</span> <span class="str">'a'</span>:
+    <span class="kw">case</span> <span class="str">'A'</span>:
+        printf(<span class="str">"letter A
+"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="str">'b'</span>:
+        printf(<span class="str">"letter B
+"</span>);
+        <span class="cmt">// FALLTHROUGH — intentional!</span>
+    <span class="kw">case</span> <span class="str">'c'</span>:
+        printf(<span class="str">"after b or just c
+"</span>);
+        <span class="kw">break</span>;
+}</pre>
+Without <code class="i">break</code>, control flows into the next case. C99 and earlier silently allow this; gcc -Wimplicit-fallthrough warns. Document intentional fall-through with a comment or the C17 attribute <code class="i">[[fallthrough]]</code>.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">undefined behavior, unspecified behavior, implementation-defined behavior</div>
+<table class="t">
+<tr><th>Class</th><th>Definition</th><th>Examples</th></tr>
+<tr><td>Undefined behavior (UB)</td><td>Anything can happen — crash, junk, or "work"</td><td>Signed overflow, NULL deref, use-after-free</td></tr>
+<tr><td>Unspecified</td><td>One of several behaviors; may differ run-to-run</td><td>Order of argument evaluation</td></tr>
+<tr><td>Implementation-defined</td><td>Documented per-compiler/platform</td><td>sizeof(int), char signedness</td></tr>
+</table>
+UB is the most dangerous: optimizers actively assume UB doesn't happen. Code like <code class="i">if (p == NULL || p-&gt;x == 0)</code> that was "working" can break under optimization if the compiler proves p was already dereferenced earlier (so it must not be NULL).
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Why -Wall -Werror is the minimum, not maximum</div>
+Despite the name, <code class="i">-Wall</code> doesn't enable ALL warnings. Useful additions:
+<ul>
+<li><code class="i">-Wextra</code> — more warnings</li>
+<li><code class="i">-Wpedantic</code> — strict standards conformance</li>
+<li><code class="i">-Wshadow</code> — local variable shadowing a global</li>
+<li><code class="i">-Wcast-qual</code> — casting away const/volatile</li>
+<li><code class="i">-Wconversion</code> — implicit narrowing conversions</li>
+<li><code class="i">-fsanitize=address,undefined</code> — runtime UB detection</li>
+</ul>
+Production C codebases compile with many warnings enabled and treat them as errors. Catching bugs at compile time is cheaper than at runtime.
+</div>
+</div>
+
 
 <div class="section">
 <h4>What MT2 covers</h4>
@@ -1633,6 +2223,70 @@ walk_list(head, add_data, &amp;total);</pre>
 
 <article class="lecture" id="L21">
 <div class="lec-header"><div class="num">LECTURE 21 · CALLBACKS &amp; LIBRARIES</div><h3>Volatile, Efficiency, and Linking Libraries</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">What the optimizer actually does</div>
+<code class="i">-O2</code> turns on dozens of optimizations. Some examples:
+<ul>
+<li><strong>Constant folding</strong> — <code class="i">x = 2 + 3</code> becomes <code class="i">x = 5</code> at compile time</li>
+<li><strong>Dead code elimination</strong> — code with no observable effect is removed</li>
+<li><strong>Loop unrolling</strong> — replicate the body N times to reduce branch overhead</li>
+<li><strong>Inlining</strong> — replace a function call with the function's body</li>
+<li><strong>Common subexpression elimination</strong> — compute <code class="i">a*b</code> once, not twice</li>
+<li><strong>Strength reduction</strong> — replace <code class="i">x*4</code> with <code class="i">x&lt;&lt;2</code></li>
+<li><strong>Tail call optimization</strong> — convert to a jump, no stack frame</li>
+<li><strong>Auto-vectorization</strong> — use SSE/AVX SIMD for parallel loops</li>
+<li><strong>Register allocation</strong> — keep frequently-used values in CPU registers</li>
+</ul>
+This is why <code class="i">register</code> and many "manual optimizations" don't help with -O2: the compiler does them better. Focus your manual optimization on algorithm choice (O(n) vs O(n²)) where the compiler can't help.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">When NOT to optimize</div>
+<ul>
+<li><strong>Don't optimize before profiling.</strong> 90% of execution time is in 10% of the code. Optimize that 10%, leave the rest readable.</li>
+<li><strong>Don't optimize debug builds.</strong> -O0 + -g gives accurate variable values in gdb. -O3 reorders code and eliminates variables, making debugging confusing.</li>
+<li><strong>Don't optimize when correctness is at stake.</strong> -O3 sometimes assumes UB doesn't happen, exposing latent bugs (signed overflow, strict aliasing).</li>
+</ul>
+Use <code class="i">gprof</code> or <code class="i">perf</code> to profile before optimizing. Real CPU bottlenecks are often surprising — what looks slow rarely is.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Static vs shared library decision tree</div>
+<table class="t">
+<tr><th>Use static (.a)</th><th>Use shared (.so)</th></tr>
+<tr><td>Self-contained executable</td><td>Many programs use the library</td></tr>
+<tr><td>No deployment of separate libs</td><td>Library may be updated independently</td></tr>
+<tr><td>Slightly faster startup (no dlopen)</td><td>Smaller executables on disk</td></tr>
+<tr><td>Library version locked at compile time</td><td>Runtime selection of implementation</td></tr>
+<tr><td>Each program has its own copy in RAM</td><td>One copy of code shared by all processes</td></tr>
+</table>
+On Linux, glibc is shared so all processes share its code pages. If glibc were static, every "hello world" would be megabytes.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">How shared library loading works at runtime</div>
+When you run <code class="i">./prog</code>:
+<ol>
+<li>Kernel sees the ELF header, notices "INTERP /lib/ld-linux.so.2"</li>
+<li>Kernel runs the dynamic linker (ld-linux.so) BEFORE your program</li>
+<li>ld-linux reads the executable's "needed libraries" list (use <code class="i">ldd ./prog</code> to see it)</li>
+<li>ld-linux finds each .so via <code class="i">LD_LIBRARY_PATH</code>, then <code class="i">/etc/ld.so.cache</code>, then default paths</li>
+<li>Each .so is mmap'd into the process's address space</li>
+<li>ld-linux resolves all "this function lives in that library" references (relocations)</li>
+<li>Then control transfers to your <code class="i">_start</code>, which calls main</li>
+</ol>
+Run <code class="i">strace ./prog 2&gt;&amp;1 | head -50</code> to see this dance live. Run <code class="i">LD_DEBUG=libs ./prog</code> for verbose loader output.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">PIC, position-independent code, why -fPIC for shared libs</div>
+A shared library can be loaded at different addresses in different processes (mandatory for ASLR). Code with hardcoded addresses (e.g. <code class="i">jmp 0x40080</code>) won't work — it's wrong if loaded at a different base. <strong>Position-independent code</strong> uses RIP-relative addressing (or a global offset table) so the same machine code works at any base address. Static libraries don't need PIC because they're copied into the executable's fixed layout.
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. The clock callback example</h4>
@@ -1797,6 +2451,82 @@ ar -crv libutil.a u1.o u2.o</pre></div></div>
 
 <article class="lecture" id="L22">
 <div class="lec-header"><div class="num">LECTURE 22 · LARGE-SCALE DEV, RANDOM, SDL</div><h3>Header Guards, Random Numbers, SDL Graphics, GTK+</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">Header guards vs #pragma once</div>
+The classic header guard:
+<pre class="code"><span class="pp">#ifndef MY_HEADER_H</span>
+<span class="pp">#define MY_HEADER_H</span>
+<span class="cmt">/* declarations */</span>
+<span class="pp">#endif</span></pre>
+Modern alternative supported by all major compilers:
+<pre class="code"><span class="pp">#pragma once</span>
+<span class="cmt">/* declarations */</span></pre>
+<code class="i">#pragma once</code> is shorter, can't conflict with another file accidentally using the same macro name, and is recognized by gcc/clang/msvc. It's not in the C standard but is universally supported. CS 240 prefers the classic guards because they're guaranteed by the standard.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Why srandom(time(NULL)) is OK for class but bad in real code</div>
+<code class="i">time(NULL)</code> returns seconds since the epoch — predictable, slow-changing. If two processes start within the same second, they get the same seed and the same "random" sequence. For:
+<ul>
+<li><strong>CS 240 simulations</strong> — fine</li>
+<li><strong>Games</strong> — fine, players don't care about predictability</li>
+<li><strong>Cryptography or security</strong> — UNACCEPTABLE — use <code class="i">/dev/urandom</code> or <code class="i">arc4random</code></li>
+</ul>
+The C standard's <code class="i">rand()</code>/<code class="i">srand()</code> are even weaker than <code class="i">random()</code>/<code class="i">srandom()</code>. For statistical work, use a proper PRNG (Mersenne Twister, PCG, xorshift).
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Modulo bias in random ranges</div>
+<pre class="code"><span class="kw">int</span> r = random() % <span class="num">10</span>;</pre>
+If <code class="i">random()</code>'s range isn't a multiple of 10, some values are slightly more likely than others. RAND_MAX is typically 2^31-1 = 2147483647. Dividing by 10 gives 214748364 with remainder 7 — values 0-7 get one more bucket than 8-9. The bias is tiny when the range is much smaller than RAND_MAX, large when ranges approach RAND_MAX. For unbiased generation, use rejection sampling: re-roll if the value falls in the "extra" range.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">SDL — what's actually happening</div>
+<code class="i">SDL_Init</code> opens connections to the OS's window/audio/input subsystems. <code class="i">SDL_SetVideoMode</code> creates a window and a "surface" — a chunk of memory representing the framebuffer. Each "blit" (block-image-transfer) copies pixels from a source surface to a destination surface, with optional color-keying / alpha. <code class="i">SDL_Flip</code> swaps two framebuffers (back buffer / front buffer) atomically, avoiding visible tearing.
+
+Modern game engines have moved to GPU APIs (OpenGL, Vulkan, DirectX, Metal) where rendering happens on the graphics card. SDL still exists as the framework that handles windowing/input/audio while delegating rendering to GPUs. CS 240's SDL is the older "blit on the CPU" model.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Game loop structure</div>
+<pre class="code"><span class="kw">int</span> running = <span class="num">1</span>;
+<span class="kw">while</span> (running) {
+    <span class="cmt">// 1. Handle input events</span>
+    SDL_Event ev;
+    <span class="kw">while</span> (SDL_PollEvent(&amp;ev)) {
+        <span class="kw">if</span> (ev.type == SDL_QUIT) running = <span class="num">0</span>;
+    }
+
+    <span class="cmt">// 2. Update world state (move sprites, physics)</span>
+    update_world(&amp;state);
+
+    <span class="cmt">// 3. Render to back buffer</span>
+    render(&amp;state, screen);
+
+    <span class="cmt">// 4. Flip buffers</span>
+    SDL_Flip(screen);
+
+    <span class="cmt">// 5. Cap framerate (optional)</span>
+    SDL_Delay(<span class="num">16</span>);   <span class="cmt">// ~60 FPS</span>
+}</pre>
+Real games separate the update from rendering on different time bases — the world updates at a fixed rate (60 Hz) while rendering targets your monitor's rate (60/120/144 Hz). Mixing them causes physics weirdness when frame rates vary.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Why one .c per struct?</div>
+The "one struct per file" convention is the C answer to encapsulation:
+<ul>
+<li>Header (.h): the struct's TYPE declaration and the public functions that operate on it</li>
+<li>Implementation (.c): the function bodies plus any private static helpers</li>
+</ul>
+Result: callers depend only on the header, not the implementation. You can change internal representation (e.g., switch from array to linked list) without touching callers — as long as the public interface is unchanged. This is "loose coupling" via translation units. C++'s class is essentially this convention with syntax sugar.
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. Large-scale development</h4>
@@ -1958,6 +2688,83 @@ SDL_Surface *s = SDL_SetVideoMode(<span class="num">800</span>, <span class="num
 
 <article class="lecture" id="L23">
 <div class="lec-header"><div class="num">LECTURE 23 · BUFFER OVERFLOWS &amp; SYSTEM CALLS</div><h3>Security: Stack Smashing &amp; The OS Boundary</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">Buffer overflow → control flow hijack — the classic exploit</div>
+<ol>
+<li>Find a function with a fixed-size local buffer and an unbounded read into it (gets, scanf without width, strcpy from external input)</li>
+<li>Send input that overflows the buffer past the saved return address</li>
+<li>Place "shellcode" (raw machine instructions) earlier in the input</li>
+<li>Overwrite the return address to point INTO your shellcode (in the buffer)</li>
+<li>When the function returns, CPU jumps to your shellcode</li>
+<li>Shellcode typically runs <code class="i">execve("/bin/sh", ...)</code> — game over</li>
+</ol>
+This is the Morris worm (1988) and tens of thousands of CVEs since. Modern defenses make this much harder but not impossible.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">The 4 modern defenses, in detail</div>
+<ul>
+<li><strong>Stack canaries (SSP)</strong> — gcc's <code class="i">-fstack-protector</code> places a random "canary" value between locals and the return address on function entry. Before returning, the function checks the canary; if changed, abort. Defeats simple linear overflows.</li>
+<li><strong>NX / DEP / W^X</strong> — pages are either Writable or eXecutable, never both. The stack is W, not X. Shellcode placed there can't run. Defeated by ROP (return-oriented programming) which chains together small "gadgets" already in executable code.</li>
+<li><strong>ASLR</strong> — addresses of the stack, heap, libraries, and (with PIE) the executable itself are randomized each run. Attackers can't pre-compute exploit addresses. Defeated by info leaks that reveal the random offsets.</li>
+<li><strong>CFI (Control Flow Integrity)</strong> — at every indirect jump/call, check that the target is a valid function. Newer; not yet universal.</li>
+</ul>
+Modern attacks chain primitive bugs to bypass each defense. The exploitation game is now decades-long arms race.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">User mode vs kernel mode — the privilege boundary</div>
+Modern CPUs have at least two privilege levels:
+<ul>
+<li><strong>User mode</strong> (ring 3) — your program runs here. Can access only its own memory (via virtual address translation). Can NOT directly access hardware, kernel memory, or other processes.</li>
+<li><strong>Kernel mode</strong> (ring 0) — the OS kernel. Full hardware access.</li>
+</ul>
+A SYSTEM CALL is the controlled gateway between them. <code class="i">read()</code> from user mode triggers a CPU instruction (<code class="i">syscall</code> on x86_64) that:
+<ol>
+<li>Saves user state</li>
+<li>Switches to kernel mode</li>
+<li>Jumps to a kernel-side handler</li>
+<li>Handler does the privileged work</li>
+<li>Returns to user mode with the result</li>
+</ol>
+This crossing is "expensive" — thousands of cycles vs ~1 for a function call. That's why stdio buffers reads/writes; one syscall reading 4 KB beats 4096 syscalls reading 1 byte.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">FILE* vs file descriptor — two layers of abstraction</div>
+<table class="t">
+<tr><th>Layer</th><th>API</th><th>Type</th></tr>
+<tr><td>System call</td><td><code class="i">open, read, write, close</code></td><td>int (file descriptor)</td></tr>
+<tr><td>C library (libc)</td><td><code class="i">fopen, fread, fwrite, fclose</code></td><td><code class="i">FILE *</code></td></tr>
+</table>
+A FILE* WRAPS a file descriptor with user-space buffering. Convert with <code class="i">int fileno(FILE *fp)</code> (FILE → fd) or <code class="i">FILE *fdopen(int fd, mode)</code> (fd → FILE). When mixing them, call <code class="i">fflush(fp)</code> before using the underlying fd directly, or you'll get out-of-order data.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">errno and perror — error reporting in C</div>
+System calls return -1 on error and set the global <code class="i">errno</code> to a numeric error code. Inspect it:
+<pre class="code"><span class="pp">#include &lt;errno.h&gt;</span>
+<span class="pp">#include &lt;string.h&gt;</span>
+
+<span class="kw">int</span> fd = open(path, O_RDONLY);
+<span class="kw">if</span> (fd &lt; <span class="num">0</span>) {
+    fprintf(stderr, <span class="str">"open(%s): %s
+"</span>, path, strerror(errno));
+    <span class="cmt">// or:</span>
+    perror(<span class="str">"open"</span>);   <span class="cmt">// prints "open: No such file or directory" to stderr</span>
+}</pre>
+Common errno values: ENOENT (no such file), EACCES (permission denied), ENOMEM (out of memory), EBADF (bad file descriptor), EINTR (interrupted by signal). Always check errno IMMEDIATELY after the failing call — other library calls may overwrite it.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">FD leaks and file table limits</div>
+Each process has a limited number of open file descriptors — check with <code class="i">ulimit -n</code> (typically 1024). Forgetting <code class="i">close()</code> in a long-running server is fatal: after 1024 connections, every <code class="i">accept()</code> fails with EMFILE. Worse, the kernel's file table is global; a single process leaking FDs can take down the whole system. <code class="i">lsof -p PID</code> shows what FDs a process has open.
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. Why strncpy matters: buffer overflows</h4>
@@ -2155,6 +2962,78 @@ close(fd);</pre>
 
 <article class="lecture" id="L24">
 <div class="lec-header"><div class="num">LECTURE 24 · BUFFER OVERFLOWS CONT'D + CORE FILES + GOTO</div><h3>Stack Diagrams, Core Dumps, the goto Statement</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">Reading a stack dump — putting it all together</div>
+Suppose gdb shows the stack as bytes:
+<pre class="code">0x7fff0040: 41 41 41 41 41 41 41 41   ← buffer[0..7]
+0x7fff0048: 41 41 41 41 41 41 41 41   ← buffer[8..15]
+0x7fff0050: 00 00 00 00 00 00 00 00   ← saved frame pointer
+0x7fff0058: a0 04 40 00 00 00 00 00   ← return address (jumps to 0x4004a0)
+0x7fff0060: 0a 00 00 00 00 00 00 00   ← argument: int n = 10
+0x7fff0068: ...                       ← caller's frame</pre>
+Stack grows DOWN, so lower addresses = newer (locals) and higher = older (caller's frame, args). 0x41 = 'A' — the function got input "AAAAAAAA...". Notice all 16 bytes of buffer are 'A's, which means the input was ≥ 16 chars. Now look at frame pointer and return address — if they're still intact, no overflow yet. If 0x7fff0050 contained more 0x41's, the saved frame pointer was overwritten — overflow detected. If 0x7fff0058 had 0x41's, the return address itself was corrupted — full hijack potential.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">x86 calling conventions — where args go</div>
+<table class="t">
+<tr><th>Architecture / ABI</th><th>First int args go in</th><th>Stack used for</th></tr>
+<tr><td>x86 (cdecl, 32-bit)</td><td>Stack only</td><td>All args, in reverse order</td></tr>
+<tr><td>x86_64 System V (Linux/macOS)</td><td>rdi, rsi, rdx, rcx, r8, r9</td><td>Args 7+, large structs</td></tr>
+<tr><td>x86_64 Microsoft (Windows)</td><td>rcx, rdx, r8, r9</td><td>Args 5+, plus shadow space</td></tr>
+<tr><td>ARM AAPCS</td><td>r0-r3</td><td>Args 5+</td></tr>
+</table>
+Float arguments use separate registers (xmm0-xmm7 on x86_64 SysV). The return value goes in rax (rax+rdx for 128-bit returns). This is why a 32-bit stack overflow exploit looks different from 64-bit: the first args aren't even on the stack.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">The frame pointer — what it's actually for</div>
+On x86_64, the frame pointer (rbp) holds the START of the current function's stack frame. Locals are accessed at fixed offsets from rbp: <code class="i">[rbp-4] = local x</code>, <code class="i">[rbp-8] = local y</code>. This makes debugging easier — gdb walks the frame pointers to print the call stack.
+
+<strong>Modern -O2 omits the frame pointer</strong> (-fomit-frame-pointer is implicit), using rbp as a general register and accessing locals via rsp-relative addressing. This frees one register for general use but makes manual stack walking harder. Recent Linux kernels have been re-enabling frame pointers for better profiling/tracing.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Core dumps — what's actually in them</div>
+A core file is essentially the process's entire memory at crash time, in ELF format. Includes:
+<ul>
+<li>All writable memory regions (stack, heap, .data, .bss)</li>
+<li>Register state at the moment of crash</li>
+<li>Memory map (which segments came from which library)</li>
+</ul>
+Excludes:
+<ul>
+<li>Code segments (regenerable from the executable file)</li>
+<li>Mapped read-only files</li>
+</ul>
+Open with <code class="i">gdb prog core</code> and you can inspect every variable, the stack at every level, and use <code class="i">print *p</code> as if the program were paused. Core files are large (~size of the heap), which is why <code class="i">ulimit -c</code> defaults to 0 in many distros.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">When goto isn't evil — the cleanup pattern</div>
+The "Linux kernel" cleanup pattern is the classic legitimate use:
+<pre class="code"><span class="kw">int</span> setup() {
+    <span class="kw">int</span> rc = <span class="num">0</span>;
+    <span class="kw">char</span> *buf1 = malloc(<span class="num">100</span>);
+    <span class="kw">if</span> (!buf1) { rc = <span class="num">-1</span>; <span class="kw">goto</span> err1; }
+    <span class="kw">char</span> *buf2 = malloc(<span class="num">200</span>);
+    <span class="kw">if</span> (!buf2) { rc = <span class="num">-1</span>; <span class="kw">goto</span> err2; }
+    FILE *fp = fopen(<span class="str">"x"</span>, <span class="str">"r"</span>);
+    <span class="kw">if</span> (!fp)   { rc = <span class="num">-1</span>; <span class="kw">goto</span> err3; }
+
+    <span class="cmt">/* do work */</span>
+    fclose(fp);
+err3: free(buf2);
+err2: free(buf1);
+err1: <span class="kw">return</span> rc;
+}</pre>
+Without goto, you'd nest if-else 3 levels deep or duplicate the cleanup code. The labels-and-goto pattern is the cleanest expression of "release everything I've acquired so far, in reverse order." This is essentially RAII (C++) or defer (Go) before those existed.
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. Stack diagram (revisited) — the takehome quiz pattern</h4>
@@ -2318,6 +3197,80 @@ done:
 
 <article class="lecture" id="L25">
 <div class="lec-header"><div class="num">LECTURE 25 · MAKEFILES</div><h3>make and the Build System</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">Why the TAB requirement is famously annoying</div>
+make's parser was written in 1976. The author (Stuart Feldman) said:
+<blockquote style="font-style:italic;color:#888;margin:10px 0">"I realized this was a bad idea, but the next morning I had a dozen users."</blockquote>
+By the time the bug was obvious, too many Makefiles relied on it. The TAB-vs-spaces issue has caused millions of hours of confusion. Modern alternatives (Ninja, Bazel, Meson) avoid this. But make is universal, so we live with it. Some editors auto-convert tabs to spaces — disable that for Makefiles.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Phony targets — why they matter</div>
+<pre class="code"><span class="cmt"># BAD - if a file named "clean" exists, make thinks the target is up-to-date</span>
+clean:
+	rm -f *.o my_prog
+
+<span class="cmt"># GOOD - .PHONY tells make to ALWAYS run this</span>
+.PHONY: clean
+clean:
+	rm -f *.o my_prog</pre>
+Common phony targets: <code class="i">all, clean, install, test, distclean, dist</code>. Without <code class="i">.PHONY</code>, anyone naive can break the build by creating a file with that name.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Make's variable flavors</div>
+<pre class="code">A = $(B)        <span class="cmt"># RECURSIVELY expanded — re-evaluated each use</span>
+A := $(B)       <span class="cmt"># SIMPLY expanded — evaluated NOW, frozen</span>
+A ?= value      <span class="cmt"># SET only if A isn't already defined</span>
+A += extra      <span class="cmt"># APPEND to existing</span>
+
+CFLAGS = -Wall
+CFLAGS = $(CFLAGS) -g    <span class="cmt"># INFINITE RECURSION!</span>
+
+CFLAGS := -Wall
+CFLAGS := $(CFLAGS) -g   <span class="cmt"># works: -Wall -g</span></pre>
+Use <code class="i">:=</code> when you don't want late binding surprises.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">make -j parallelism — why it sometimes fails</div>
+<code class="i">make -j8</code> runs up to 8 recipes in parallel — much faster on multicore machines. But:
+<ul>
+<li>Recipes that don't declare ALL their dependencies will fail when they run before what they actually need</li>
+<li>Recipes writing to the same file race each other</li>
+<li>Order of error messages becomes unpredictable</li>
+</ul>
+A correct Makefile works at any -j level. A "works only with -j1" Makefile has incomplete dependencies. You can find these bugs by adding <code class="i">.NOTPARALLEL:</code> as a debugging tool.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Auto-generated dependencies — the missing piece</div>
+A naive Makefile only knows: "main.o depends on main.c". But what about the .h files main.c includes? If you change a header, dependent .c files need rebuilding too. Solution: <code class="i">gcc -MMD</code>:
+<pre class="code">CFLAGS = -Wall -MMD
+%.o: %.c
+	$(CC) $(CFLAGS) -c $&lt; -o $@
+
+-include $(OBJS:.o=.d)</pre>
+gcc generates a <code class="i">.d</code> file alongside each <code class="i">.o</code>, listing every header included. The Makefile <code class="i">-include</code>s them. Now changing any included header triggers rebuild of every .c that includes it, transitively. This is what real projects do — without it, "make clean &amp;&amp; make" is the only safe rebuild.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Other build systems — why make persists</div>
+<table class="t">
+<tr><th>Tool</th><th>Strengths</th><th>Used by</th></tr>
+<tr><td>make</td><td>Universal, simple syntax</td><td>Linux kernel, Unix utilities</td></tr>
+<tr><td>CMake</td><td>Cross-platform, generates makefiles/ninja/etc.</td><td>LLVM, KDE, many open source</td></tr>
+<tr><td>Ninja</td><td>Fast, designed for generated input</td><td>Chrome, Android (under CMake)</td></tr>
+<tr><td>Bazel</td><td>Hermetic builds, monorepo scale</td><td>Google internal</td></tr>
+<tr><td>Meson</td><td>Modern Python-like</td><td>GNOME, systemd</td></tr>
+</table>
+For a class project, plain make is fine. For a 100k-file company codebase, you want something else.
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. The problem</h4>
@@ -2489,6 +3442,77 @@ clean:
 
 <article class="lecture" id="L26">
 <div class="lec-header"><div class="num">LECTURE 26 · INTERFACING WITH HARDWARE</div><h3>Ports, Linux /dev, Raspberry Pi, GPIO</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">Memory-mapped I/O — how software talks to hardware</div>
+On the Raspberry Pi (and most ARM SoCs), GPIO pins are controlled by writing to specific MEMORY ADDRESSES. The CPU's memory subsystem routes accesses to those addresses to the GPIO peripheral instead of RAM. From C:
+<pre class="code"><span class="pp">#define GPIO_BASE 0x3F200000</span>   <span class="cmt">// physical address on Pi 3</span>
+<span class="kw">volatile unsigned int</span> *gpio = (<span class="kw">unsigned int</span> *) GPIO_BASE;
+gpio[<span class="num">0x1C</span> / <span class="num">4</span>] = <span class="num">1</span> &lt;&lt; <span class="num">17</span>;   <span class="cmt">// Set GPIO pin 17 high</span></pre>
+The <code class="i">volatile</code> is essential — the compiler must NOT cache reads or eliminate writes. On Linux user-space, you can't directly access these physical addresses; you mmap <code class="i">/dev/mem</code> first.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Why peripherals require careful timing</div>
+GPIO writes are FAST (nanoseconds). But hardware response is often SLOW (microseconds for I2C, milliseconds for relays). The CPU can issue thousands of writes per millisecond, faster than the hardware can respond. Common patterns:
+<ul>
+<li><strong>Polling</strong> — repeatedly read a status register until it shows "done"</li>
+<li><strong>Delays</strong> — sleep for a known time before reading</li>
+<li><strong>Interrupts</strong> — hardware tells the CPU when it's ready</li>
+</ul>
+For real-time work, you need to know your hardware's timing. Datasheets specify minimum hold/setup times, propagation delays, and clock requirements.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">GPIO direction registers</div>
+A GPIO pin is configurable: input (read voltage) or output (drive voltage). Modern SoCs have separate registers:
+<ul>
+<li><strong>FSEL</strong> (function select) — chooses pin role: input, output, or alternate function (UART, SPI, etc.)</li>
+<li><strong>SET</strong> — write a 1 to drive the corresponding pin HIGH</li>
+<li><strong>CLR</strong> — write a 1 to drive the corresponding pin LOW</li>
+<li><strong>LEV</strong> — read to get current pin state</li>
+</ul>
+Notice SET and CLR are write-only — separate registers avoid race conditions where one bit is being toggled while reading the rest.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Why level shifters matter</div>
+Many sensors use 5V logic (Arduino-era hardware) but the Pi's GPIOs are 3.3V tolerant only. Connecting 5V to a 3.3V GPIO without a level shifter:
+<ul>
+<li>BEST CASE: the input clamping diodes conduct, drawing excess current that damages the SoC over time</li>
+<li>WORST CASE: instant chip death</li>
+</ul>
+Solutions: voltage divider (resistors), bidirectional level shifter chips, or sensors that support 3.3V mode. Always check pin voltage in the datasheet.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">The /dev abstraction — UNIX's "everything is a file"</div>
+UNIX's design philosophy: hide hardware details behind file-like APIs. <code class="i">open</code>, <code class="i">read</code>, <code class="i">write</code>, <code class="i">close</code> work on:
+<ul>
+<li>Regular files</li>
+<li>Pipes</li>
+<li>Network sockets</li>
+<li>Devices (<code class="i">/dev/ttyUSB0</code>, <code class="i">/dev/sda</code>)</li>
+<li>Special files (<code class="i">/dev/null</code>, <code class="i">/dev/zero</code>, <code class="i">/dev/random</code>)</li>
+<li>Pseudo-files (<code class="i">/proc/cpuinfo</code>, <code class="i">/sys/class/gpio</code>)</li>
+</ul>
+This unification makes programs simpler — a tool that processes files automatically works on devices and sockets. <code class="i">cat</code> works on serial ports, network connections, and files alike.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">SoCs vs CPUs vs microcontrollers</div>
+<table class="t">
+<tr><th>Class</th><th>Examples</th><th>Characteristics</th></tr>
+<tr><td>Microcontroller (MCU)</td><td>Arduino's ATmega, STM32, PIC</td><td>Small RAM (KBs), no MMU, runs bare-metal code</td></tr>
+<tr><td>System-on-Chip (SoC)</td><td>Pi's BCM2835, smartphones</td><td>CPU + GPU + peripherals, MBs of RAM, runs Linux</td></tr>
+<tr><td>CPU</td><td>x86 desktop chip</td><td>Standalone CPU, needs separate chipset/RAM/GPU</td></tr>
+</table>
+The Pi sits between MCU and CPU. Programs are usually written under Linux (high-level languages, full libc), but you can also run "bare-metal" code that controls everything itself.
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. Ports — old and new</h4>
@@ -2615,6 +3639,106 @@ clean:
 
 <article class="lecture" id="L27">
 <div class="lec-header"><div class="num">LECTURE 27 · NETWORKING (FINAL LECTURE)</div><h3>Bubble Sort, IP/TCP, Sockets, Final Exam Info</h3></div>
+<div class="section">
+<h4>Beyond the Slides — Deep Dive</h4>
+
+<div class="callout deep">
+<div class="callout-label">The OSI / TCP/IP layers — what each adds</div>
+Real networking is layered, each layer adding a feature on top of the one below:
+<table class="t">
+<tr><th>Layer</th><th>Protocols</th><th>What it provides</th></tr>
+<tr><td>5+ Application</td><td>HTTP, SSH, DNS, SMTP</td><td>What the data MEANS</td></tr>
+<tr><td>4 Transport</td><td>TCP, UDP</td><td>End-to-end reliability + ports (multiplex many apps on one host)</td></tr>
+<tr><td>3 Network</td><td>IP (v4, v6)</td><td>Routing across networks (hop-by-hop addressing)</td></tr>
+<tr><td>2 Link</td><td>Ethernet, Wi-Fi (802.11)</td><td>Same-cable / same-radio delivery (MAC addresses)</td></tr>
+<tr><td>1 Physical</td><td>Cables, radio waves</td><td>Bits as electrical/optical/RF signals</td></tr>
+</table>
+A web request goes: HTTP request → TCP segment → IP packet → Ethernet frame → wire → and back up the stack at the destination.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">TCP vs UDP — when to use each</div>
+<table class="t">
+<tr><th>Feature</th><th>TCP</th><th>UDP</th></tr>
+<tr><td>Connection</td><td>Yes (3-way handshake)</td><td>None (just send)</td></tr>
+<tr><td>Reliable</td><td>Yes (acks, retransmits)</td><td>No (packet may be lost)</td></tr>
+<tr><td>Ordered</td><td>Yes</td><td>No (may arrive out of order)</td></tr>
+<tr><td>Stream</td><td>Yes (no message boundaries)</td><td>No (each packet is a message)</td></tr>
+<tr><td>Latency</td><td>Higher (waits for acks)</td><td>Lower (fire and forget)</td></tr>
+<tr><td>Use cases</td><td>Web, SSH, file transfer</td><td>Video streaming, DNS, games, VoIP</td></tr>
+</table>
+TCP gives you reliability for free but pays in latency. UDP is faster but the application must handle losses — sometimes acceptable (a dropped video frame is fine; the next one comes in 16ms).
+</div>
+
+<div class="callout deep">
+<div class="callout-label">The 3-way handshake — how TCP starts a connection</div>
+<pre class="code">Client                    Server
+  ----- SYN seq=A -----&gt;
+  &lt;-- SYN-ACK seq=B,A+1 --
+  ----- ACK A+1,B+1 ---&gt;
+  &lt;==== Connection established ====&gt;</pre>
+This exchange establishes initial sequence numbers (random for security) and confirms both directions work. After this, every TCP segment carries a sequence number; the receiver acks back so the sender knows it arrived. Lost packets are detected by missing acks (after a timeout) and retransmitted.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Network byte order — big-endian everywhere</div>
+The internet uses big-endian for all multi-byte values in protocol headers. x86 is little-endian. Hence <code class="i">htons</code> (host-to-network short), <code class="i">htonl</code> (long), <code class="i">ntohs</code>, <code class="i">ntohl</code> — they swap bytes if needed. On a big-endian machine they're no-ops; on x86 they actually swap. Forgetting <code class="i">htons</code> is the #1 socket-programming bug — the port number ends up correct on a big-endian machine, wrong everywhere else.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Why blocking calls block — accept, recv, connect</div>
+By default, sockets are BLOCKING:
+<ul>
+<li><code class="i">accept()</code> blocks until a client connects</li>
+<li><code class="i">recv()</code> blocks until at least 1 byte arrives</li>
+<li><code class="i">connect()</code> blocks until the handshake completes (or times out)</li>
+</ul>
+This is a problem for servers: while you're blocked in recv() with one client, others can't be served. Three solutions:
+<ul>
+<li><strong>Threads</strong> — one per connection (or thread pool)</li>
+<li><strong>fork()</strong> — one process per connection (Apache prefork)</li>
+<li><strong>Non-blocking + epoll/kqueue</strong> — single thread juggling thousands of connections (nginx, redis)</li>
+</ul>
+Modern high-performance servers use the epoll approach. Lower-overhead, scales to 10,000+ connections per thread.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">DNS resolution under the hood</div>
+"Look up <code class="i">www.purdue.edu</code>" actually involves:
+<ol>
+<li>Browser checks its own cache</li>
+<li>OS asks the configured resolver (typically your ISP's DNS)</li>
+<li>Resolver checks ITS cache</li>
+<li>If not cached: resolver asks a root server "where's .edu?"</li>
+<li>Root server: "ask a-l.edu-servers.net"</li>
+<li>Resolver asks an .edu server: "where's purdue.edu?"</li>
+<li>.edu server: "ask ns1.purdue.edu"</li>
+<li>Resolver asks ns1.purdue.edu: "what's www.purdue.edu?"</li>
+<li>Authoritative answer: "128.10.5.32"</li>
+<li>Resolver caches and returns to OS</li>
+<li>OS caches and returns to browser</li>
+<li>Browser opens TCP connection to 128.10.5.32:443</li>
+</ol>
+The whole chain typically takes 10-100ms but is cached for hours/days. <code class="i">dig www.purdue.edu</code> on Linux shows the trace.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">Sockets are file descriptors</div>
+On UNIX, a socket is just an int (a file descriptor) — same type as those from open(). You can use <code class="i">read()</code>/<code class="i">write()</code> on sockets, or the more powerful <code class="i">recv()</code>/<code class="i">send()</code> with flags. You can <code class="i">select()</code>/<code class="i">poll()</code> on a mix of sockets and files. This unification means <code class="i">cat</code> works on a TCP connection, <code class="i">tail -f</code> works on a network log, etc. Windows separated networking from files (winsock) — UNIX kept them unified.
+</div>
+
+<div class="callout deep">
+<div class="callout-label">TLS / HTTPS — the layer above TCP</div>
+HTTPS is HTTP over TLS over TCP. TLS adds:
+<ul>
+<li>Encryption — eavesdroppers see only ciphertext</li>
+<li>Authentication — certificates prove the server's identity</li>
+<li>Integrity — tampering is detectable</li>
+</ul>
+The handshake (after TCP is established) negotiates a cipher suite, exchanges keys, and verifies certificates. After handshake, the application sees a "secure stream" similar to a normal TCP stream. Real apps use libraries like OpenSSL — implementing TLS yourself is suicide.
+</div>
+</div>
+
 
 <div class="section">
 <h4>1. Bubble sort — a simple sort</h4>
@@ -2848,24 +3972,92 @@ socket → (optional bind) → connect → send/recv → close.
 <div>CS 240 STUDY GUIDE · LECTURES 12-27 · BWN EDITION</div>
 </footer>
 <script>
-document.querySelectorAll('nav.tabs button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.tab).classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-});
-function toggleMCQs(btn) {
-  const list = btn.parentElement.querySelector('.mcq-list');
-  const showing = list.querySelector('.mcq.show-ans');
-  list.querySelectorAll('.mcq').forEach(m => {
-    if (showing) m.classList.remove('show-ans');
-    else m.classList.add('show-ans');
-  });
-  btn.textContent = showing ? 'Show All Answers' : 'Hide All Answers';
-}
+(function() {
+  function setupTabs() {
+    document.querySelectorAll('nav.tabs button').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('nav.tabs button').forEach(function(b){ b.classList.remove('active'); });
+        document.querySelectorAll('.tab').forEach(function(c){ c.classList.remove('active'); });
+        btn.classList.add('active');
+        var target = document.getElementById(btn.dataset.tab);
+        if (target) target.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  }
+
+  function findMcqList(btn) {
+    // Try sibling traversal first
+    var el = btn.nextElementSibling;
+    while (el) {
+      if (el.classList && el.classList.contains('mcq-list')) return el;
+      el = el.nextElementSibling;
+    }
+    // Fallback: search within parent
+    if (btn.parentElement) {
+      var found = btn.parentElement.querySelector('.mcq-list');
+      if (found) return found;
+    }
+    return null;
+  }
+
+  function setupToggleButtons() {
+    var buttons = document.querySelectorAll('.toggle-all');
+    buttons.forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var list = findMcqList(btn);
+        if (!list) {
+          console.warn('mcq-list not found for button', btn);
+          return;
+        }
+        var anyShowing = list.querySelector('.mcq.show-ans');
+        var mcqs = list.querySelectorAll('.mcq');
+        mcqs.forEach(function(m) {
+          if (anyShowing) m.classList.remove('show-ans');
+          else m.classList.add('show-ans');
+        });
+        btn.textContent = anyShowing ? 'Show All Answers' : 'Hide All Answers';
+      });
+    });
+  }
+
+  // Also expose toggleMCQs globally for any inline onclick handlers still present
+  window.toggleMCQs = function(btn) {
+    var list = findMcqList(btn);
+    if (!list) return;
+    var anyShowing = list.querySelector('.mcq.show-ans');
+    list.querySelectorAll('.mcq').forEach(function(m) {
+      if (anyShowing) m.classList.remove('show-ans');
+      else m.classList.add('show-ans');
+    });
+    btn.textContent = anyShowing ? 'Show All Answers' : 'Hide All Answers';
+  };
+
+  // Per-question click-to-reveal: clicking any MCQ toggles just its own answer
+  function setupPerQuestionToggle() {
+    document.querySelectorAll('.mcq').forEach(function(mcq) {
+      mcq.style.cursor = 'pointer';
+      mcq.addEventListener('click', function(e) {
+        // ignore clicks that originated on the toggle-all button
+        if (e.target.classList && e.target.classList.contains('toggle-all')) return;
+        mcq.classList.toggle('show-ans');
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setupTabs();
+      setupToggleButtons();
+      setupPerQuestionToggle();
+    });
+  } else {
+    setupTabs();
+    setupToggleButtons();
+    setupPerQuestionToggle();
+  }
+})();
 </script>
 </body>
 </html>
