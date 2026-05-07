@@ -1,0 +1,2618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS 240 Study Guide — Lectures 2-12</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Georgia, 'Times New Roman', serif; background: #faf8f3; color: #1a1a1a; line-height: 1.6; font-size: 16px; }
+header.top { background: #1a1a1a; color: #f5e6c8; padding: 28px 20px; text-align: center; border-bottom: 4px double #d4a82d; }
+header.top h1 { font-size: 32px; letter-spacing: -0.01em; }
+header.top .sub { font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 0.2em; margin-top: 8px; opacity: 0.7; }
+nav.tabs { background: #2c2520; display: flex; flex-wrap: wrap; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #d4a82d; }
+nav.tabs button { flex: 1; min-width: 140px; background: transparent; color: #f5e6c8; border: none; padding: 12px 14px; cursor: pointer; font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; border-right: 1px solid rgba(212, 168, 45, 0.2); }
+nav.tabs button:hover { background: rgba(212, 168, 45, 0.15); }
+nav.tabs button.active { background: #d4a82d; color: #1a1a1a; font-weight: bold; }
+main { max-width: 1100px; margin: 0 auto; padding: 30px 20px 80px; }
+.tab { display: none; }
+.tab.active { display: block; }
+.tab-intro { text-align: center; margin-bottom: 40px; padding: 20px; border-bottom: 2px solid #1a1a1a; }
+.tab-intro h2 { font-size: 28px; margin-bottom: 8px; }
+.tab-intro p { color: #555; font-style: italic; }
+article.lecture { margin-bottom: 60px; padding-bottom: 40px; border-bottom: 3px double #999; }
+.lec-header { background: #1a1a1a; color: #f5e6c8; padding: 16px 20px; margin: 0 -20px 20px; border-left: 6px solid #c0492a; }
+.lec-header .num { font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 0.2em; color: #d4a82d; }
+.lec-header h3 { font-size: 22px; margin-top: 4px; }
+.section { margin: 24px 0; }
+.section h4 { font-size: 19px; border-bottom: 2px solid #d4a82d; padding-bottom: 4px; margin-bottom: 12px; display: inline-block; }
+.section h5 { font-size: 16px; font-style: italic; color: #c0492a; margin: 16px 0 6px; }
+.section p { margin: 8px 0; }
+.section ul, .section ol { margin: 8px 0 12px 24px; }
+.section li { margin: 4px 0; }
+.section strong { color: #c0492a; }
+pre.code { background: #1a1a1a; color: #e8e2d2; padding: 12px 16px; border-left: 4px solid #d4a82d; font-family: 'Courier New', monospace; font-size: 13px; overflow-x: auto; margin: 10px 0; line-height: 1.5; white-space: pre; }
+pre.code .cmt { color: #82a87e; font-style: italic; }
+pre.code .kw  { color: #f4a261; }
+pre.code .str { color: #d4a82d; }
+pre.code .num { color: #f4a261; }
+pre.code .pp  { color: #d4a82d; font-weight: bold; }
+pre.code .err { background: rgba(192, 73, 42, 0.3); color: #ff9b8c; }
+code.i { font-family: 'Courier New', monospace; font-size: 0.9em; background: rgba(192, 73, 42, 0.1); padding: 1px 5px; color: #c0492a; }
+.callout { border-left: 4px solid #c0492a; background: rgba(212, 168, 45, 0.1); padding: 12px 16px; margin: 14px 0; }
+.callout.warn { border-left-color: #c0492a; background: rgba(192, 73, 42, 0.08); }
+.callout.tip { border-left-color: #4a6b3a; background: rgba(74, 107, 58, 0.08); }
+.callout.deep { border-left-color: #2c3e6c; background: rgba(44, 62, 108, 0.08); }
+.callout-label { font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #c0492a; font-weight: bold; margin-bottom: 4px; }
+.callout.tip .callout-label { color: #4a6b3a; }
+.callout.deep .callout-label { color: #2c3e6c; }
+.steps { background: rgba(0,0,0,0.04); padding: 16px 20px; margin: 14px 0; border: 1px solid rgba(0,0,0,0.1); }
+.steps h6 { font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; color: #2c3e6c; }
+.steps ol { counter-reset: step; list-style: none; margin: 0; padding: 0; }
+.steps ol li { counter-increment: step; position: relative; padding-left: 32px; margin: 6px 0; }
+.steps ol li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 22px; height: 22px; background: #c0492a; color: #faf8f3; font-family: 'Courier New', monospace; font-size: 11px; font-weight: bold; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+table.t { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+table.t th, table.t td { border: 1px solid #1a1a1a; padding: 6px 10px; text-align: left; vertical-align: top; }
+table.t th { background: #1a1a1a; color: #f5e6c8; font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+.practice { background: #1a1a1a; color: #f5e6c8; margin: 30px -20px 0; padding: 30px 20px; }
+.practice h4 { font-size: 22px; border-bottom: 2px solid #d4a82d; padding-bottom: 4px; margin-bottom: 12px; color: #d4a82d; }
+.practice h5 { font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #d4a82d; margin: 24px 0 10px; }
+.frq { background: rgba(245, 230, 200, 0.05); border-left: 3px solid #d4a82d; padding: 10px 14px; margin: 8px 0; }
+.frq strong { color: #d4a82d; }
+.frq.debug { border-left-color: #ff9b8c; }
+.frq.debug strong { color: #ff9b8c; }
+.frq-answer { margin-top: 8px; padding-top: 8px; border-top: 1px dashed rgba(212, 168, 45, 0.3); font-style: italic; color: rgba(245, 230, 200, 0.85); }
+.mcq { margin: 12px 0; padding: 10px 14px; background: rgba(245, 230, 200, 0.04); counter-increment: mcqcount; }
+.mcq-list { counter-reset: mcqcount; }
+.mcq .q { font-weight: bold; margin-bottom: 6px; }
+.mcq .q::before { content: "Q" counter(mcqcount) ". "; color: #d4a82d; font-family: 'Courier New', monospace; }
+.mcq ul { list-style: none; margin: 0; padding: 0; }
+.mcq ul li { font-family: 'Courier New', monospace; font-size: 12px; padding: 2px 0; }
+.mcq .ans { margin-top: 6px; padding: 6px 10px; background: rgba(212, 168, 45, 0.15); border-left: 3px solid #d4a82d; font-style: italic; font-size: 13px; display: none; }
+.mcq.show-ans .ans { display: block; }
+.toggle-all { background: #d4a82d; color: #1a1a1a; border: none; padding: 8px 14px; font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: bold; cursor: pointer; margin: 12px 0; }
+.toggle-all:hover { background: #c0492a; color: #f5e6c8; }
+footer { background: #1a1a1a; color: #f5e6c8; text-align: center; padding: 30px 20px; font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 0.2em; border-top: 4px double #d4a82d; }
+footer .b { font-family: Georgia, serif; font-size: 22px; color: #d4a82d; letter-spacing: 0; margin-bottom: 8px; font-style: italic; }
+.pipeline { background: linear-gradient(90deg, #1a1a1a, #2c3e6c, #1a1a1a); color: #f5e6c8; padding: 18px; margin: 16px 0; font-family: 'Courier New', monospace; font-size: 12px; }
+.pipeline .arrow { color: #d4a82d; font-weight: bold; }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>CS 240 Study Guide — Lectures 2-12</h1>
+  <div class="sub">PROGRAMMING IN C · TURKSTRA · DEEP DIVE EDITION</div>
+</header>
+<nav class="tabs">
+  <button class="active" data-tab="t1">L2-4 · TOOLCHAIN &amp; I/O</button>
+  <button data-tab="t2">L5-7 · ASSERT, STRUCTS, ARRAYS</button>
+  <button data-tab="t3">L8-10 · MEMORY &amp; BITS</button>
+  <button data-tab="t4">L11-12 · POINTERS &amp; MALLOC</button>
+</nav>
+<main>
+
+<section class="tab active" id="t1">
+<div class="tab-intro"><h2>Tab 1 · Toolchain &amp; File I/O</h2><p>Lectures 2-4: how compilation actually works, file I/O fundamentals, command-line arguments, EOF detection.</p></div>
+
+<article class="lecture" id="L2">
+<div class="lec-header"><div class="num">LECTURE 02 · TOOLCHAIN</div><h3>Compiling, Object Files, Linking, Executing</h3></div>
+
+<div class="section">
+<h4>1. The Big Picture: The Build Pipeline</h4>
+<p>When you type <code class="i">gcc hello.c -o hello</code>, gcc orchestrates a four-stage pipeline. Knowing each stage matters because errors at each stage mean different things.</p>
+<div class="pipeline">
+hello.c <span class="arrow">→ [PREPROCESSOR cpp] →</span> hello.i <span class="arrow">→ [COMPILER cc1] →</span> hello.s <span class="arrow">→ [ASSEMBLER as] →</span> hello.o <span class="arrow">→ [LINKER ld] →</span> hello (executable)
+</div>
+<table class="t">
+<tr><th>Stage</th><th>Tool</th><th>Input → Output</th><th>What it does</th></tr>
+<tr><td>1. Preprocess</td><td>cpp</td><td>.c → .i</td><td>Expand #includes, #defines, strip comments, evaluate #ifdefs</td></tr>
+<tr><td>2. Compile</td><td>cc1</td><td>.i → .s</td><td>Translate C to assembly for the target CPU</td></tr>
+<tr><td>3. Assemble</td><td>as</td><td>.s → .o</td><td>Translate assembly to machine code (object file)</td></tr>
+<tr><td>4. Link</td><td>ld</td><td>.o + libs → exe</td><td>Resolve symbols, combine objects into executable</td></tr>
+</table>
+<div class="callout deep">
+<div class="callout-label">Beyond the slides — see each stage</div>
+You can stop at any stage:
+<ul>
+<li><code class="i">gcc -E hello.c</code> → preprocessed source on stdout</li>
+<li><code class="i">gcc -S hello.c</code> → produces hello.s assembly</li>
+<li><code class="i">gcc -c hello.c</code> → produces hello.o object file</li>
+<li><code class="i">gcc hello.c</code> → all the way through linking, produces a.out</li>
+</ul>
+This is why "compile errors" ≠ "linker errors". A compile error means the compiler couldn't translate your code (syntax, type mismatch). A linker error means the compile succeeded but a symbol wasn't found (e.g. you called <code class="i">sqrt</code> but didn't link <code class="i">-lm</code>).
+</div>
+</div>
+
+<div class="section">
+<h4>2. Why C, Why This Matters</h4>
+<ul>
+<li>Created by <strong>Dennis Ritchie</strong> at Bell Labs, 1969-1973</li>
+<li>Goal: write UNIX in a portable language (the original UNIX was nearly all assembly, so each new architecture meant rewriting it)</li>
+<li>By using C, only ~5% of UNIX needed to stay assembly</li>
+<li>Today: kernels (Linux/Windows/macOS), JVM, embedded firmware, drivers, fast libraries are all C</li>
+</ul>
+<h5>C standards — version names you'll see</h5>
+<ul>
+<li><strong>K&amp;R C</strong> — pre-1989, defined by the Kernighan &amp; Ritchie book</li>
+<li><strong>C89/C90</strong> — first ANSI/ISO standard</li>
+<li><strong>C99</strong> — what this class targets; added <code class="i">bool</code>, <code class="i">//</code> comments, designated initializers, VLAs</li>
+<li><strong>C11, C18, C23</strong> — newer revisions</li>
+</ul>
+</div>
+
+<div class="section">
+<h4>3. Java vs. C — The Mental Shift</h4>
+<table class="t">
+<tr><th>Attribute</th><th>C</th><th>Java</th></tr>
+<tr><td>Style</td><td>Procedural</td><td>Object-oriented</td></tr>
+<tr><td>Source portability</td><td>Yes (recompile)</td><td>Yes</td></tr>
+<tr><td>Binary portability</td><td>No — recompile per architecture</td><td>Yes — JVM bytecode</td></tr>
+<tr><td>Compile</td><td><code class="i">gcc hello.c</code></td><td><code class="i">javac Hello.java</code></td></tr>
+<tr><td>Run</td><td><code class="i">./a.out</code></td><td><code class="i">java Hello</code></td></tr>
+<tr><td>Math library</td><td>Need <code class="i">-lm</code></td><td>Auto</td></tr>
+<tr><td>Strings</td><td>'\0'-terminated char array</td><td>Built-in immutable String</td></tr>
+<tr><td>Memory</td><td><code class="i">malloc</code> / <code class="i">free</code></td><td><code class="i">new</code> + GC</td></tr>
+<tr><td>Local var init</td><td><strong>Garbage by default</strong></td><td>Auto-initialized</td></tr>
+<tr><td>Pointers</td><td>Yes (with arithmetic)</td><td>References, no arithmetic</td></tr>
+<tr><td>Generic type</td><td><code class="i">void *</code></td><td><code class="i">Object</code></td></tr>
+<tr><td>Constants</td><td><code class="i">const</code> or <code class="i">#define</code></td><td><code class="i">final</code></td></tr>
+</table>
+</div>
+
+<div class="section">
+<h4>4. gcc Flags — Memorize These</h4>
+<table class="t">
+<tr><th>Flag</th><th>Effect</th></tr>
+<tr><td><code class="i">-c</code></td><td>Compile only — produce .o, do not link</td></tr>
+<tr><td><code class="i">-o name</code></td><td>Name the output (default: a.out for exe, file.o for objects)</td></tr>
+<tr><td><code class="i">-g</code></td><td>Include debugging symbols (variable names, line numbers) for gdb</td></tr>
+<tr><td><code class="i">-Wall</code></td><td>Enable (most) warnings</td></tr>
+<tr><td><code class="i">-Werror</code></td><td>Treat warnings as errors</td></tr>
+<tr><td><code class="i">-O / -O1 / -O2 / -O3</code></td><td>Optimization levels (none / basic / production / aggressive)</td></tr>
+<tr><td><code class="i">-std=c99</code></td><td>Use the C99 standard</td></tr>
+<tr><td><code class="i">-ansi</code></td><td>Use ANSI C standard (= -std=c89)</td></tr>
+<tr><td><code class="i">-l<i>name</i></code></td><td>Link library lib<i>name</i>.so or lib<i>name</i>.a (e.g. <code class="i">-lm</code> for math)</td></tr>
+<tr><td><code class="i">-L <i>dir</i></code></td><td>Add <i>dir</i> to library search path</td></tr>
+<tr><td><code class="i">-I <i>dir</i></code></td><td>Add <i>dir</i> to include search path</td></tr>
+<tr><td><code class="i">-D NAME=val</code></td><td>Define a preprocessor macro from the command line</td></tr>
+</table>
+<h5>Examples</h5>
+<pre class="code"><span class="cmt"># Compile to .o with debug, all warnings, C99</span>
+gcc -g -Wall -std=c99 -c file.c
+
+<span class="cmt"># Compile X.c, output as Y.o</span>
+gcc -c X.c -std=c99 -o Y.o
+
+<span class="cmt"># All in one - compile + link</span>
+gcc -Wall -Werror -g -o my_prog file1.c file2.c -lm</pre>
+</div>
+
+<div class="section">
+<h4>5. Object Files — What's Actually Inside</h4>
+<p>An object file (<code class="i">.o</code>) is incomplete machine code. It contains:</p>
+<ul>
+<li><strong>Code section (.text)</strong> — machine code for this module's functions</li>
+<li><strong>Data section (.data, .bss)</strong> — initialized and zero-initialized globals</li>
+<li><strong>Symbol table</strong> — names this object DEFINES (e.g. main, my_func) and names it NEEDS (e.g. printf, strlen)</li>
+<li><strong>Relocation info</strong> — where addresses need to be patched up at link time</li>
+</ul>
+<div class="callout deep">
+<div class="callout-label">Inspect with nm and objdump</div>
+<pre class="code">$ nm hello.o
+0000000000000000 T main          <span class="cmt"># T = defined here in text section</span>
+                 U printf         <span class="cmt"># U = undefined, needs to be linked</span>
+
+$ objdump -d hello.o              <span class="cmt"># disassemble</span></pre>
+The "U printf" is the key: this object knows it needs printf, but doesn't have it. The linker satisfies the U entries by looking through other .o files and libraries.
+</div>
+</div>
+
+<div class="section">
+<h4>6. Linking — Two Reasons to Care</h4>
+<p>Why split code across multiple .o files?</p>
+<ol>
+<li><strong>Incremental compilation</strong> — change one file, only that file recompiles. With 50 .c files this saves enormous time</li>
+<li><strong>Source privacy</strong> — distribute .o files without the source (CS 240 homework releases use this — you get .o files for the parts you don't write)</li>
+<li><strong>Code reuse</strong> — share .o files across multiple programs (libraries)</li>
+</ol>
+<h5>What the linker does</h5>
+<ol>
+<li>Read each .o file's symbol table</li>
+<li>Match every "U" (undefined) symbol to a "T" (defined) elsewhere</li>
+<li>Patch addresses (relocate) so calls and references work</li>
+<li>Combine all sections into one executable</li>
+<li>Add startup code (the <code class="i">_start</code> stub that calls main)</li>
+</ol>
+<div class="callout warn">
+<div class="callout-label">Common linker errors</div>
+<ul>
+<li><code class="i">undefined reference to `sqrt'</code> — forgot <code class="i">-lm</code></li>
+<li><code class="i">multiple definition of `foo'</code> — same function defined in 2+ files (or in a header without static)</li>
+<li><code class="i">undefined reference to `main'</code> — no main function anywhere</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<h4>7. Function Prototypes — Why They Exist</h4>
+<p>The compiler processes one .c file at a time, so when file2.c calls a function from file1.c, the compiler needs to know its signature. Without a prototype, the compiler ASSUMES <code class="i">int</code> return and unspecified args — then links anyway, producing silent corruption.</p>
+<pre class="code"><span class="cmt">/* file1.c */</span>
+<span class="kw">float</span> calc(<span class="kw">float</span> a, <span class="kw">float</span> b) { <span class="kw">return</span> a * b; }
+
+<span class="cmt">/* file2.c — WRONG: no prototype */</span>
+<span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">int</span> main() {
+    <span class="kw">float</span> r = calc(<span class="num">11.10</span>, <span class="num">3.0</span>);  <span class="cmt">// compiler thinks calc returns int!</span>
+    printf(<span class="str">"%f\n"</span>, r);              <span class="cmt">// junk output</span>
+}
+
+<span class="cmt">/* file2.c — CORRECT */</span>
+<span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">float</span> calc(<span class="kw">float</span>, <span class="kw">float</span>);          <span class="cmt">// the prototype (declaration)</span>
+<span class="kw">int</span> main() {
+    <span class="kw">float</span> r = calc(<span class="num">11.10</span>, <span class="num">3.0</span>);
+    printf(<span class="str">"%f\n"</span>, r);
+}</pre>
+<p>A header file (<code class="i">.h</code>) is just a place to put prototypes (and struct/typedef declarations) so multiple .c files can share them without duplicating.</p>
+</div>
+
+<div class="section">
+<h4>8. Execution — what <code class="i">./</code> Means</h4>
+<pre class="code">$ ./hello</pre>
+<p>The <code class="i">./</code> tells the shell "run the file 'hello' in the current directory" — by default the shell only searches PATH, not <code class="i">.</code>. This is a security measure: if <code class="i">.</code> were on PATH, an attacker could put a malicious <code class="i">ls</code> in your directory.</p>
+<div class="callout deep">
+<div class="callout-label">What happens when you press Enter</div>
+<ol>
+<li>Shell <code class="i">fork()</code>s a child process</li>
+<li>Child <code class="i">execve()</code>s the executable</li>
+<li>Kernel reads the executable's headers (ELF format on Linux)</li>
+<li>Kernel maps code/data sections into the process's virtual address space</li>
+<li>Kernel jumps to the program's entry point (<code class="i">_start</code> in libc)</li>
+<li><code class="i">_start</code> sets up argc/argv/envp on the stack and calls <code class="i">main()</code></li>
+<li>When main returns, <code class="i">_start</code> calls <code class="i">exit()</code> with main's return value</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<h4>How to approach a "what gcc command" question</h4>
+<div class="steps">
+<h6>Recipe</h6>
+<ol>
+<li>Identify the goal: object file (.o), executable, or just preprocessed output</li>
+<li>Object file → use <code class="i">-c</code></li>
+<li>Executable → omit <code class="i">-c</code>, add <code class="i">-o name</code></li>
+<li>Always add <code class="i">-Wall -Werror -g</code> for class assignments</li>
+<li>If using math: add <code class="i">-lm</code> AT THE END (linker order matters)</li>
+<li>If multiple files: list them all; if any are .o, the linker handles them</li>
+</ol>
+</div>
+</div>
+
+<div class="practice">
+<h4>Practice — Lecture 2</h4>
+<h5>Free-Response</h5>
+
+<div class="frq"><strong>FRQ 1.</strong> Write the gcc command to compile <code class="i">main.c</code> and <code class="i">util.c</code> into an executable named <code class="i">prog</code>, with debug symbols and warnings as errors, using C99.
+<div class="frq-answer"><strong>Answer:</strong> <code class="i">gcc -Wall -Werror -g -std=c99 -o prog main.c util.c</code></div></div>
+
+<div class="frq debug"><strong>FRQ 2 (Debug).</strong> Find the bug:
+<pre class="code" style="margin-top:6px"><span class="cmt">/* file1.c */</span>
+<span class="kw">double</span> compute(<span class="kw">int</span> n) { <span class="kw">return</span> n * <span class="num">3.14</span>; }
+
+<span class="cmt">/* file2.c */</span>
+<span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">int</span> main() {
+    <span class="kw">double</span> r = compute(<span class="num">10</span>);
+    printf(<span class="str">"%f\n"</span>, r);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+<div class="frq-answer"><strong>Answer:</strong> file2.c is missing a prototype for <code class="i">compute</code>. Without it, the compiler implicitly assumes <code class="i">int compute()</code>. When the actual compute returns a double, the calling convention mismatches — junk in r. Fix: add <code class="i">double compute(int);</code> at the top of file2.c (or include a shared header).</div></div>
+
+<div class="frq debug"><strong>FRQ 3 (Debug).</strong> Why does this command produce <code class="i">undefined reference to `sqrt'</code>?
+<pre class="code" style="margin-top:6px">gcc -Wall calc.c -o calc</pre>
+<div class="frq-answer"><strong>Answer:</strong> calc.c uses <code class="i">sqrt</code> from <code class="i">&lt;math.h&gt;</code>. The header gives the prototype (so compile succeeds) but the actual <code class="i">sqrt</code> code lives in <code class="i">libm</code>, which is NOT linked by default. Add <code class="i">-lm</code> at the end: <code class="i">gcc -Wall calc.c -o calc -lm</code>. Position matters — <code class="i">-lm</code> must come after the source/object that needs it.</div></div>
+
+<div class="frq"><strong>FRQ 4.</strong> Walk through what happens (4 stages) when you run <code class="i">gcc hello.c -o hello</code>.
+<div class="frq-answer"><strong>Answer:</strong> (1) Preprocess: cpp expands #includes/#defines into hello.i. (2) Compile: cc1 translates hello.i to hello.s assembly. (3) Assemble: as translates hello.s to hello.o object code. (4) Link: ld combines hello.o with libc and startup code into the executable hello.</div></div>
+
+<div class="frq"><strong>FRQ 5.</strong> Two reasons to ship code as object files instead of source.
+<div class="frq-answer"><strong>Answer:</strong> (1) Faster builds — incremental compilation only rebuilds changed files. (2) Source privacy / IP protection — others can link against your code without seeing it. (Bonus: code reuse across many projects.)</div></div>
+
+<button class="toggle-all" onclick="toggleMCQs(this)">Show All Answers</button>
+<h5>Multiple-Choice</h5>
+<div class="mcq-list">
+
+<div class="mcq"><div class="q">The four stages of gcc, in order:</div>
+<ul><li>A) Compile, link, preprocess, assemble</li><li>B) Preprocess, compile, assemble, link</li><li>C) Assemble, compile, preprocess, link</li><li>D) Link, assemble, compile, preprocess</li><li>E) Just compile and link</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Flag to stop after producing the object file:</div>
+<ul><li>A) -O</li><li>B) -o</li><li>C) -c</li><li>D) -S</li><li>E) -E</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">Flag to stop after producing assembly (.s):</div>
+<ul><li>A) -E</li><li>B) -S</li><li>C) -c</li><li>D) -A</li><li>E) -a</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Flag to stop after preprocessing (.i):</div>
+<ul><li>A) -E</li><li>B) -p</li><li>C) -c</li><li>D) -i</li><li>E) -P</li></ul>
+<div class="ans">A.</div></div>
+
+<div class="mcq"><div class="q">"undefined reference to" is:</div>
+<ul><li>A) Compile error</li><li>B) Linker error</li><li>C) Runtime error</li><li>D) Preprocessor error</li><li>E) Assembler error</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Symbol marked U in nm output means:</div>
+<ul><li>A) Used</li><li>B) Undefined — needs linking</li><li>C) Unique</li><li>D) Unsigned</li><li>E) Unreferenced</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Symbol marked T in nm means:</div>
+<ul><li>A) Type</li><li>B) Test</li><li>C) Defined in text (code) section</li><li>D) Tombstoned</li><li>E) Trampoline</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">Default output filename when -o is omitted:</div>
+<ul><li>A) program</li><li>B) out</li><li>C) a.out</li><li>D) main</li><li>E) Same as input</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">In <code class="i">gcc -c x.c -o y.o</code>:</div>
+<ul><li>A) Produces executable y.o</li><li>B) Produces object y.o</li><li>C) Compile error</li><li>D) Produces y</li><li>E) Both x.o and y.o</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">A header (.h) typically contains:</div>
+<ul><li>A) Function bodies</li><li>B) Function prototypes and struct declarations</li><li>C) main()</li><li>D) Compiled code</li><li>E) The license</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">C local variable initial value:</div>
+<ul><li>A) 0</li><li>B) NULL</li><li>C) Garbage (uninitialized)</li><li>D) Compile error</li><li>E) -1</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">C global (uninitialized) variable initial value:</div>
+<ul><li>A) Garbage</li><li>B) Zero (in BSS)</li><li>C) NULL</li><li>D) -1</li><li>E) Compile error</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Why must <code class="i">./</code> precede a local executable?</div>
+<ul><li>A) Required by C99</li><li>B) Shell searches PATH only by default; <code class="i">./</code> means current directory</li><li>C) For permissions</li><li>D) Faster startup</li><li>E) For symlinks</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">In a typical hello world, the entry point _start lives in:</div>
+<ul><li>A) The kernel</li><li>B) Your hello.o</li><li>C) The C runtime (libc startup)</li><li>D) The shell</li><li>E) The linker</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">When does the compiler need a function prototype?</div>
+<ul><li>A) Always</li><li>B) When the function is defined in another translation unit, used before its definition, or both</li><li>C) Only with -Wall</li><li>D) Never</li><li>E) Only for void functions</li></ul>
+<div class="ans">B.</div></div>
+
+</div>
+</div>
+</article>
+
+
+<article class="lecture" id="L3">
+<div class="lec-header"><div class="num">LECTURE 03 · FILE I/O</div><h3>Opening, Closing, Reading, Writing Files</h3></div>
+
+<div class="section">
+<h4>1. The Mental Model — FILE * is a Handle</h4>
+<p>A <code class="i">FILE *</code> is an opaque handle to a stream. You don't look inside it. You hand it to library functions which know how to use it.</p>
+<div class="callout deep">
+<div class="callout-label">What's actually inside FILE</div>
+<code class="i">FILE</code> is a struct (defined in &lt;stdio.h&gt;) that wraps:
+<ul>
+<li>An OS file descriptor (an int — see Lecture 23)</li>
+<li>A buffer (typically 4-8 KB) for performance</li>
+<li>The current position</li>
+<li>Error and EOF flags</li>
+<li>Mode info (read/write/append, binary/text)</li>
+</ul>
+The buffering is why <strong>fclose matters</strong>: if your program exits without closing, buffered data may never reach the disk. <code class="i">stdout</code> is line-buffered when connected to a terminal, fully-buffered when piped — that's why <code class="i">printf("hi"); for(;;);</code> may show nothing on a terminal until you add <code class="i">\n</code>.
+</div>
+<p>Three FILE * are pre-opened at program start:</p>
+<ul>
+<li><code class="i">stdin</code> — standard input (reads from keyboard / pipe)</li>
+<li><code class="i">stdout</code> — standard output (terminal / pipe)</li>
+<li><code class="i">stderr</code> — standard error (terminal, typically unbuffered)</li>
+</ul>
+</div>
+
+<div class="section">
+<h4>2. fopen() — Modes</h4>
+<pre class="code">FILE *fopen(<span class="kw">const char</span> *path, <span class="kw">const char</span> *mode);</pre>
+<table class="t">
+<tr><th>Mode</th><th>Behavior</th><th>If file exists</th><th>If file missing</th></tr>
+<tr><td>"r"</td><td>Read</td><td>Open at start</td><td>FAIL (NULL)</td></tr>
+<tr><td>"w"</td><td>Write</td><td>TRUNCATE to 0 bytes</td><td>Create empty</td></tr>
+<tr><td>"a"</td><td>Append</td><td>Open at end</td><td>Create empty</td></tr>
+<tr><td>"r+"</td><td>Read+write</td><td>Open at start</td><td>FAIL</td></tr>
+<tr><td>"w+"</td><td>Read+write</td><td>TRUNCATE to 0</td><td>Create</td></tr>
+<tr><td>"a+"</td><td>Read+append</td><td>Open at end (writes still append)</td><td>Create</td></tr>
+</table>
+<p>Add <code class="i">b</code> for binary mode (e.g. <code class="i">"rb"</code>, <code class="i">"wb"</code>). On UNIX, "b" is a no-op; on Windows, it disables newline translation.</p>
+<div class="callout warn">
+<div class="callout-label">Class rule — always check fopen</div>
+<pre class="code">FILE *fp = fopen(path, <span class="str">"r"</span>);
+<span class="kw">if</span> (fp == NULL) {
+    perror(<span class="str">"fopen"</span>);   <span class="cmt">// prints reason</span>
+    <span class="kw">return</span> <span class="num">-1</span>;
+}</pre>
+Failing to check fopen's return is an instant point loss in this class.
+</div>
+</div>
+
+<div class="section">
+<h4>3. fclose()</h4>
+<pre class="code"><span class="kw">int</span> fclose(FILE *fp);   <span class="cmt">// 0 on success, EOF on failure</span></pre>
+<p>fclose:</p>
+<ol>
+<li>Flushes the buffer (writes pending output)</li>
+<li>Releases the FILE struct memory</li>
+<li>Closes the underlying OS file descriptor</li>
+</ol>
+<p><strong>Crucially:</strong> fclose does NOT set your variable to NULL. After fclose, the pointer is dangling — using it is undefined behavior. Always:</p>
+<pre class="code">fclose(fp);
+fp = NULL;</pre>
+</div>
+
+<div class="section">
+<h4>4. fprintf — Formatted Output</h4>
+<pre class="code"><span class="kw">int</span> fprintf(FILE *fp, <span class="kw">const char</span> *fmt, ...);
+
+<span class="cmt">// these are equivalent:</span>
+printf(<span class="str">"hi\n"</span>);
+fprintf(stdout, <span class="str">"hi\n"</span>);
+
+fprintf(my_log, <span class="str">"User %s logged in at %d\n"</span>, name, ts);</pre>
+<h5>Format specifiers</h5>
+<table class="t">
+<tr><th>Spec</th><th>Type</th><th>Spec</th><th>Type</th></tr>
+<tr><td>%d %i</td><td>int</td><td>%u</td><td>unsigned int</td></tr>
+<tr><td>%ld</td><td>long</td><td>%lu</td><td>unsigned long</td></tr>
+<tr><td>%lld</td><td>long long</td><td>%c</td><td>char</td></tr>
+<tr><td>%f</td><td>double (printing)</td><td>%lf</td><td>double (scanning)</td></tr>
+<tr><td>%e %g</td><td>scientific / general float</td><td>%s</td><td>string (char *)</td></tr>
+<tr><td>%x %X</td><td>hex (lower / upper)</td><td>%o</td><td>octal</td></tr>
+<tr><td>%p</td><td>pointer (hex address)</td><td>%%</td><td>literal %</td></tr>
+</table>
+<h5>Width &amp; precision</h5>
+<pre class="code">printf(<span class="str">"%5d\n"</span>, <span class="num">42</span>);     <span class="cmt">// "   42"  (width 5, right-justified)</span>
+printf(<span class="str">"%-5d|\n"</span>, <span class="num">42</span>);    <span class="cmt">// "42   |" (left-justified)</span>
+printf(<span class="str">"%05d\n"</span>, <span class="num">42</span>);    <span class="cmt">// "00042"  (zero-padded)</span>
+printf(<span class="str">"%.2f\n"</span>, <span class="num">3.14159</span>); <span class="cmt">// "3.14"   (2 decimal places)</span>
+printf(<span class="str">"%10.2f\n"</span>, <span class="num">3.14</span>); <span class="cmt">// "      3.14" (width 10, 2 decimals)</span></pre>
+</div>
+
+<div class="section">
+<h4>5. fscanf — Formatted Input</h4>
+<pre class="code"><span class="kw">int</span> fscanf(FILE *fp, <span class="kw">const char</span> *fmt, ...);
+
+<span class="cmt">// equivalent:</span>
+scanf(<span class="str">"%d"</span>, &amp;x);
+fscanf(stdin, <span class="str">"%d"</span>, &amp;x);</pre>
+<p>Returns the count of <strong>successful conversions</strong>, or EOF (-1) at end-of-file.</p>
+<h5>Why the &amp;?</h5>
+<p>scanf needs to WRITE to your variable. C is pass-by-value, so passing <code class="i">x</code> would only give scanf a copy. Instead you pass <code class="i">&amp;x</code> (the address) so scanf can deposit the result.</p>
+<div class="callout warn">
+<div class="callout-label">Common scanf pitfalls</div>
+<ul>
+<li><strong>Forgetting &amp;</strong> on a non-array — segfault</li>
+<li><strong>Not checking the return</strong> — proceed with garbage if a conversion failed</li>
+<li><strong>Whitespace in format</strong> — %d skips leading whitespace; %c does not</li>
+<li><strong>%s reads until whitespace</strong> — won't capture multi-word strings; no length cap = buffer overflow</li>
+<li><strong>Mixing scanf and fgets</strong> — scanf often leaves a \n behind that fgets then "eats"</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<h4>6. Complete pattern — read all ints from a file</h4>
+<pre class="code"><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">int</span> main(<span class="kw">int</span> argc, <span class="kw">char</span> *argv[]) {
+    <span class="kw">if</span> (argc &lt; <span class="num">2</span>) {
+        fprintf(stderr, <span class="str">"usage: %s file\n"</span>, argv[<span class="num">0</span>]);
+        <span class="kw">return</span> <span class="num">1</span>;
+    }
+    FILE *fp = fopen(argv[<span class="num">1</span>], <span class="str">"r"</span>);
+    <span class="kw">if</span> (fp == NULL) {
+        perror(<span class="str">"fopen"</span>);
+        <span class="kw">return</span> <span class="num">1</span>;
+    }
+    <span class="kw">int</span> n;
+    <span class="kw">while</span> (fscanf(fp, <span class="str">"%d"</span>, &amp;n) == <span class="num">1</span>) {
+        printf(<span class="str">"got %d\n"</span>, n);
+    }
+    fclose(fp);
+    fp = NULL;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</div>
+
+<div class="section">
+<h4>How to approach a "write to file" question</h4>
+<div class="steps">
+<h6>Recipe</h6>
+<ol>
+<li>Declare <code class="i">FILE *fp = NULL;</code></li>
+<li>fopen with appropriate mode ("w" = truncate, "a" = append)</li>
+<li>Check <code class="i">if (fp == NULL) return error;</code></li>
+<li>fprintf / fwrite the data; check return values for errors</li>
+<li>fclose(fp); fp = NULL;</li>
+</ol>
+</div>
+</div>
+
+<div class="practice">
+<h4>Practice — Lecture 3</h4>
+<h5>Free-Response</h5>
+
+<div class="frq"><strong>FRQ 1.</strong> Write a program that opens "log.txt" for appending, writes one line "Hello", closes safely.
+<div class="frq-answer"><strong>Answer:</strong>
+<pre class="code" style="margin-top:6px"><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">int</span> main() {
+    FILE *fp = fopen(<span class="str">"log.txt"</span>, <span class="str">"a"</span>);
+    <span class="kw">if</span> (fp == NULL) <span class="kw">return</span> <span class="num">1</span>;
+    fprintf(fp, <span class="str">"Hello\n"</span>);
+    fclose(fp);
+    fp = NULL;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre></div></div>
+
+<div class="frq debug"><strong>FRQ 2 (Debug).</strong> What's wrong here?
+<pre class="code" style="margin-top:6px">FILE *fp = fopen(<span class="str">"data.txt"</span>, <span class="str">"r"</span>);
+<span class="kw">int</span> x;
+fscanf(fp, <span class="str">"%d"</span>, x);
+printf(<span class="str">"%d\n"</span>, x);
+fclose(fp);</pre>
+<div class="frq-answer"><strong>Two bugs.</strong> (1) No NULL check on fp — if data.txt doesn't exist, fp is NULL and fscanf segfaults. (2) <code class="i">fscanf("%d", x)</code> should be <code class="i">fscanf("%d", &amp;x)</code>. Without the &amp;, scanf treats x's value as an address and writes to a random location — segfault or memory corruption.</div></div>
+
+<div class="frq debug"><strong>FRQ 3 (Debug).</strong> Why might "Hello" not appear in the file?
+<pre class="code" style="margin-top:6px">FILE *fp = fopen(<span class="str">"out.txt"</span>, <span class="str">"w"</span>);
+fprintf(fp, <span class="str">"Hello"</span>);
+exit(<span class="num">0</span>);  <span class="cmt">// no fclose!</span></pre>
+<div class="frq-answer"><strong>Answer:</strong> stdio is buffered. "Hello" is sitting in fp's user-space buffer, not yet on disk. fclose flushes the buffer; without it (and without an explicit fflush), the data may be lost. Note: a normal main return DOES flush all open FILE* buffers via the atexit-registered cleanup — but if the program crashes or calls _exit, buffers are dropped.</div></div>
+
+<div class="frq"><strong>FRQ 4.</strong> Difference between mode "r+" and "w+"?
+<div class="frq-answer"><strong>Answer:</strong> "r+" opens for read+write, file must exist (no truncate). "w+" opens for read+write, but TRUNCATES the file to zero length (or creates it).</div></div>
+
+<div class="frq"><strong>FRQ 5.</strong> What does fscanf return at end-of-file?
+<div class="frq-answer"><strong>Answer:</strong> EOF (-1) when EOF is reached before any conversion. Returns less-than-expected count if some conversions succeeded then EOF was hit. Returns 0 on input format mismatch with no successful conversions.</div></div>
+
+<button class="toggle-all" onclick="toggleMCQs(this)">Show All Answers</button>
+<h5>Multiple-Choice</h5>
+<div class="mcq-list">
+
+<div class="mcq"><div class="q">fopen returns NULL when:</div>
+<ul><li>A) File is empty</li><li>B) Open fails (missing file in "r", permission denied, etc.)</li><li>C) End of file</li><li>D) Always on first call</li><li>E) On Windows only</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Mode "w" with existing file:</div>
+<ul><li>A) Appends</li><li>B) Fails</li><li>C) Truncates to 0 bytes</li><li>D) Returns NULL</li><li>E) Returns existing data</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">Mode "a" with existing file:</div>
+<ul><li>A) Truncates</li><li>B) Opens at end (preserves data)</li><li>C) Fails</li><li>D) Returns NULL</li><li>E) Reads only</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">After fclose(fp), the pointer is:</div>
+<ul><li>A) Set to NULL automatically</li><li>B) Unchanged (dangling)</li><li>C) Set to EOF</li><li>D) Set to 0xDEADBEEF</li><li>E) Random</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">fscanf returns at EOF (no input):</div>
+<ul><li>A) 0</li><li>B) NULL</li><li>C) EOF (= -1)</li><li>D) 1</li><li>E) Sets errno only</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">printf is equivalent to:</div>
+<ul><li>A) fprintf(stdin, ...)</li><li>B) fprintf(stdout, ...)</li><li>C) fscanf(stdout, ...)</li><li>D) fputs(stdout, ...)</li><li>E) sprintf(NULL, ...)</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">stderr is typically:</div>
+<ul><li>A) Line-buffered</li><li>B) Unbuffered (writes appear immediately)</li><li>C) Fully-buffered</li><li>D) Not opened</li><li>E) Always closed</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">When connected to a terminal, stdout is:</div>
+<ul><li>A) Unbuffered</li><li>B) Line-buffered (flushes on \n)</li><li>C) Fully buffered</li><li>D) Not opened</li><li>E) Same as stderr</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Why does scanf need &amp; for non-array variables?</div>
+<ul><li>A) Type safety</li><li>B) C is pass-by-value; scanf needs the address to write into</li><li>C) Required by C99</li><li>D) For thread safety</li><li>E) For error handling</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">scanf's "%5d" means:</div>
+<ul><li>A) Read at most 5 digits</li><li>B) Pad to 5 columns</li><li>C) Read 5 ints</li><li>D) 5-byte int</li><li>E) Skip 5</li></ul>
+<div class="ans">A.</div></div>
+
+<div class="mcq"><div class="q">Format specifier for unsigned int:</div>
+<ul><li>A) %d</li><li>B) %u</li><li>C) %i</li><li>D) %s</li><li>E) %p</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Format specifier for printing a pointer address:</div>
+<ul><li>A) %d</li><li>B) %x</li><li>C) %p</li><li>D) %a</li><li>E) %ptr</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">"%-10d" prints int with:</div>
+<ul><li>A) Width 10, left-justified</li><li>B) Width 10, right-justified</li><li>C) 10 leading zeros</li><li>D) Negative</li><li>E) 10 decimal places</li></ul>
+<div class="ans">A.</div></div>
+
+<div class="mcq"><div class="q">"%.3f" prints a double with:</div>
+<ul><li>A) Width 3</li><li>B) 3 digits before decimal</li><li>C) 3 digits after decimal</li><li>D) Multiplied by 10^3</li><li>E) 3 zeroes</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">Why might fprintf'd data not appear on disk after a crash?</div>
+<ul><li>A) Permissions</li><li>B) stdio buffering — buffer not flushed</li><li>C) Disk error</li><li>D) Encoding</li><li>E) Always appears</li></ul>
+<div class="ans">B.</div></div>
+
+</div>
+</div>
+</article>
+
+
+<article class="lecture" id="L4">
+<div class="lec-header"><div class="num">LECTURE 04 · MORE I/O</div><h3>argv, EOF Detection, scanf Sets, bool</h3></div>
+
+<div class="section">
+<h4>1. main's Arguments — argc and argv</h4>
+<pre class="code"><span class="kw">int</span> main(<span class="kw">int</span> argc, <span class="kw">char</span> *argv[]);
+<span class="cmt">// equivalent:</span>
+<span class="kw">int</span> main(<span class="kw">int</span> argc, <span class="kw">char</span> **argv);</pre>
+<ul>
+<li><code class="i">argc</code> — argument count, including the program name</li>
+<li><code class="i">argv</code> — array of strings (each a <code class="i">char *</code>)</li>
+<li><code class="i">argv[0]</code> — program name as invoked</li>
+<li><code class="i">argv[argc]</code> — guaranteed to be NULL (sentinel)</li>
+</ul>
+<h5>Example: ./prog hello world 42</h5>
+<pre class="code">argc = <span class="num">4</span>
+argv[<span class="num">0</span>] = <span class="str">"./prog"</span>
+argv[<span class="num">1</span>] = <span class="str">"hello"</span>
+argv[<span class="num">2</span>] = <span class="str">"world"</span>
+argv[<span class="num">3</span>] = <span class="str">"42"</span>      <span class="cmt">// always a string, even if it looks like a number</span>
+argv[<span class="num">4</span>] = NULL</pre>
+<div class="callout deep">
+<div class="callout-label">Beyond the slides — where argv lives</div>
+The shell creates the argv array on the program's stack before main runs. The strings themselves typically live just above the stack, with environment variables. argv strings are mutable (you can write into argv[1]) but going out of bounds wrecks the stack.
+</div>
+<h5>Converting argv to integer</h5>
+<pre class="code"><span class="pp">#include &lt;stdlib.h&gt;</span>
+<span class="kw">int</span> n = atoi(argv[<span class="num">1</span>]);   <span class="cmt">// no error reporting</span>
+<span class="kw">long</span> n2 = strtol(argv[<span class="num">1</span>], NULL, <span class="num">10</span>);  <span class="cmt">// safer</span></pre>
+</div>
+
+<div class="section">
+<h4>2. EOF Detection — Why feof Is a Trap</h4>
+<p>Common mistake:</p>
+<pre class="code">fscanf(fp, <span class="str">"%d"</span>, &amp;n);
+<span class="kw">while</span> (!feof(fp)) {
+    printf(<span class="str">"%d\n"</span>, n);
+    fscanf(fp, <span class="str">"%d"</span>, &amp;n);
+}</pre>
+<p><strong>Why this is wrong:</strong> <code class="i">feof</code> returns true only AFTER a read attempt has hit EOF. So when the LAST fscanf returns EOF, the variable <code class="i">n</code> is unchanged from the previous read — the loop processes the last value <em>twice</em>.</p>
+<h5>Correct pattern</h5>
+<pre class="code"><span class="kw">while</span> (fscanf(fp, <span class="str">"%d"</span>, &amp;n) == <span class="num">1</span>) {
+    printf(<span class="str">"%d\n"</span>, n);
+}</pre>
+<p>Use the function's RETURN VALUE to drive the loop. fscanf returns the count of successful conversions, or EOF (-1) when input ends before anything is read.</p>
+</div>
+
+<div class="section">
+<h4>3. ferror and clearerr</h4>
+<pre class="code"><span class="kw">int</span> ferror(FILE *fp);   <span class="cmt">// non-zero if an error occurred</span>
+<span class="kw">void</span> clearerr(FILE *fp); <span class="cmt">// reset both error and EOF flags</span></pre>
+<p>Useful for distinguishing "EOF reached" (feof) from "I/O error" (ferror). In CS 240, prefer checking the return value of read/write operations.</p>
+</div>
+
+<div class="section">
+<h4>4. scanset Format — %[]</h4>
+<p>%[<i>chars</i>] reads one or more characters matching the set:</p>
+<table class="t">
+<tr><th>Format</th><th>Meaning</th></tr>
+<tr><td><code class="i">%[abc]</code></td><td>read a, b, or c</td></tr>
+<tr><td><code class="i">%[A-Z]</code></td><td>read uppercase letters</td></tr>
+<tr><td><code class="i">%[0-9A-Za-z]</code></td><td>read alphanumeric</td></tr>
+<tr><td><code class="i">%[^abc]</code></td><td>read characters NOT a, b, c (^ = negate)</td></tr>
+<tr><td><code class="i">%[^\n]</code></td><td>read up to (not including) newline = "rest of line"</td></tr>
+</table>
+<h5>Special characters in the set</h5>
+<ul>
+<li>To match <code class="i">]</code>: put it FIRST → <code class="i">%[]xyz]</code></li>
+<li>To match <code class="i">-</code>: put it LAST → <code class="i">%[xyz-]</code></li>
+</ul>
+<div class="callout warn">
+<div class="callout-label">ALWAYS use width</div>
+A buffer of size N can safely hold N-1 characters plus the '\0' terminator. Use width N-1 in the format:
+<pre class="code"><span class="kw">char</span> buf[<span class="num">100</span>];
+fscanf(fp, <span class="str">"%99[^\n]"</span>, buf);   <span class="cmt">// reads up to 99, leaves room for \0</span></pre>
+Without the width, scanf will happily write past the end of the buffer.
+</div>
+</div>
+
+<div class="section">
+<h4>5. #include — Search Paths</h4>
+<pre class="code"><span class="pp">#include &lt;stdio.h&gt;</span>     <span class="cmt">// system path: /usr/include, /usr/local/include</span>
+<span class="pp">#include "myheader.h"</span>   <span class="cmt">// current dir first, then system path</span></pre>
+<p>Add directories with <code class="i">-I</code>:</p>
+<pre class="code">gcc -I/path/to/headers -I. file.c</pre>
+<div class="callout deep">
+<div class="callout-label">What #include literally does</div>
+The preprocessor LITERALLY copies the header file's contents into your .c file at the location of the #include. There's no magic — the result is one giant translation unit. This is why a header with a function definition (not just declaration) causes "multiple definition" linker errors when included from 2+ .c files: each .c gets its own copy of the function.
+</div>
+</div>
+
+<div class="section">
+<h4>6. bool — C99 Booleans</h4>
+<pre class="code"><span class="pp">#include &lt;stdbool.h&gt;</span>
+
+<span class="kw">bool</span> ready = <span class="kw">true</span>;
+<span class="kw">if</span> (!ready) { ... }
+<span class="kw">while</span> (running) { ... }</pre>
+<p><code class="i">bool</code> is technically <code class="i">_Bool</code>; <code class="i">true</code> and <code class="i">false</code> are macros. Old code (pre-C99) often defines its own:</p>
+<pre class="code"><span class="kw">typedef int</span> bool;
+<span class="pp">#define TRUE 1</span>
+<span class="pp">#define FALSE 0</span></pre>
+<p>For new code, use <code class="i">&lt;stdbool.h&gt;</code>.</p>
+</div>
+
+<div class="section">
+<h4>How to approach a "read every line of a file" question</h4>
+<div class="steps">
+<h6>Recipe</h6>
+<ol>
+<li>Get filename (typically argv[1]); validate argc</li>
+<li>fopen with "r"; check NULL</li>
+<li>Allocate buffer of MAX size; the format width is MAX-1</li>
+<li>Loop: <code class="i">while (fscanf(fp, "%MAX_MINUS_1[^\n]\n", buf) == 1)</code></li>
+<li>Process the line</li>
+<li>fclose; ptr = NULL</li>
+</ol>
+</div>
+</div>
+
+<div class="practice">
+<h4>Practice — Lecture 4</h4>
+<h5>Free-Response</h5>
+
+<div class="frq"><strong>FRQ 1.</strong> Given <code class="i">./calc 5 + 3</code>, what's argc, argv[2], argv[3]?
+<div class="frq-answer"><strong>Answer:</strong> argc = 4. argv[0]="./calc", argv[1]="5", argv[2]="+", argv[3]="3" (still a string).</div></div>
+
+<div class="frq debug"><strong>FRQ 2 (Debug).</strong> What does this print for input "1 2 3"?
+<pre class="code" style="margin-top:6px"><span class="kw">int</span> n;
+fscanf(stdin, <span class="str">"%d"</span>, &amp;n);
+<span class="kw">while</span> (!feof(stdin)) {
+    printf(<span class="str">"%d\n"</span>, n);
+    fscanf(stdin, <span class="str">"%d"</span>, &amp;n);
+}</pre>
+<div class="frq-answer"><strong>Answer:</strong> Prints "1\n2\n3\n3\n" — the last value 3 prints TWICE. After reading 3, the loop condition feof is still false (no failed read yet). Inside the loop, print 3, then fscanf hits EOF and returns -1, leaving n unchanged. Loop checks feof — now true — and exits, but the duplicate already printed. Fix: use the return value of fscanf as the loop condition.</div></div>
+
+<div class="frq debug"><strong>FRQ 3 (Debug).</strong> Find the buffer overflow:
+<pre class="code" style="margin-top:6px"><span class="kw">char</span> name[<span class="num">10</span>];
+printf(<span class="str">"name? "</span>);
+scanf(<span class="str">"%s"</span>, name);
+printf(<span class="str">"hi %s\n"</span>, name);</pre>
+<div class="frq-answer"><strong>Answer:</strong> %s reads until whitespace with no length limit. Input longer than 9 chars (leaving 1 for \0) overflows <code class="i">name</code>, corrupting the stack — including the saved frame pointer and return address. Fix: <code class="i">scanf("%9s", name);</code></div></div>
+
+<div class="frq"><strong>FRQ 4.</strong> Format specifier to read up to 50 characters (not newline) into <code class="i">char buf[51]</code>?
+<div class="frq-answer"><strong>Answer:</strong> <code class="i">"%50[^\n]"</code> — width 50 leaves byte 51 for the '\0'.</div></div>
+
+<div class="frq"><strong>FRQ 5.</strong> Difference between <code class="i">#include &lt;file.h&gt;</code> and <code class="i">#include "file.h"</code>?
+<div class="frq-answer"><strong>Answer:</strong> Angle brackets search system include paths only (typically /usr/include). Quotes search the current directory FIRST, then fall back to system paths. Quotes for your project's headers; angle brackets for system/library headers.</div></div>
+
+<button class="toggle-all" onclick="toggleMCQs(this)">Show All Answers</button>
+<h5>Multiple-Choice</h5>
+<div class="mcq-list">
+
+<div class="mcq"><div class="q">argv[0] is:</div>
+<ul><li>A) The first user argument</li><li>B) NULL</li><li>C) The program name as invoked</li><li>D) argc as a string</li><li>E) Empty</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">argv[argc] is:</div>
+<ul><li>A) Last argument</li><li>B) NULL (sentinel)</li><li>C) Same as argv[0]</li><li>D) Undefined</li><li>E) Garbage</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Why is feof() problematic in a while-condition?</div>
+<ul><li>A) It's slow</li><li>B) Returns true only AFTER a failed read; previous data may process twice</li><li>C) Always returns 0</li><li>D) Crashes on EOF</li><li>E) Deprecated</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Format <code class="i">"%[^\n]"</code> reads:</div>
+<ul><li>A) A newline</li><li>B) Up to but not including a newline (rest of line)</li><li>C) Negation</li><li>D) Empty</li><li>E) An error code</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">For a 100-byte buffer, safe scanf width:</div>
+<ul><li>A) 100</li><li>B) 99</li><li>C) 101</li><li>D) Any</li><li>E) 50</li></ul>
+<div class="ans">B. Reserves 1 byte for \0.</div></div>
+
+<div class="mcq"><div class="q">"%[abc]" reads:</div>
+<ul><li>A) Literal "abc"</li><li>B) Sequence of a/b/c characters</li><li>C) One char that is a, b, or c, then stops</li><li>D) String "abc"</li><li>E) Anything but abc</li></ul>
+<div class="ans">B. Reads a run of chars in the set.</div></div>
+
+<div class="mcq"><div class="q">To match a literal ] in a scanset:</div>
+<ul><li>A) Use \]</li><li>B) Put it first: %[]xyz]</li><li>C) Use %%]</li><li>D) Cannot</li><li>E) Use *]</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">To match a literal - in a scanset:</div>
+<ul><li>A) Use \-</li><li>B) Put it last: %[xyz-]</li><li>C) Always allowed</li><li>D) Use %%-</li><li>E) Cannot</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">argv[i] type:</div>
+<ul><li>A) char</li><li>B) char *</li><li>C) char **</li><li>D) int</li><li>E) struct</li></ul>
+<div class="ans">B. argv is char**, so argv[i] is char*.</div></div>
+
+<div class="mcq"><div class="q">For input "5 + 3" with <code class="i">./prog 5 + 3</code>, argv[2] is:</div>
+<ul><li>A) The integer 2</li><li>B) "+"</li><li>C) Empty</li><li>D) "3"</li><li>E) NULL</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Header for bool:</div>
+<ul><li>A) &lt;stdio.h&gt;</li><li>B) &lt;stdbool.h&gt;</li><li>C) &lt;bool.h&gt;</li><li>D) Built-in (no include)</li><li>E) &lt;stdlib.h&gt;</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">In C99, true is:</div>
+<ul><li>A) 0</li><li>B) Any non-zero</li><li>C) Defined as 1 in stdbool.h</li><li>D) "TRUE"</li><li>E) NULL</li></ul>
+<div class="ans">C. (Though C also treats any non-zero as true in conditions.)</div></div>
+
+<div class="mcq"><div class="q">Quotes vs angle brackets in #include:</div>
+<ul><li>A) Identical</li><li>B) Quotes search current dir first</li><li>C) Angles are for C++</li><li>D) Quotes are deprecated</li><li>E) Angles search current dir</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">fscanf returns 0 when:</div>
+<ul><li>A) EOF</li><li>B) First conversion failed (input format mismatch) before any conversion</li><li>C) Always success</li><li>D) Read NULL</li><li>E) ferror set</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">In scanf, "%d" with input " 42":</div>
+<ul><li>A) Fails because of leading space</li><li>B) Skips leading whitespace, reads 42</li><li>C) Reads 0</li><li>D) Hangs</li><li>E) Returns -1</li></ul>
+<div class="ans">B. %d auto-skips whitespace.</div></div>
+
+</div>
+</div>
+</article>
+
+</section>
+
+<section class="tab" id="t2">
+<div class="tab-intro"><h2>Tab 2 · Assert, Random Access, Structs, Arrays</h2><p>Lectures 5-7: defensive programming with assert, fseek/ftell, structures, arrays.</p></div>
+
+<article class="lecture" id="L5">
+<div class="lec-header"><div class="num">LECTURE 05 · ASSERT &amp; RANDOM ACCESS</div><h3>The assert() Macro &amp; fseek/ftell</h3></div>
+
+<div class="section">
+<h4>1. Code Comments — When and Why</h4>
+<h5>Bad comments restate the obvious</h5>
+<pre class="code">i = i + <span class="num">1</span>;  <span class="cmt">// add 1 to i  ← useless</span>
+<span class="cmt">// loop from 0 to 9</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">10</span>; i++) ...</pre>
+<h5>Good comments explain WHY, not WHAT</h5>
+<pre class="code"><span class="cmt">// Skip header rows; the file format starts data at line 4.</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">3</span>; i++) read_line(fp);
+
+<span class="cmt">// TODO: this only handles ASCII; needs UTF-8 support for issue #142</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; s[i] != <span class="str">'\0'</span>; i++) ...</pre>
+<p>Mark incomplete code with <code class="i">TODO</code>, <code class="i">FIXME</code>, or <code class="i">XXX</code>. Add comments when fixing bugs to explain the trap for future readers.</p>
+</div>
+
+<div class="section">
+<h4>2. assert() — A Self-Checking Crash</h4>
+<pre class="code"><span class="pp">#include &lt;assert.h&gt;</span>
+assert(condition);</pre>
+<p>If <code class="i">condition</code> is true, nothing happens. If false, the program <strong>aborts immediately</strong> and prints something like:</p>
+<pre class="code">prog: prog.c:42: foo: Assertion `ptr != NULL' failed.</pre>
+<div class="callout deep">
+<div class="callout-label">What assert is — really</div>
+assert is a <strong>macro</strong>, not a function. It expands to roughly:
+<pre class="code"><span class="pp">#define assert(e) \
+    ((e) ? (void)0 : __assert_fail(#e, __FILE__, __LINE__, __func__))</span></pre>
+The <code class="i">#e</code> turns the expression into a string for the error message. <code class="i">__assert_fail</code> prints the message and calls <code class="i">abort()</code>, which raises SIGABRT and triggers a core dump.
+</div>
+</div>
+
+<div class="section">
+<h4>3. When to Use assert</h4>
+<h5>USE assert for "this should never happen"</h5>
+<pre class="code"><span class="kw">int</span> divide(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    assert(b != <span class="num">0</span>);  <span class="cmt">// caller's bug if it happens</span>
+    <span class="kw">return</span> a / b;
+}
+
+<span class="kw">int</span> *p = malloc(<span class="num">100</span>);
+assert(p != NULL); <span class="cmt">// for class — though malloc CAN fail in real code</span></pre>
+<h5>DON'T use assert for runtime errors</h5>
+<pre class="code"><span class="cmt">// BAD — file might genuinely not exist</span>
+FILE *fp = fopen(path, <span class="str">"r"</span>);
+assert(fp != NULL);</pre>
+<p>The right pattern is to handle missing files gracefully (return an error code, print a message). Asserts are for situations that indicate a programmer bug — invariants you trust at design time.</p>
+</div>
+
+<div class="section">
+<h4>4. Disabling assertions — NDEBUG</h4>
+<pre class="code">$ gcc -DNDEBUG=1 -o prog prog.c</pre>
+<p>When NDEBUG is defined at compile time, every <code class="i">assert(...)</code> expands to nothing. The expression is NOT evaluated.</p>
+<div class="callout warn">
+<div class="callout-label">Deadly mistake</div>
+<pre class="code"><span class="cmt">// BAD — works in debug, breaks in release</span>
+assert(++counter &gt; <span class="num">0</span>);</pre>
+With NDEBUG defined, <code class="i">++counter</code> is never executed. The increment is silently lost. Rule: <strong>only put pure side-effect-free expressions inside assert.</strong>
+</div>
+</div>
+
+<div class="section">
+<h4>5. Random-Access I/O — fseek and ftell</h4>
+<pre class="code"><span class="kw">long</span> ftell(FILE *fp);                        <span class="cmt">// current offset</span>
+<span class="kw">int</span> fseek(FILE *fp, <span class="kw">long</span> offset, <span class="kw">int</span> whence); <span class="cmt">// move</span></pre>
+<table class="t">
+<tr><th>whence</th><th>Meaning</th></tr>
+<tr><td><code class="i">SEEK_SET</code> (0)</td><td>Offset from beginning</td></tr>
+<tr><td><code class="i">SEEK_CUR</code> (1)</td><td>Offset from current position</td></tr>
+<tr><td><code class="i">SEEK_END</code> (2)</td><td>Offset from end (negative offset = before end)</td></tr>
+</table>
+<p>fseek returns 0 success, -1 on failure. ftell returns offset or -1.</p>
+<h5>Idioms</h5>
+<pre class="code"><span class="cmt">// rewind to start</span>
+fseek(fp, <span class="num">0</span>, SEEK_SET);
+<span class="cmt">// or the dedicated function:</span>
+rewind(fp);
+
+<span class="cmt">// jump to end</span>
+fseek(fp, <span class="num">0</span>, SEEK_END);
+
+<span class="cmt">// get file size</span>
+fseek(fp, <span class="num">0</span>, SEEK_END);
+<span class="kw">long</span> size = ftell(fp);
+fseek(fp, <span class="num">0</span>, SEEK_SET);
+
+<span class="cmt">// jump to byte 1024</span>
+fseek(fp, <span class="num">1024</span>, SEEK_SET);
+
+<span class="cmt">// jump to record N (each record fixed size)</span>
+fseek(fp, N * <span class="kw">sizeof</span>(record_t), SEEK_SET);
+
+<span class="cmt">// rewind 16 bytes</span>
+fseek(fp, <span class="num">-16</span>, SEEK_CUR);</pre>
+<div class="callout deep">
+<div class="callout-label">Why random access matters</div>
+For sequential text files, you read top to bottom. But for fixed-format binary records (like a database), you can jump straight to record N without reading the previous N-1. This is O(1) lookup. Combined with fwrite, you can build flat-file databases entirely in C.
+</div>
+</div>
+
+<div class="section">
+<h4>How to approach a "jump to record N" question</h4>
+<div class="steps">
+<h6>Recipe</h6>
+<ol>
+<li>Open the file in binary mode ("rb" or "rb+")</li>
+<li>Compute the offset: <code class="i">N * sizeof(record_t)</code></li>
+<li><code class="i">fseek(fp, offset, SEEK_SET)</code> — check return for -1</li>
+<li>fread the record; check that fread returned 1</li>
+<li>Use the data, optionally fseek back and fwrite to update</li>
+<li>fclose; ptr = NULL</li>
+</ol>
+</div>
+</div>
+
+<div class="practice">
+<h4>Practice — Lecture 5</h4>
+<h5>Free-Response</h5>
+
+<div class="frq"><strong>FRQ 1.</strong> What header is needed for assert?
+<div class="frq-answer"><strong>Answer:</strong> <code class="i">&lt;assert.h&gt;</code></div></div>
+
+<div class="frq debug"><strong>FRQ 2 (Debug).</strong> Why is this dangerous?
+<pre class="code" style="margin-top:6px"><span class="kw">int</span> count = <span class="num">0</span>;
+<span class="kw">while</span> (have_more()) {
+    assert(process_one() == <span class="num">0</span>);
+    count++;
+}</pre>
+<div class="frq-answer"><strong>Answer:</strong> <code class="i">process_one()</code> is called inside the assert. With <code class="i">-DNDEBUG</code>, the entire <code class="i">assert(...)</code> macro vanishes — process_one is never called. The loop runs forever (or count never increments correctly). Fix: <code class="i">int rc = process_one(); assert(rc == 0);</code></div></div>
+
+<div class="frq"><strong>FRQ 3.</strong> Get the size of an open file.
+<div class="frq-answer"><strong>Answer:</strong>
+<pre class="code" style="margin-top:6px">fseek(fp, <span class="num">0</span>, SEEK_END);
+<span class="kw">long</span> size = ftell(fp);
+fseek(fp, <span class="num">0</span>, SEEK_SET);</pre></div></div>
+
+<div class="frq debug"><strong>FRQ 4 (Debug).</strong> What's wrong?
+<pre class="code" style="margin-top:6px"><span class="kw">struct</span> rec records[<span class="num">100</span>];
+fseek(fp, <span class="num">5</span>, SEEK_SET);
+fread(records, <span class="kw">sizeof</span>(<span class="kw">struct</span> rec), <span class="num">1</span>, fp);</pre>
+<div class="frq-answer"><strong>Answer:</strong> The fseek offset 5 is in BYTES, not records. To jump to record index 5, use <code class="i">5 * sizeof(struct rec)</code>. Otherwise you read starting at byte 5, which is in the middle of record 0 — you get garbage.</div></div>
+
+<div class="frq"><strong>FRQ 5.</strong> When SHOULD you use assert vs return error code?
+<div class="frq-answer"><strong>Answer:</strong> Assert when the condition's failure indicates a PROGRAMMER bug — invariants the caller must satisfy (e.g., NULL checks on internal pointers, array bounds in private code). Return error codes for runtime conditions the caller might reasonably encounter (file not found, network down, malformed input).</div></div>
+
+<button class="toggle-all" onclick="toggleMCQs(this)">Show All Answers</button>
+<h5>Multiple-Choice</h5>
+<div class="mcq-list">
+
+<div class="mcq"><div class="q">When NDEBUG is defined, assert(x):</div>
+<ul><li>A) Always passes</li><li>B) Always fails</li><li>C) Expands to nothing — x is NOT evaluated</li><li>D) Logs to syslog</li><li>E) Returns void</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">assert is implemented as a:</div>
+<ul><li>A) Function</li><li>B) Macro</li><li>C) Keyword</li><li>D) System call</li><li>E) Library type</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">SEEK_SET means offset is from:</div>
+<ul><li>A) Current</li><li>B) End</li><li>C) Beginning</li><li>D) Last fread</li><li>E) Last open</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">SEEK_END with offset 0 puts cursor:</div>
+<ul><li>A) At start</li><li>B) At end (after last byte)</li><li>C) At byte 0 from end</li><li>D) Random</li><li>E) Returns -1</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">fseek returns:</div>
+<ul><li>A) New offset</li><li>B) 0 on success, -1 on error</li><li>C) Old offset</li><li>D) Bytes moved</li><li>E) NULL</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">ftell returns on error:</div>
+<ul><li>A) 0</li><li>B) NULL</li><li>C) -1</li><li>D) EOF</li><li>E) errno</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">When fseek fails, the file position:</div>
+<ul><li>A) Reset to 0</li><li>B) Set to EOF</li><li>C) Unchanged</li><li>D) Random</li><li>E) NULL</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q"><code class="i">rewind(fp)</code> equivalent:</div>
+<ul><li>A) fseek(fp, 0, SEEK_SET)</li><li>B) fseek(fp, 0, SEEK_END)</li><li>C) fseek(fp, -1, SEEK_CUR)</li><li>D) fclose(fp); fopen(...)</li><li>E) ftell(fp)</li></ul>
+<div class="ans">A.</div></div>
+
+<div class="mcq"><div class="q">Worst place for assert:</div>
+<ul><li>A) <code class="i">assert(idx &gt;= 0)</code></li><li>B) <code class="i">assert(my_invariant)</code></li><li>C) <code class="i">assert(fopen("f","r"))</code></li><li>D) <code class="i">assert(answer == expected)</code></li><li>E) <code class="i">assert(ptr != NULL)</code></li></ul>
+<div class="ans">C. fopen failure is normal.</div></div>
+
+<div class="mcq"><div class="q">A "good" comment:</div>
+<ul><li>A) // i++</li><li>B) // increment i</li><li>C) // Skip header rows; data starts on line 4</li><li>D) // for loop</li><li>E) // assignment</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">fp at byte 100. fseek(fp, -10, SEEK_CUR) puts it at:</div>
+<ul><li>A) 110</li><li>B) -10</li><li>C) 90</li><li>D) 10</li><li>E) Error</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">To read record N (fixed size), fseek to:</div>
+<ul><li>A) N</li><li>B) N * sizeof(record)</li><li>C) N + sizeof(record)</li><li>D) sizeof(record)</li><li>E) -N</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">When assert fails, the program:</div>
+<ul><li>A) Returns error code</li><li>B) Calls abort() — usually generates core dump</li><li>C) Logs and continues</li><li>D) Returns 0</li><li>E) Throws exception</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Disable asserts at compile:</div>
+<ul><li>A) -no-assert</li><li>B) -DNDEBUG</li><li>C) -DRELEASE</li><li>D) -O3</li><li>E) Cannot</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Whence value 1 corresponds to:</div>
+<ul><li>A) SEEK_SET</li><li>B) SEEK_CUR</li><li>C) SEEK_END</li><li>D) SEEK_HOLE</li><li>E) Undefined</li></ul>
+<div class="ans">B.</div></div>
+
+</div>
+</div>
+</article>
+
+
+<article class="lecture" id="L6">
+<div class="lec-header"><div class="num">LECTURE 06 · STRUCTURES</div><h3>Structures, Declaration vs Definition, Strings</h3></div>
+
+<div class="section">
+<h4>1. Why Structures Exist</h4>
+<p>You can group related data in arrays — but only if they're the same type. To represent a person with name, age, height, and a list of test scores, you need different types together. That's a struct.</p>
+<div class="callout deep">
+<div class="callout-label">C struct vs Java class — fundamental difference</div>
+A C struct is JUST DATA. There are no methods, no inheritance, no access modifiers, no constructors. Functions that operate on a struct are written separately and take the struct (or pointer) as a parameter. This is "data and behavior separated" — the opposite of OOP. C++ classes are basically structs with methods bolted on.
+</div>
+</div>
+
+<div class="section">
+<h4>2. Assignment Suppression — %*</h4>
+<p>Insert <code class="i">*</code> after <code class="i">%</code> to scan and DISCARD a value:</p>
+<pre class="code">fscanf(fp, <span class="str">"%d %*f %s"</span>, &amp;n, name);
+<span class="cmt">// reads int into n, reads &amp; discards float, reads string into name</span></pre>
+<p>The skipped value isn't counted in the return value. Useful when a file has columns you don't need.</p>
+</div>
+
+<div class="section">
+<h4>3. Declaring a Structure Type</h4>
+<pre class="code"><span class="kw">struct</span> point {
+    <span class="kw">int</span> x;
+    <span class="kw">int</span> y;
+};   <span class="cmt">// the semicolon is REQUIRED</span></pre>
+<p>This declaration ALONE allocates no memory — it just defines a type. To create variables:</p>
+<pre class="code"><span class="kw">struct</span> point a;              <span class="cmt">// uninitialized</span>
+<span class="kw">struct</span> point b = {<span class="num">3</span>, <span class="num">4</span>};      <span class="cmt">// initialized</span>
+<span class="kw">struct</span> point c = {.x = <span class="num">5</span>};   <span class="cmt">// designated initializer (C99)</span></pre>
+</div>
+
+<div class="section">
+<h4>4. Declaration vs Definition — KEY DISTINCTION</h4>
+<table class="t">
+<tr><th>Term</th><th>Effect</th><th>Example</th></tr>
+<tr><td><strong>Declaration</strong></td><td>Announces type/signature, allocates no memory</td><td><code class="i">struct point;</code> or <code class="i">extern int x;</code></td></tr>
+<tr><td><strong>Definition</strong></td><td>Allocates storage</td><td><code class="i">int x;</code> or <code class="i">int x = 5;</code></td></tr>
+</table>
+<pre class="code"><span class="cmt">// Pure declaration (no var):</span>
+<span class="kw">struct</span> point {
+    <span class="kw">int</span> x, y;
+};
+
+<span class="cmt">// Declaration AND definition (allocates 'origin'):</span>
+<span class="kw">struct</span> coord {
+    <span class="kw">int</span> u, v;
+} origin;</pre>
+<p>Function prototypes are declarations. <code class="i">extern</code> turns a definition into a declaration ("this exists somewhere else"). Each variable must be DEFINED in exactly one .c file; can be DECLARED in many.</p>
+</div>
+
+<div class="section">
+<h4>5. typedef — Type Aliases</h4>
+<pre class="code"><span class="kw">struct</span> point {
+    <span class="kw">int</span> x, y;
+};
+<span class="kw">typedef struct</span> point point_t;
+
+<span class="cmt">// now you can write:</span>
+point_t p1, p2;
+<span class="cmt">// instead of:</span>
+<span class="kw">struct</span> point p3, p4;</pre>
+<h5>One-shot typedef</h5>
+<pre class="code"><span class="kw">typedef struct</span> {
+    <span class="kw">int</span> x, y;
+} point_t;</pre>
+<p>This makes an anonymous struct and aliases it to <code class="i">point_t</code>. The struct has no tag — you can ONLY refer to it by the typedef name.</p>
+</div>
+
+<div class="section">
+<h4>6. Initializing Structs with Arrays</h4>
+<pre class="code"><span class="kw">struct</span> person {
+    <span class="kw">char</span> name[<span class="num">40</span>];
+    <span class="kw">char</span> title[<span class="num">16</span>];
+    <span class="kw">int</span> codes[<span class="num">4</span>];
+};
+
+<span class="kw">struct</span> person jt = {
+    <span class="str">"Jeff Turkstra"</span>,
+    <span class="str">"Troublemaker"</span>,
+    {<span class="num">10</span>, <span class="num">20</span>, <span class="num">25</span>, <span class="num">9</span>}
+};</pre>
+<p>Nested braces for the inner array.</p>
+<h5>Assigning fields after declaration</h5>
+<pre class="code"><span class="pp">#include &lt;string.h&gt;</span>
+<span class="kw">struct</span> person p = {<span class="str">""</span>, <span class="str">""</span>, {<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>}};
+strncpy(p.name, <span class="str">"Hello"</span>, <span class="kw">sizeof</span>(p.name) - <span class="num">1</span>);
+p.name[<span class="kw">sizeof</span>(p.name) - <span class="num">1</span>] = <span class="str">'\0'</span>;
+p.codes[<span class="num">0</span>] = <span class="num">42</span>;</pre>
+</div>
+
+<div class="section">
+<h4>7. Compound Literals (C99)</h4>
+<p>Re-assign an entire struct at once:</p>
+<pre class="code">p = (<span class="kw">struct</span> person){<span class="str">"Bob"</span>, <span class="str">"VP"</span>, {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>}};</pre>
+<p>The cast-style syntax creates a temporary struct with those values and assigns it.</p>
+</div>
+
+<div class="section">
+<h4>8. Struct Assignment Works</h4>
+<pre class="code"><span class="kw">struct</span> point a = {<span class="num">1</span>, <span class="num">2</span>}, b;
+b = a;   <span class="cmt">// MEMBERWISE COPY — works! Unlike Java references.</span></pre>
+<div class="callout warn">
+<div class="callout-label">Shallow copy gotcha</div>
+Struct assignment copies the bytes. If a struct contains POINTERS, the copy points to the same memory:
+<pre class="code"><span class="kw">struct</span> info { <span class="kw">char</span> *name; };
+<span class="kw">struct</span> info a = { malloc(<span class="num">100</span>) };
+strcpy(a.name, <span class="str">"hi"</span>);
+<span class="kw">struct</span> info b = a;        <span class="cmt">// SHARED pointer</span>
+b.name[<span class="num">0</span>] = <span class="str">'H'</span>;            <span class="cmt">// modifies a.name too!</span>
+free(b.name);             <span class="cmt">// later free(a.name) = double free</span></pre>
+</div>
+</div>
+
+<div class="section">
+<h4>How to approach a "design a struct" question</h4>
+<div class="steps">
+<h6>Recipe</h6>
+<ol>
+<li>List required fields with types and sizes</li>
+<li>Write <code class="i">struct name { fields };</code></li>
+<li>Add a typedef if you want to drop "struct" prefix later</li>
+<li>To create a variable: <code class="i">struct name var = {...};</code> with initializers in declaration order</li>
+<li>For string fields, init with literal or strncpy + force \0</li>
+<li>Access with <code class="i">var.field</code> or <code class="i">ptr-&gt;field</code></li>
+</ol>
+</div>
+</div>
+
+<div class="practice">
+<h4>Practice — Lecture 6</h4>
+<h5>Free-Response</h5>
+
+<div class="frq"><strong>FRQ 1.</strong> Define a struct <code class="i">book</code> with: 60-char title, 40-char author, int year. Then create a variable for "Hamlet" by Shakespeare, 1603.
+<div class="frq-answer"><strong>Answer:</strong>
+<pre class="code" style="margin-top:6px"><span class="kw">struct</span> book {
+    <span class="kw">char</span> title[<span class="num">60</span>];
+    <span class="kw">char</span> author[<span class="num">40</span>];
+    <span class="kw">int</span> year;
+};
+<span class="kw">struct</span> book b = {<span class="str">"Hamlet"</span>, <span class="str">"Shakespeare"</span>, <span class="num">1603</span>};</pre></div></div>
+
+<div class="frq debug"><strong>FRQ 2 (Debug).</strong> What's wrong?
+<pre class="code" style="margin-top:6px"><span class="kw">struct</span> point {
+    <span class="kw">int</span> x;
+    <span class="kw">int</span> y;
+}
+<span class="kw">int</span> main() {
+    <span class="kw">struct</span> point p = {<span class="num">1</span>, <span class="num">2</span>};
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+<div class="frq-answer"><strong>Answer:</strong> Missing semicolon after the struct's closing brace. C requires <code class="i">};</code> at the end of a struct declaration. Without it, the compiler tries to parse <code class="i">int main()</code> as another field of struct point and reports a confusing error.</div></div>
+
+<div class="frq debug"><strong>FRQ 3 (Debug).</strong> Why does this print junk?
+<pre class="code" style="margin-top:6px"><span class="kw">struct</span> info {
+    <span class="kw">char</span> name[<span class="num">10</span>];
+};
+<span class="kw">struct</span> info i;
+strncpy(i.name, <span class="str">"Hello, World!"</span>, <span class="num">13</span>);
+printf(<span class="str">"%s\n"</span>, i.name);</pre>
+<div class="frq-answer"><strong>Two bugs.</strong> (1) "Hello, World!" is 13 chars but <code class="i">name</code> is only 10 — strncpy with n=13 writes 3 bytes past the end of the buffer (stack corruption). (2) Even if it fit, strncpy doesn't add '\0' when n equals or exceeds the source length without room. printf("%s") then keeps reading until it finds a random zero byte. Fix: <code class="i">strncpy(i.name, src, sizeof(i.name) - 1); i.name[sizeof(i.name) - 1] = '\0';</code></div></div>
+
+<div class="frq"><strong>FRQ 4.</strong> Difference between declaration and definition?
+<div class="frq-answer"><strong>Answer:</strong> A declaration tells the compiler about a name's type/shape but allocates no memory. A definition allocates storage and may initialize. <code class="i">extern int x;</code> is a declaration; <code class="i">int x;</code> at file scope is a definition.</div></div>
+
+<div class="frq"><strong>FRQ 5.</strong> Write a typedef so that <code class="i">point_t</code> is an alias for <code class="i">struct point { int x, y; };</code>.
+<div class="frq-answer"><strong>Answer:</strong>
+<pre class="code" style="margin-top:6px"><span class="kw">typedef struct</span> point {
+    <span class="kw">int</span> x, y;
+} point_t;</pre>
+or split:
+<pre class="code" style="margin-top:6px"><span class="kw">struct</span> point { <span class="kw">int</span> x, y; };
+<span class="kw">typedef struct</span> point point_t;</pre></div></div>
+
+<button class="toggle-all" onclick="toggleMCQs(this)">Show All Answers</button>
+<h5>Multiple-Choice</h5>
+<div class="mcq-list">
+
+<div class="mcq"><div class="q">Which IS a struct DECLARATION (no memory)?</div>
+<ul><li>A) <code class="i">struct foo {int x;} v;</code></li><li>B) <code class="i">struct foo {int x;};</code></li><li>C) <code class="i">struct foo v;</code></li><li>D) <code class="i">struct foo *p;</code></li><li>E) None</li></ul>
+<div class="ans">B. A is decl+def, C and D allocate.</div></div>
+
+<div class="mcq"><div class="q">Access struct member m of variable s:</div>
+<ul><li>A) <code class="i">s::m</code></li><li>B) <code class="i">s.m</code></li><li>C) <code class="i">s-&gt;m</code></li><li>D) <code class="i">m(s)</code></li><li>E) <code class="i">s[m]</code></li></ul>
+<div class="ans">B. (-&gt; is for pointer to struct.)</div></div>
+
+<div class="mcq"><div class="q">After <code class="i">struct point a={1,2}, b;</code>, does <code class="i">b = a;</code> work?</div>
+<ul><li>A) Compile error</li><li>B) Yes — built-in struct assignment (memberwise copy)</li><li>C) Only with memcpy</li><li>D) Only with -std=c99</li><li>E) Only if pointers</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">C99 compound literal syntax:</div>
+<ul><li>A) <code class="i">{1,2}</code></li><li>B) <code class="i">(struct point){1,2}</code></li><li>C) <code class="i">struct point(1,2)</code></li><li>D) <code class="i">new struct point(1,2)</code></li><li>E) <code class="i">struct point := {1,2}</code></li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q"><code class="i">fscanf("%d %*f %s", &amp;n, s)</code> with input "10 3.5 hi" returns:</div>
+<ul><li>A) 3</li><li>B) 2 (skipped not counted)</li><li>C) 1</li><li>D) 0</li><li>E) -1</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Required after struct's closing brace:</div>
+<ul><li>A) Comma</li><li>B) Semicolon</li><li>C) Open paren</li><li>D) Nothing</li><li>E) Newline</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Initialize a struct with nested array:</div>
+<ul><li>A) Single braces</li><li>B) Nested braces for the array</li><li>C) Array first, then struct</li><li>D) Use memcpy</li><li>E) Use strncpy</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">A function prototype is a:</div>
+<ul><li>A) Definition</li><li>B) Declaration only</li><li>C) Macro</li><li>D) Typedef</li><li>E) Implicit cast</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q"><code class="i">extern int x;</code> is a:</div>
+<ul><li>A) Definition</li><li>B) Declaration only — defined elsewhere</li><li>C) Both</li><li>D) Compile error</li><li>E) Type alias</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">A struct copy with internal pointers does:</div>
+<ul><li>A) Deep copy</li><li>B) Shallow copy — pointers shared</li><li>C) Compile error</li><li>D) Random</li><li>E) Always NULL</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">typedef in C:</div>
+<ul><li>A) Allocates memory</li><li>B) Creates a type alias (no allocation)</li><li>C) Same as #define</li><li>D) Defines a class</li><li>E) Imports a library</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">A C99 designated initializer:</div>
+<ul><li>A) <code class="i">{x: 1}</code></li><li>B) <code class="i">{.x = 1}</code></li><li>C) <code class="i">{[x] = 1}</code></li><li>D) <code class="i">{x => 1}</code></li><li>E) Not in C99</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">For struct foo with no members declared after typedef:</div>
+<ul><li>A) Empty struct works (size 0)</li><li>B) Empty struct is NOT in standard C (compiler may extend)</li><li>C) Same as void</li><li>D) Treated as int</li><li>E) Treated as char</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Difference: <code class="i">struct foo</code> vs typedef alias <code class="i">foo_t</code>:</div>
+<ul><li>A) Identical</li><li>B) <code class="i">foo_t</code> avoids writing <code class="i">struct</code> each time</li><li>C) <code class="i">foo_t</code> is faster</li><li>D) Required by C99</li><li>E) <code class="i">foo_t</code> means pointer</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Does C have constructors for structs?</div>
+<ul><li>A) Yes</li><li>B) No — write your own init function</li><li>C) Only with C99</li><li>D) Only for typedef</li><li>E) Only for pointers</li></ul>
+<div class="ans">B.</div></div>
+
+</div>
+</div>
+</article>
+
+
+<article class="lecture" id="L7">
+<div class="lec-header"><div class="num">LECTURE 07 · ARRAYS</div><h3>Arrays, Initialization Quirks, the strncpy Trap</h3></div>
+
+<div class="section">
+<h4>1. extern Recap</h4>
+<pre class="code"><span class="kw">extern char</span> g_loan_history[MAX][<span class="num">3</span>][BUF];
+<span class="kw">extern int</span> g_loan_count;</pre>
+<p><code class="i">extern</code> at file scope: declares a variable defined in another module. Doesn't allocate. The variable must be DEFINED in exactly one .c file (without extern).</p>
+</div>
+
+<div class="section">
+<h4>2. The Auto-Initialization Rule</h4>
+<table class="t">
+<tr><th>Storage</th><th>Initial value (no explicit init)</th></tr>
+<tr><td>Global (file scope)</td><td>Zero (in BSS)</td></tr>
+<tr><td>Static local</td><td>Zero</td></tr>
+<tr><td>Plain local (auto)</td><td><strong>Garbage</strong> — whatever was on the stack</td></tr>
+<tr><td>malloc'd</td><td>Garbage</td></tr>
+<tr><td>calloc'd</td><td>Zero</td></tr>
+</table>
+<div class="callout deep">
+<div class="callout-label">Where do globals get zeroed?</div>
+The OS, when it loads the program, allocates the BSS section and zeroes it. This happens BEFORE main runs. It's free — no per-byte writing — because the kernel can map it lazily from a zeroed page. This is why globals are "free to initialize to zero" but locals are "free to leave garbage."
+</div>
+</div>
+
+<div class="section">
+<h4>3. Partial Initialization</h4>
+<pre class="code"><span class="kw">int</span> arr[<span class="num">200</span>] = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>};
+<span class="cmt">// arr[0]=1, arr[1]=2, arr[2]=3, arr[3..199] = 0</span></pre>
+<p>If you provide ANY initializer, all unspecified members are set to zero. Idiom for zeroing an array:</p>
+<pre class="code"><span class="kw">int</span> arr[<span class="num">100</span>] = {<span class="num">0</span>};   <span class="cmt">// all 100 = 0</span>
+<span class="kw">int</span> arr[<span class="num">100</span>] = {};      <span class="cmt">// C23 / GCC extension</span></pre>
+</div>
+
+<div class="section">
+<h4>4. Array Auto-Sizing</h4>
+<pre class="code"><span class="kw">int</span> a[] = {<span class="num">1</span>, <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">5</span>, <span class="num">8</span>};   <span class="cmt">// size = 6</span></pre>
+<p>Compiler infers the size from the initializer count. Useful for tables that may grow.</p>
+<h5>How to compute count safely</h5>
+<pre class="code"><span class="kw">int</span> a[] = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>};
+<span class="kw">int</span> n = <span class="kw">sizeof</span>(a) / <span class="kw">sizeof</span>(a[<span class="num">0</span>]);   <span class="cmt">// n = 3</span></pre>
+<p>This works ONLY when the array is in scope as an array. Once passed to a function (where it decays to a pointer), <code class="i">sizeof</code> returns pointer size.</p>
+</div>
+
+<div class="section">
+<h4>5. Arrays of Structures</h4>
+<pre class="code"><span class="kw">struct</span> person people[<span class="num">3</span>] = {
+    {<span class="str">"Alice"</span>, <span class="str">"TA"</span>,  {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>}},
+    {<span class="str">"Bob"</span>,   <span class="str">"TA"</span>,  {<span class="num">5</span>, <span class="num">6</span>, <span class="num">7</span>, <span class="num">8</span>}},
+    {<span class="str">"Cleo"</span>,  <span class="str">"Pf"</span>,  {<span class="num">9</span>, <span class="num">8</span>, <span class="num">7</span>, <span class="num">6</span>}},
+};</pre>
+<p>Each inner brace is one struct's worth of fields. Trailing comma after last element is allowed.</p>
+</div>
+
+<div class="section">
+<h4>6. The strncpy Trap</h4>
+<pre class="code"><span class="kw">char</span> *strncpy(<span class="kw">char</span> *dest, <span class="kw">const char</span> *src, <span class="kw">size_t</span> n);</pre>
+<p>strncpy copies AT MOST <code class="i">n</code> bytes from src to dest:</p>
+<ul>
+<li>If <code class="i">strlen(src) &lt; n</code>: dest is null-terminated AND PADDED WITH ZEROS up to n bytes</li>
+<li>If <code class="i">strlen(src) &gt;= n</code>: dest gets exactly n bytes, NO null terminator</li>
+</ul>
+<div class="callout warn">
+<div class="callout-label">The trap</div>
+<pre class="code"><span class="kw">char</span> buf[<span class="num">5</span>];
+strncpy(buf, <span class="str">"Hello"</span>, <span class="num">5</span>);
+printf(<span class="str">"%s\n"</span>, buf);   <span class="cmt">// READS PAST END until random \0</span></pre>
+"Hello" is 5 chars; strncpy copies all 5, leaving NO room for '\0'. printf with %s walks past buf looking for a terminator. Result: junk output and possibly a segfault.
+</div>
+<h5>Correct idiom</h5>
+<pre class="code">strncpy(buf, src, <span class="kw">sizeof</span>(buf) - <span class="num">1</span>);
+buf[<span class="kw">sizeof</span>(buf) - <span class="num">1</span>] = <span class="str">'\0'</span>;
+<span class="cmt">// or, equivalently:</span>
+strncpy(buf, src, <span class="kw">sizeof</span>(buf));
+buf[<span class="kw">sizeof</span>(buf) - <span class="num">1</span>] = <span class="str">'\0'</span>;</pre>
+<p>Always force a '\0' as the last byte after strncpy.</p>
+</div>
+
+<div class="section">
+<h4>7. Variable-Length Arrays — Disallowed in This Class</h4>
+<pre class="code"><span class="kw">void</span> bad(<span class="kw">int</span> n) {
+    <span class="kw">int</span> arr[n];   <span class="cmt">// VLA — C99 added, but Turkstra forbids in CS 240</span>
+}</pre>
+<p>VLAs allocate on the stack with a runtime-known size. Stack-overflow risk and not portable to C++/older compilers. Use malloc instead.</p>
+</div>
+
+<div class="section">
+<h4>How to approach an "init array of structs" question</h4>
+<div class="steps">
+<h6>Recipe</h6>
+<ol>
+<li>Define the struct type</li>
+<li>Declare the array: <code class="i">struct T arr[N];</code></li>
+<li>Initialize with nested-brace literal: <code class="i">{ {...}, {...}, ... }</code></li>
+<li>Each inner brace = one element's fields in declaration order</li>
+<li>For unset elements: globals = 0, locals = garbage (init explicitly)</li>
+<li>For string fields: use literal in initializer or strncpy + force \0 after</li>
+</ol>
+</div>
+</div>
+
+<div class="practice">
+<h4>Practice — Lecture 7</h4>
+<h5>Free-Response</h5>
+
+<div class="frq"><strong>FRQ 1.</strong> Initialize <code class="i">int arr[10]</code> so all elements are zero, in two ways.
+<div class="frq-answer"><strong>Answer:</strong> (1) <code class="i">int arr[10] = {0};</code> — partial init zeros the rest. (2) <code class="i">int arr[10] = {};</code> (C23/GCC). Or just declare as global to get free zeros.</div></div>
+
+<div class="frq debug"><strong>FRQ 2 (Debug).</strong> What's wrong?
+<pre class="code" style="margin-top:6px"><span class="kw">char</span> dest[<span class="num">8</span>];
+strncpy(dest, <span class="str">"buffalo"</span>, <span class="num">8</span>);
+printf(<span class="str">"%s\n"</span>, dest);</pre>
+<div class="frq-answer"><strong>Answer:</strong> "buffalo" is 7 chars + '\0' = 8 bytes total; strncpy with n=8 copies all 7 chars and the '\0' (just barely fits). Actually this case works! BUT — change "buffalo" to "buffalos" (8 chars) and strncpy fills all 8 bytes WITHOUT a '\0'. printf reads past the end. The robust fix is always: <code class="i">strncpy(dest, src, sizeof(dest)); dest[sizeof(dest)-1] = '\0';</code></div></div>
+
+<div class="frq debug"><strong>FRQ 3 (Debug).</strong> Find the bug:
+<pre class="code" style="margin-top:6px"><span class="kw">int</span> sum_array(<span class="kw">int</span> arr[]) {
+    <span class="kw">int</span> n = <span class="kw">sizeof</span>(arr) / <span class="kw">sizeof</span>(arr[<span class="num">0</span>]);
+    <span class="kw">int</span> total = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) total += arr[i];
+    <span class="kw">return</span> total;
+}</pre>
+<div class="frq-answer"><strong>Answer:</strong> Inside the function, <code class="i">arr</code> is a POINTER, not an array. <code class="i">sizeof(arr)</code> returns the pointer size (8 on 64-bit), so n = 8/4 = 2 — only ever sums 2 elements. Fix: pass the size as a separate parameter: <code class="i">int sum_array(int *arr, int n)</code>.</div></div>
+
+<div class="frq"><strong>FRQ 4.</strong> Why is <code class="i">int x[]= {1,2,3};</code> different inside a function vs at file scope?
+<div class="frq-answer"><strong>Answer:</strong> At file scope (global): static storage; sizeof works to give the array size. As a function parameter (<code class="i">int x[]</code>): equivalent to <code class="i">int *x</code>; size info is lost. Inside a function as a local with initializer: works as expected.</div></div>
+
+<div class="frq"><strong>FRQ 5.</strong> Why are local arrays NOT zero-initialized?
+<div class="frq-answer"><strong>Answer:</strong> Locals live on the stack, which is reused as functions enter/exit. Zeroing them on every call would slow programs down dramatically with no benefit. Globals get free zeroing (BSS) only because the OS does it once at load time.</div></div>
+
+<button class="toggle-all" onclick="toggleMCQs(this)">Show All Answers</button>
+<h5>Multiple-Choice</h5>
+<div class="mcq-list">
+
+<div class="mcq"><div class="q">Global int arr[100] not initialized:</div>
+<ul><li>A) Garbage</li><li>B) All zero (BSS)</li><li>C) NULL</li><li>D) Compile error</li><li>E) -1</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Local int arr[100] not initialized:</div>
+<ul><li>A) Garbage (uninitialized stack)</li><li>B) All zero</li><li>C) NULL</li><li>D) Compile error</li><li>E) Random consistent value</li></ul>
+<div class="ans">A.</div></div>
+
+<div class="mcq"><div class="q"><code class="i">int x[5] = {1};</code> — x[2] is:</div>
+<ul><li>A) Garbage</li><li>B) 0</li><li>C) 1</li><li>D) Random</li><li>E) Undefined</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q"><code class="i">int a[] = {7,8,9};</code> — sizeof(a) on 32-bit:</div>
+<ul><li>A) 3</li><li>B) 4</li><li>C) 8</li><li>D) 12</li><li>E) Depends on init</li></ul>
+<div class="ans">D. 3 ints × 4 bytes.</div></div>
+
+<div class="mcq"><div class="q">Inside <code class="i">void f(int a[])</code>, sizeof(a) is:</div>
+<ul><li>A) Total array bytes</li><li>B) Pointer size</li><li>C) sizeof(int)</li><li>D) Undefined</li><li>E) Element count</li></ul>
+<div class="ans">B. Array decays to pointer.</div></div>
+
+<div class="mcq"><div class="q">strncpy guarantees null terminator:</div>
+<ul><li>A) Always</li><li>B) Never</li><li>C) Only when strlen(src) &lt; n</li><li>D) Only on Linux</li><li>E) Only with -Wall</li></ul>
+<div class="ans">C.</div></div>
+
+<div class="mcq"><div class="q">For a 100-byte buffer holding strings, max safe content:</div>
+<ul><li>A) 100 chars</li><li>B) 99 chars + '\0'</li><li>C) 100 chars no '\0'</li><li>D) 50 chars</li><li>E) Unlimited</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">VLAs (<code class="i">int arr[n]</code> with n a runtime variable):</div>
+<ul><li>A) Required by C99</li><li>B) Allowed by C99 but disallowed in CS 240</li><li>C) Always faster</li><li>D) Allocate on heap</li><li>E) Cannot fail</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Idiomatic way to zero a local array:</div>
+<ul><li>A) <code class="i">int a[10];</code></li><li>B) <code class="i">int a[10] = {0};</code></li><li>C) <code class="i">int a[10]; a = 0;</code></li><li>D) <code class="i">int a[10]; *a = 0;</code></li><li>E) Cannot</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Array name in expression context evaluates to:</div>
+<ul><li>A) The array</li><li>B) Address of first element (pointer)</li><li>C) Number of elements</li><li>D) NULL</li><li>E) sizeof</li></ul>
+<div class="ans">B. (Decay rule. Exception: sizeof(arr) and &amp;arr.)</div></div>
+
+<div class="mcq"><div class="q"><code class="i">char a[] = "abc";</code> — sizeof(a):</div>
+<ul><li>A) 3</li><li>B) 4 (includes \0)</li><li>C) 1</li><li>D) 8</li><li>E) Depends</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Which is illegal as a function parameter?</div>
+<ul><li>A) <code class="i">int *p</code></li><li>B) <code class="i">int p[]</code></li><li>C) <code class="i">int p[5]</code> (size ignored, treated as pointer)</li><li>D) <code class="i">int p[][3]</code></li><li>E) None — all are legal</li></ul>
+<div class="ans">E.</div></div>
+
+<div class="mcq"><div class="q">extern needed when:</div>
+<ul><li>A) Declaring locals</li><li>B) Referencing a variable defined in another .c file</li><li>C) Always for globals</li><li>D) Required by C99</li><li>E) For static</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Best buffer overflow fix for fscanf:</div>
+<ul><li>A) Bigger buffer</li><li>B) Use width: <code class="i">"%99[^\n]"</code> for 100-byte buffer</li><li>C) Disable warnings</li><li>D) Cast to char *</li><li>E) Use sprintf instead</li></ul>
+<div class="ans">B.</div></div>
+
+<div class="mcq"><div class="q">Correct strncpy idiom:</div>
+<ul><li>A) <code class="i">strncpy(d, s, strlen(s));</code></li><li>B) <code class="i">strncpy(d, s, sizeof(d)); d[sizeof(d)-1]=0;</code></li><li>C) <code class="i">strcpy(d, s);</code></li><li>D) <code class="i">memcpy(d, s, strlen(s));</code></li><li>E) <code class="i">sprintf(d, "%s", s);</code></li></ul>
+<div class="ans">B.</div></div>
+
+</div>
+</div>
+</article>
+
+</section>
+
+<section class="tab" id="t3">
+<div class="tab-intro"><h2>Tab 3 · Memory &amp; Bits</h2><p>Lectures 8-10: data layout, padding, binary I/O, bitfields, unions, enums, bitwise ops, intro to pointers.</p></div>
+
+<article class="lecture" id="L8">
+<div class="lec-header"><div class="num">LECTURE 08 · MEMORY LAYOUT</div><h3>How Data Sits in Memory: Padding, Alignment, Binary I/O</h3></div>
+
+<div class="section">
+<h4>1. Memory as Bytes</h4>
+<p>Memory is a long row of bytes — addresses 0 to 2^N - 1 (N = pointer width: 32 or 64). Each byte is a value 0-255 or one ASCII character.</p>
+<div class="callout deep">
+<div class="callout-label">The process address space (Linux/x86_64)</div>
+<pre class="code">0xFFFFFFFFFFFFFFFF  ┌──────────────────┐
+                    │ kernel space     │
+0x00007FFFFFFFFFFF  ├──────────────────┤
+                    │ stack ↓          │  grows DOWN
+                    │  (mmap region)   │  shared libs
+                    │ heap ↑           │  grows UP from malloc
+                    ├──────────────────┤
+                    │ BSS              │  zero-initialized globals
+                    │ data             │  initialized globals
+                    │ text             │  your code
+0x0000000000400000  └──────────────────┘</pre>
+This is why <code class="i">char *p = "hi";</code> is read-only (literal lives in text/rodata) and <code class="i">malloc</code>'d data lives in the heap.
+</div>
+</div>
+
+<div class="section">
+<h4>2. sizeof Is Architecture-Dependent</h4>
+<table class="t">
+<tr><th>Type</th><th>32-bit Linux</th><th>64-bit Linux</th></tr>
+<tr><td>char</td><td>1</td><td>1</td></tr>
+<tr><td>short</td><td>2</td><td>2</td></tr>
+<tr><td>int</td><td>4</td><td>4</td></tr>
+<tr><td>long</td><td>4</td><td>8</td></tr>
+<tr><td>long long</td><td>8</td><td>8</td></tr>
+<tr><td>float</td><td>4</td><td>4</td></tr>
+<tr><td>double</td><td>8</td><td>8</td></tr>
+<tr><td>pointer</td><td>4</td><td>8</td></tr>
+</table>
+<p>Use <code class="i">sizeof</code> instead of hardcoding numbers — your code stays portable.</p>
+</div>
+
+<div class="section">
+<h4>3. Alignment — Why Padding Exists</h4>
+<p>Most CPUs require multi-byte values to be at addresses divisible by their size:</p>
+<ul>
+<li>An int (4 bytes) wants address divisible by 4</li>
+<li>A short (2 bytes) wants address divisible by 2</li>
+<li>A double (8 bytes) wants address divisible by 8</li>
+</ul>
+<p>If unaligned: some architectures (Sparc, old ARM) crash; x86 just slows down.</p>
+<h5>Padding within a struct</h5>
+<pre class="code"><span class="kw">struct</span> bad {
+    <span class="kw">char</span> c;     <span class="cmt">// 1 byte at offset 0</span>
+    <span class="cmt">// 3 bytes of padding so int starts on multiple of 4</span>
+    <span class="kw">int</span> i;      <span class="cmt">// 4 bytes at offset 4</span>
+};
+<span class="cmt">// sizeof = 8, not 5</span></pre>
+<h5>Trailing padding for arrays</h5>
+<pre class="code"><span class="kw">struct</span> tail {
+    <span class="kw">int</span> i;      <span class="cmt">// offset 0</span>
+    <span class="kw">char</span> c;     <span class="cmt">// offset 4</span>
+    <span class="cmt">// 3 bytes trailing padding</span>
+};
+<span class="cmt">// sizeof = 8 — so arr[1] keeps int aligned</span></pre>
+</div>
+
+<div class="section">
+<h4>4. Reorder to Minimize Size</h4>
+<p>Order fields LARGEST to SMALLEST: doubles → long long → pointers → long → int / float → short → char. Result: padding only at the end (if any).</p>
+<pre class="code"><span class="cmt">// BAD — 28 bytes on 32-bit</span>
+<span class="kw">struct</span> b { <span class="kw">char</span> c1; <span class="kw">int</span> i1; <span class="kw">char</span> c2; <span class="kw">int</span> i2;
+            <span class="kw">char</span> c3; <span class="kw">int</span> i3; <span class="kw">char</span> c4; };
+
+<span class="cmt">// GOOD — 16 bytes</span>
+<span class="kw">struct</span> g { <span class="kw">int</span> i1, i2, i3; <span class="kw">char</span> c1, c2, c3, c4; };</pre>
+</div>
+
+<div class="section">
+<h4>5. Binary I/O — fread &amp; fwrite</h4>
+<pre class="code"><span class="kw">size_t</span> fwrite(<span class="kw">const void</span> *p, <span class="kw">size_t</span> sz, <span class="kw">size_t</span> n, FILE *fp);
+<span class="kw">size_t</span> fread (<span class="kw">void</span>       *p, <span class="kw">size_t</span> sz, <span class="kw">size_t</span> n, FILE *fp);</pre>
+<p>Dump structures as raw bytes. Returns count of items (NOT bytes) transferred.</p>
+<pre class="code"><span class="kw">struct</span> rec r = {<span class="num">42</span>, <span class="num">3.14</span>};
+FILE *fp = fopen(<span class="str">"data.bin"</span>, <span class="str">"wb"</span>);
+fwrite(&amp;r, <span class="kw">sizeof</span>(r), <span class="num">1</span>, fp);
+fclose(fp);
+
+<span class="cmt">// Reading multiple records</span>
+<span class="kw">while</span> (fread(&amp;r, <span class="kw">sizeof</span>(r), <span class="num">1</span>, fp) == <span class="num">1</span>) {
+    process(&amp;r);
+}</pre>
+<div class="callout warn">
+<div class="callout-label">Binary files NOT portable</div>
+A file written on x86 (little-endian, 64-bit, specific padding) may be unreadable on Sparc (big-endian, different alignment).
+</div>
+</div>
+
+<div class="section">
+<h4>6. Endianness — Byte Ordering</h4>
+<p>For <code class="i">int x = 0x12345678;</code>:</p>
+<table class="t">
+<tr><th>Order</th><th>Bytes at A, A+1, A+2, A+3</th><th>Used by</th></tr>
+<tr><td>Big-endian</td><td>0x12, 0x34, 0x56, 0x78</td><td>Sparc, networking</td></tr>
+<tr><td>Little-endian</td><td>0x78, 0x56, 0x34, 0x12</td><td>x86, x86_64, most ARM</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h4>How to compute struct size</h4>
+<div class="steps">
+<h6>Recipe</h6>
+<ol>
+<li>Walk fields top-to-bottom, tracking byte offset</li>
+<li>For each field, note required alignment (= its size for primitives)</li>
+<li>If current offset isn't a multiple of that alignment, ADD PADDING</li>
+<li>Place the field; advance offset by its size</li>
+<li>At the end, ROUND UP total to multiple of largest alignment in the struct</li>
+</ol>
+</div>
+</div>
+
+<div class="practice">
+<h4>Practice — Lecture 8</h4>
+<h5>Free-Response</h5>
+
+<div class="frq"><strong>FRQ 1.</strong> sizeof on 32-bit: <code class="i">struct {int a; char b; int c; char d;}</code>
+<div class="frq-answer"><strong>Answer:</strong> 16. Layout: int (0-3), char (4), 3 pad (5-7), int (8-11), char (12), 3 trailing pad (13-15).</div></div>
+
+<div class="frq"><strong>FRQ 2.</strong> Reorder to minimize: <code class="i">char a; double b; char c; int d;</code>
+<div class="frq-answer"><strong>Answer:</strong> <code class="i">double b; int d; char a; char c;</code> — biggest first. Original = 24, reordered = 16.</div></div>
+
+<div class="frq debug"><strong>FRQ 3 (Debug).</strong> Why doesn't this work cross-platform?
+<pre class="code" style="margin-top:6px">FILE *fp = fopen(<span class="str">"out.bin"</span>, <span class="str">"w"</span>);
+fwrite(&amp;p, <span class="kw">sizeof</span>(p), <span class="num">1</span>, fp);</pre>
+<div class="frq-answer"><strong>Answer:</strong> Two issues. (1) Mode "w" — should be "wb" for binary. On Windows, text mode translates \r\n &lt;-&gt; \n, corrupting binary data. (2) Even with "wb", endianness/alignment may differ across architectures.</div></div>
+
+<div class="frq debug"><strong>FRQ 4 (Debug).</strong> Why does sizeof give 8 for <code class="i">struct{int a; char b;}</code> instead of 5?
+<div class="frq-answer"><strong>Answer:</strong> Trailing padding. Largest member (int) needs 4-byte alignment; total rounded up to multiple of 4 → 5 + 3 padding = 8. Required so arrays of this struct keep all int fields aligned.</div></div>
+
+<div class="frq"><strong>FRQ 5.</strong> What does fwrite return?
+<div class="frq-answer"><strong>Answer:</strong> Count of items (NOT bytes) actually written. Compare to your requested count to detect partial writes/errors.</div></div>
+
+<button class="toggle-all" onclick="toggleMCQs(this)">Show All Answers</button>
+<h5>Multiple-Choice</h5>
+<div class="mcq-list">
+<div class="mcq"><div class="q">Why padding inside structs?</div>
+<ul><li>A) Save memory</li><li>B) Keep multi-byte fields aligned</li><li>C) Security</li><li>D) C99 requires it</li><li>E) Random</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">int aligns to:</div>
+<ul><li>A) 1</li><li>B) 2</li><li>C) 4</li><li>D) 8</li><li>E) 16</li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q"><code class="i">struct {int x; char c;}</code> on 32-bit:</div>
+<ul><li>A) 5</li><li>B) 6</li><li>C) 8</li><li>D) 16</li><li>E) 4</li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q">To minimize padding, order:</div>
+<ul><li>A) Smallest first</li><li>B) Largest first</li><li>C) Alphabetical</li><li>D) Random</li><li>E) Pointers first</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">fread returns:</div>
+<ul><li>A) Bytes</li><li>B) Items (not bytes)</li><li>C) 0 success</li><li>D) NULL on EOF</li><li>E) -1 success</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Binary files written on x86:</div>
+<ul><li>A) Always portable</li><li>B) NOT portable across architectures</li><li>C) Linux only</li><li>D) Always 64-bit</li><li>E) Encrypted</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">long on 64-bit Linux:</div>
+<ul><li>A) 4</li><li>B) 8</li><li>C) 16</li><li>D) Same as int</li><li>E) Implementation</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">long on 64-bit Windows:</div>
+<ul><li>A) 4 (LLP64 model)</li><li>B) 8</li><li>C) 16</li><li>D) Same as Linux</li><li>E) 12</li></ul>
+<div class="ans">A.</div></div>
+<div class="mcq"><div class="q">Big-endian stores 0x12345678:</div>
+<ul><li>A) 78 56 34 12</li><li>B) 12 34 56 78</li><li>C) 56 78 12 34</li><li>D) Random</li><li>E) Always 0</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Network byte order:</div>
+<ul><li>A) Little-endian</li><li>B) Big-endian</li><li>C) Mixed</li><li>D) Native</li><li>E) UTF-8</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">A struct's total sizeof:</div>
+<ul><li>A) Sum of fields</li><li>B) Sum + padding (rounded to largest alignment)</li><li>C) Power of 2</li><li>D) Same as biggest field</li><li>E) Always 16</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Open file in binary mode:</div>
+<ul><li>A) "r"</li><li>B) "rb"</li><li>C) "rB"</li><li>D) "binary"</li><li>E) "raw"</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">On Windows, "w" text mode:</div>
+<ul><li>A) Same as "wb"</li><li>B) Translates \n to \r\n</li><li>C) Always crashes</li><li>D) Compresses</li><li>E) UTF-8</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">If fwrite returns 0 instead of 1:</div>
+<ul><li>A) Success</li><li>B) Error / disk full</li><li>C) NULL</li><li>D) Buffer empty</li><li>E) Encoding</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Heap memory holds:</div>
+<ul><li>A) Locals</li><li>B) Code</li><li>C) malloc'd memory</li><li>D) Constants</li><li>E) Args</li></ul>
+<div class="ans">C.</div></div>
+</div>
+</div>
+</article>
+
+<article class="lecture" id="L9">
+<div class="lec-header"><div class="num">LECTURE 09 · BITS</div><h3>Bitfields, Unions, Enums, Bitwise Ops, Endianness</h3></div>
+
+<div class="section">
+<h4>1. Bitfields — Sub-Byte Struct Fields</h4>
+<pre class="code"><span class="kw">struct</span> ieee_float {
+    <span class="kw">unsigned int</span> sign     : <span class="num">1</span>;
+    <span class="kw">unsigned int</span> exponent : <span class="num">8</span>;
+    <span class="kw">unsigned int</span> mantissa : <span class="num">23</span>;
+};</pre>
+<p>Each field uses exactly the specified number of bits, packed into the underlying int. Useful for hardware registers, but <strong>don't use bitfields in CS 240 homework</strong> — shown for awareness.</p>
+</div>
+
+<div class="section">
+<h4>2. union — All Fields Share Storage</h4>
+<pre class="code"><span class="kw">union</span> data {
+    <span class="kw">int</span> i;
+    <span class="kw">float</span> f;
+    <span class="kw">char</span> bytes[<span class="num">4</span>];
+};
+<span class="cmt">// sizeof = 4 (largest member)</span></pre>
+<p>All members start at offset 0; setting one overwrites the others. Common use: type punning to inspect bit layout.</p>
+<pre class="code"><span class="kw">union</span> { <span class="kw">float</span> f; <span class="kw">unsigned int</span> bits; } u;
+u.f = <span class="num">3.14f</span>;
+printf(<span class="str">"%x\n"</span>, u.bits);   <span class="cmt">// IEEE 754 representation</span></pre>
+<div class="callout deep">
+<div class="callout-label">union vs cast — different semantics</div>
+A union write-then-read is well-defined for accessing the byte layout of one type as another. Casting <code class="i">*(int*)&amp;f</code> violates strict aliasing and may break with optimizations.
+</div>
+</div>
+
+<div class="section">
+<h4>3. enum — Named Integer Constants</h4>
+<pre class="code"><span class="kw">enum</span> color {
+    RED,        <span class="cmt">// 0</span>
+    GREEN,      <span class="cmt">// 1</span>
+    BLUE        <span class="cmt">// 2</span>
+};
+<span class="kw">enum</span> color c = GREEN;</pre>
+<h5>Explicit values</h5>
+<pre class="code"><span class="kw">enum</span> http {
+    OK = <span class="num">200</span>,
+    NOT_FOUND = <span class="num">404</span>,
+    SERVER_ERR = <span class="num">500</span>,
+    INTERNAL = <span class="num">500</span>      <span class="cmt">// alias allowed</span>
+};</pre>
+<p><code class="i">enum {A=10, B, C}</code> gives B=11, C=12.</p>
+</div>
+
+<div class="section">
+<h4>4. Bitwise Operators</h4>
+<table class="t">
+<tr><th>Logical</th><th>Bitwise</th><th>Effect</th></tr>
+<tr><td>&amp;&amp;</td><td>&amp;</td><td>AND</td></tr>
+<tr><td>||</td><td>|</td><td>OR</td></tr>
+<tr><td>!</td><td>~</td><td>NOT</td></tr>
+<tr><td>—</td><td>^</td><td>XOR</td></tr>
+</table>
+<p><strong>Logical:</strong> treats values as 0 / non-zero, returns 0 or 1. <strong>Bitwise:</strong> works bit-by-bit.</p>
+<pre class="code"><span class="kw">char</span> x = <span class="num">5</span>;   <span class="cmt">// 0000 0101</span>
+<span class="kw">char</span> y = <span class="num">6</span>;   <span class="cmt">// 0000 0110</span>
+x &amp; y;       <span class="cmt">// 0000 0100 = 4</span>
+x | y;       <span class="cmt">// 0000 0111 = 7</span>
+x ^ y;       <span class="cmt">// 0000 0011 = 3</span>
+~x;          <span class="cmt">// 1111 1010 = -6 signed / 250 unsigned</span></pre>
+</div>
+
+<div class="section">
+<h4>5. Shift Operators</h4>
+<pre class="code"><span class="kw">int</span> x = <span class="num">10</span>;       <span class="cmt">// 0000 1010</span>
+x &lt;&lt; <span class="num">2</span>;          <span class="cmt">// 0010 1000 = 40 (×4)</span>
+x &gt;&gt; <span class="num">1</span>;          <span class="cmt">// 0000 0101 = 5  (÷2)</span></pre>
+<ul>
+<li><code class="i">x &lt;&lt; n</code> = multiply by 2^n</li>
+<li><code class="i">x &gt;&gt; n</code> = divide by 2^n (signed: arithmetic shift, sign-extends)</li>
+</ul>
+<div class="callout warn">
+<div class="callout-label">Undefined behavior</div>
+Shifting by &gt;= type width is UB. <code class="i">int x; x &lt;&lt; 32;</code> is undefined.
+</div>
+</div>
+
+<div class="section">
+<h4>6. Bit Set / Clear / Toggle / Test — The Four Patterns</h4>
+<pre class="code">x |= (<span class="num">1</span> &lt;&lt; N);    <span class="cmt">// SET bit N</span>
+x &amp;= ~(<span class="num">1</span> &lt;&lt; N);   <span class="cmt">// CLEAR bit N</span>
+x ^= (<span class="num">1</span> &lt;&lt; N);    <span class="cmt">// TOGGLE bit N</span>
+<span class="kw">if</span> (x &amp; (<span class="num">1</span> &lt;&lt; N))  <span class="cmt">// TEST bit N (non-zero if set)</span></pre>
+<h5>Combine flags</h5>
+<pre class="code"><span class="pp">#define READ   (1 &lt;&lt; 0)</span>
+<span class="pp">#define WRITE  (1 &lt;&lt; 1)</span>
+<span class="pp">#define EXEC   (1 &lt;&lt; 2)</span>
+
+<span class="kw">int</span> perms = READ | WRITE;       <span class="cmt">// 0011</span>
+<span class="kw">if</span> (perms &amp; WRITE) { ... }
+perms &amp;= ~WRITE;                  <span class="cmt">// remove write</span></pre>
+</div>
+
+<div class="section">
+<h4>How to set/clear/test bit N</h4>
+<div class="steps">
+<h6>Recipe</h6>
+<ol>
+<li>Build mask: <code class="i">mask = 1 &lt;&lt; N</code></li>
+<li>SET: <code class="i">x |= mask</code></li>
+<li>CLEAR: <code class="i">x &amp;= ~mask</code></li>
+<li>TOGGLE: <code class="i">x ^= mask</code></li>
+<li>TEST: <code class="i">if (x &amp; mask)</code></li>
+</ol>
+</div>
+</div>
+
+<div class="practice">
+<h4>Practice — Lecture 9</h4>
+<h5>Free-Response</h5>
+
+<div class="frq"><strong>FRQ 1.</strong> Set bit 5 and clear bit 3 in <code class="i">flags</code>.
+<div class="frq-answer"><strong>Answer:</strong> <code class="i">flags |= (1 &lt;&lt; 5); flags &amp;= ~(1 &lt;&lt; 3);</code></div></div>
+
+<div class="frq debug"><strong>FRQ 2 (Debug).</strong> What's wrong?
+<pre class="code" style="margin-top:6px"><span class="kw">int</span> a = <span class="num">4</span>, b = <span class="num">3</span>;
+<span class="kw">if</span> (a &amp; b) printf(<span class="str">"both nonzero\n"</span>);
+<span class="kw">else</span> printf(<span class="str">"at least one is zero\n"</span>);</pre>
+<div class="frq-answer"><strong>Answer:</strong> Used bitwise &amp; instead of logical &amp;&amp;. <code class="i">4 &amp; 3</code> = <code class="i">0100 &amp; 0011</code> = <code class="i">0000</code> = 0 (falsy) — prints "at least one is zero" even though both ARE non-zero. Fix: use <code class="i">a &amp;&amp; b</code>.</div></div>
+
+<div class="frq debug"><strong>FRQ 3 (Debug).</strong> Why undefined?
+<pre class="code" style="margin-top:6px"><span class="kw">int</span> x = <span class="num">1</span>;
+printf(<span class="str">"%d\n"</span>, x &lt;&lt; <span class="num">32</span>);</pre>
+<div class="frq-answer"><strong>Answer:</strong> Shifting by &gt;= the operand's width is undefined behavior. On a 32-bit int, valid shifts are 0..31. Compilers may produce 0, x, or anything else.</div></div>
+
+<div class="frq"><strong>FRQ 4.</strong> sizeof a union with int (4) and double (8)?
+<div class="frq-answer"><strong>Answer:</strong> 8 — size of largest member (with possible padding for alignment).</div></div>
+
+<div class="frq"><strong>FRQ 5.</strong> Define an enum so RED, YELLOW, GREEN can be combined as flags (1, 2, 4).
+<div class="frq-answer"><strong>Answer:</strong> <code class="i">enum light { RED=1, YELLOW=2, GREEN=4 };</code></div></div>
+
+<button class="toggle-all" onclick="toggleMCQs(this)">Show All Answers</button>
+<h5>Multiple-Choice</h5>
+<div class="mcq-list">
+<div class="mcq"><div class="q">Union members:</div>
+<ul><li>A) Have separate memory</li><li>B) Share memory (offset 0)</li><li>C) Are pointers</li><li>D) Immutable</li><li>E) Must be ints</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">First member of <code class="i">enum {A,B,C}</code>:</div>
+<ul><li>A) 1</li><li>B) 0</li><li>C) -1</li><li>D) Random</li><li>E) Undefined</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q"><code class="i">5 &amp; 6</code>:</div>
+<ul><li>A) 0</li><li>B) 4</li><li>C) 7</li><li>D) 11</li><li>E) 30</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q"><code class="i">5 | 6</code>:</div>
+<ul><li>A) 1</li><li>B) 4</li><li>C) 7</li><li>D) 11</li><li>E) 30</li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q"><code class="i">5 ^ 6</code>:</div>
+<ul><li>A) 0</li><li>B) 3</li><li>C) 7</li><li>D) 11</li><li>E) 1</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Big-endian for 0x12345678:</div>
+<ul><li>A) 78 56 34 12</li><li>B) 12 34 56 78</li><li>C) 34 12 78 56</li><li>D) Random</li><li>E) Same as little</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">x86 uses:</div>
+<ul><li>A) Big-endian</li><li>B) Little-endian</li><li>C) Mixed</li><li>D) Network</li><li>E) UTF-8</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Clear bit N:</div>
+<ul><li>A) <code class="i">x |= (1&lt;&lt;N)</code></li><li>B) <code class="i">x &amp;= ~(1&lt;&lt;N)</code></li><li>C) <code class="i">x ^= (1&lt;&lt;N)</code></li><li>D) <code class="i">x = ~N</code></li><li>E) <code class="i">x &amp;= N</code></li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Toggle bit N:</div>
+<ul><li>A) <code class="i">x |= (1&lt;&lt;N)</code></li><li>B) <code class="i">x &amp;= ~(1&lt;&lt;N)</code></li><li>C) <code class="i">x ^= (1&lt;&lt;N)</code></li><li>D) <code class="i">x &lt;&lt; N</code></li><li>E) <code class="i">~x</code></li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q">Shift by &gt;= type width:</div>
+<ul><li>A) Defined as 0</li><li>B) Undefined behavior</li><li>C) NOP</li><li>D) Defined as -1</li><li>E) Wraps</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Logical &amp;&amp; returns:</div>
+<ul><li>A) Bitwise result</li><li>B) Always 0 or 1</li><li>C) -1 or 1</li><li>D) NULL or non-NULL</li><li>E) First non-zero</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q"><code class="i">enum {X=5, Y, Z}</code> — Y is:</div>
+<ul><li>A) 0</li><li>B) 1</li><li>C) 5</li><li>D) 6</li><li>E) Undefined</li></ul>
+<div class="ans">D.</div></div>
+<div class="mcq"><div class="q">sizeof(union {int; double; char;}):</div>
+<ul><li>A) 13</li><li>B) 8 (largest)</li><li>C) 16</li><li>D) 4</li><li>E) 1</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Bitfields in CS 240 homework:</div>
+<ul><li>A) Required</li><li>B) Discouraged — "won't need them"</li><li>C) Mandatory for security</li><li>D) Only with -O3</li><li>E) Hardware only</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">x &lt;&lt; 3 mathematically:</div>
+<ul><li>A) x + 3</li><li>B) x × 8</li><li>C) x / 8</li><li>D) x ^ 3</li><li>E) x % 8</li></ul>
+<div class="ans">B.</div></div>
+</div>
+</div>
+</article>
+
+<article class="lecture" id="L10">
+<div class="lec-header"><div class="num">LECTURE 10 · POINTERS</div><h3>Introduction to Pointers</h3></div>
+
+<div class="section">
+<h4>The K&amp;R Disclaimer</h4>
+<p>"Pointers have been lumped with the goto statement as a marvelous way to create impossible-to-understand programs. With discipline, however, pointers can be used to achieve clarity and simplicity."</p>
+<p>The CONCEPT is simple: a pointer is a variable holding the address of another variable. Combinations and applications get tricky.</p>
+</div>
+
+<div class="section">
+<h4>1. The Big Idea</h4>
+<p>Every variable has an address (its location in memory) and a value (data at that location). A POINTER is a variable whose value IS another variable's address.</p>
+<pre class="code"><span class="kw">int</span> x = <span class="num">42</span>;       <span class="cmt">// suppose x is at address 0x1000</span>
+<span class="kw">int</span> *p = &amp;x;     <span class="cmt">// p holds the value 0x1000</span>
+                  <span class="cmt">// p itself lives elsewhere, suppose at 0x2000</span>
+
+printf(<span class="str">"%d\n"</span>, x);   <span class="cmt">// 42</span>
+printf(<span class="str">"%p\n"</span>, &amp;x);  <span class="cmt">// 0x1000</span>
+printf(<span class="str">"%d\n"</span>, *p);  <span class="cmt">// 42 (deref: value at p's address)</span>
+printf(<span class="str">"%p\n"</span>, p);   <span class="cmt">// 0x1000 (p's value = x's address)</span>
+printf(<span class="str">"%p\n"</span>, &amp;p);  <span class="cmt">// 0x2000 (p's own address)</span></pre>
+</div>
+
+<div class="section">
+<h4>2. The Two Operators</h4>
+<table class="t">
+<tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+<tr><td><code class="i">&amp;</code></td><td>Address-of</td><td><code class="i">&amp;x</code> = "address of x"</td></tr>
+<tr><td><code class="i">*</code> (in expression)</td><td>Dereference</td><td><code class="i">*p</code> = "the thing p points to"</td></tr>
+<tr><td><code class="i">*</code> (in declaration)</td><td>"is a pointer to"</td><td><code class="i">int *p;</code> = "p is pointer to int"</td></tr>
+</table>
+<div class="callout warn">
+<div class="callout-label">Same symbol, different meanings</div>
+<pre class="code"><span class="kw">int</span> *p;       <span class="cmt">// declaration: * means "p is a pointer"</span>
+*p = <span class="num">5</span>;       <span class="cmt">// expression: * means "dereference p"</span></pre>
+This trips up beginners. Read declarations as "pointer to int", expressions as "dereference."
+</div>
+</div>
+
+<div class="section">
+<h4>3. Defining a Pointer</h4>
+<pre class="code"><span class="kw">int</span> *p;          <span class="cmt">// uninitialized — DANGEROUS</span>
+<span class="kw">int</span> *p = NULL;   <span class="cmt">// initialized to "nowhere"</span>
+<span class="kw">int</span> x;
+<span class="kw">int</span> *q = &amp;x;     <span class="cmt">// initialized to point to x</span></pre>
+<p>An uninitialized pointer holds a random address. Dereferencing it crashes (lucky) or silently corrupts memory (unlucky).</p>
+<h5>Multiple declarations</h5>
+<pre class="code"><span class="kw">int</span> *p, q;     <span class="cmt">// p is int*, q is int (NOT int*)</span>
+<span class="kw">int</span> *p, *q;    <span class="cmt">// both are int*</span></pre>
+</div>
+
+<div class="section">
+<h4>4. Why Pointers — Pass-By-Reference</h4>
+<h5>This DOESN'T work</h5>
+<pre class="code"><span class="kw">void</span> increment(<span class="kw">int</span> n) {
+    n = n + <span class="num">1</span>;
+}
+<span class="kw">int</span> main() {
+    <span class="kw">int</span> x = <span class="num">0</span>;
+    increment(x);
+    printf(<span class="str">"%d\n"</span>, x);   <span class="cmt">// still 0!</span>
+}</pre>
+<p>C is pass-by-VALUE — increment got a COPY of x.</p>
+<h5>This works — pass-by-pointer</h5>
+<pre class="code"><span class="kw">void</span> increment(<span class="kw">int</span> *p) {
+    *p = *p + <span class="num">1</span>;
+}
+<span class="kw">int</span> main() {
+    <span class="kw">int</span> x = <span class="num">0</span>;
+    increment(&amp;x);
+    printf(<span class="str">"%d\n"</span>, x);   <span class="cmt">// now 1</span>
+}</pre>
+<p>The function still got a COPY of the pointer — but both pointers point to the SAME int, so dereferencing modifies the original.</p>
+</div>
+
+<div class="section">
+<h4>5. NOW You Understand scanf</h4>
+<pre class="code">scanf(<span class="str">"%d"</span>, &amp;x);
+<span class="cmt">// scanf needs to write into x</span>
+<span class="cmt">// it can't receive x's value; it needs x's address</span></pre>
+<p>For arrays, no <code class="i">&amp;</code> needed: an array name evaluates to its first element's address. <code class="i">scanf("%s", buf)</code> works because <code class="i">buf</code> ≡ <code class="i">&amp;buf[0]</code>.</p>
+</div>
+
+<div class="section">
+<h4>6. NULL — The Special Pointer Value</h4>
+<pre class="code"><span class="kw">int</span> *p = NULL;
+<span class="kw">if</span> (p == NULL) ...    <span class="cmt">// "p doesn't point anywhere"</span>
+<span class="kw">if</span> (!p)         ...    <span class="cmt">// equivalent shorthand</span></pre>
+<p><code class="i">NULL</code> is a macro typically defined as <code class="i">((void *)0)</code>. Dereferencing NULL is undefined — typically a segfault on Linux.</p>
+</div>
+
+<div class="section">
+<h4>7. Pointer Sizes</h4>
+<p>All pointers, regardless of what they point to, have the SAME size on a given architecture:</p>
+<ul>
+<li>32-bit system: 4 bytes</li>
+<li>64-bit system: 8 bytes</li>
+</ul>
+<p><code class="i">char *</code>, <code class="i">int *</code>, <code class="i">struct foo *</code>, <code class="i">void *</code> — all 8 bytes on x86_64.</p>
+</div>
+
+<div class="section">
+<h4>How to make a function modify the caller's variable</h4>
+<div class="steps">
+<h6>Recipe</h6>
+<ol>
+<li>Change parameter type from <code class="i">T</code> to <code class="i">T *</code></li>
+<li>Inside, dereference: read <code class="i">*p</code>, write <code class="i">*p = ...</code></li>
+<li>Caller passes the address: <code class="i">f(&amp;x)</code></li>
+<li>For arrays, name is already an address — pass directly</li>
+<li>Always check NULL before dereferencing</li>
+<li>Initialize all pointers (NULL or real address)</li>
+</ol>
+</div>
+</div>
+
+<div class="practice">
+<h4>Practice — Lecture 10</h4>
+<h5>Free-Response</h5>
+
+<div class="frq"><strong>FRQ 1.</strong> Write <code class="i">void swap(int *a, int *b)</code> that swaps two ints.
+<div class="frq-answer"><strong>Answer:</strong>
+<pre class="code" style="margin-top:6px"><span class="kw">void</span> swap(<span class="kw">int</span> *a, <span class="kw">int</span> *b) {
+    <span class="kw">int</span> t = *a;
+    *a = *b;
+    *b = t;
+}</pre></div></div>
+
+<div class="frq debug"><strong>FRQ 2 (Debug).</strong> Why doesn't this work?
+<pre class="code" style="margin-top:6px"><span class="kw">void</span> add_one(<span class="kw">int</span> n) { n = n + <span class="num">1</span>; }
+<span class="kw">int</span> main() {
+    <span class="kw">int</span> x = <span class="num">5</span>;
+    add_one(x);
+    printf(<span class="str">"%d\n"</span>, x);
+}</pre>
+<div class="frq-answer"><strong>Answer:</strong> Pass-by-value. add_one received a copy of x; the increment happens to the local n only, then n is discarded. Output: 5. Fix: <code class="i">void add_one(int *n) { *n += 1; }</code> and <code class="i">add_one(&amp;x);</code></div></div>
+
+<div class="frq debug"><strong>FRQ 3 (Debug).</strong> Spot the segfault:
+<pre class="code" style="margin-top:6px"><span class="kw">int</span> *p;
+*p = <span class="num">42</span>;
+printf(<span class="str">"%d\n"</span>, *p);</pre>
+<div class="frq-answer"><strong>Answer:</strong> p is uninitialized — its value is whatever junk was on the stack. <code class="i">*p = 42</code> writes 42 to a random address. Invalid → segfault; valid → silent corruption. Fix: <code class="i">int x; int *p = &amp;x;</code> or <code class="i">int *p = malloc(sizeof(int));</code></div></div>
+
+<div class="frq debug"><strong>FRQ 4 (Debug).</strong> What's wrong?
+<pre class="code" style="margin-top:6px"><span class="kw">int</span> x;
+scanf(<span class="str">"%d"</span>, x);
+printf(<span class="str">"%d\n"</span>, x);</pre>
+<div class="frq-answer"><strong>Answer:</strong> Missing <code class="i">&amp;</code>. scanf needs the address. Without &amp;, you pass x's (uninitialized) VALUE — scanf treats it as an address and writes to a random location → segfault or corruption. Fix: <code class="i">scanf("%d", &amp;x);</code></div></div>
+
+<div class="frq"><strong>FRQ 5.</strong> Size of <code class="i">char *p</code> on x86_64?
+<div class="frq-answer"><strong>Answer:</strong> 8 bytes. All pointers on x86_64 are 8 bytes regardless of what they point to.</div></div>
+
+<button class="toggle-all" onclick="toggleMCQs(this)">Show All Answers</button>
+<h5>Multiple-Choice</h5>
+<div class="mcq-list">
+<div class="mcq"><div class="q">A pointer holds:</div>
+<ul><li>A) A value</li><li>B) An address</li><li>C) A function</li><li>D) A type</li><li>E) NULL only</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q"><code class="i">&amp;x</code> means:</div>
+<ul><li>A) Dereference x</li><li>B) Bitwise AND</li><li>C) Address of x</li><li>D) Reference x</li><li>E) Pointer to x's value</li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q"><code class="i">*p</code> in <code class="i">int *p;</code>:</div>
+<ul><li>A) Dereference</li><li>B) Multiply</li><li>C) Declares p as pointer to int</li><li>D) Sets to NULL</li><li>E) Squared</li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q">After <code class="i">int x; int *p=&amp;x; *p=7;</code> x is:</div>
+<ul><li>A) 0</li><li>B) 7</li><li>C) NULL</li><li>D) Garbage</li><li>E) Address of 7</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">C parameter passing:</div>
+<ul><li>A) By reference only</li><li>B) By value (simulate ref via pointers)</li><li>C) Both</li><li>D) By name</li><li>E) Move semantics</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">scanf("%d") needs &amp; because:</div>
+<ul><li>A) C99</li><li>B) scanf needs the address to write into the variable</li><li>C) Style</li><li>D) Type-safety</li><li>E) Threading</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">scanf("%s", buf) needs &amp;:</div>
+<ul><li>A) Yes always</li><li>B) No — array name is already an address</li><li>C) Only if small</li><li>D) Only with -Wall</li><li>E) Always &amp;buf[0]</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Format for printing a pointer:</div>
+<ul><li>A) %d</li><li>B) %x</li><li>C) %p</li><li>D) %a</li><li>E) %&amp;</li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q">Pointers on x86_64:</div>
+<ul><li>A) 4 bytes</li><li>B) 8 bytes (all of them)</li><li>C) Same as target</li><li>D) Variable</li><li>E) 16</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Dereferencing NULL:</div>
+<ul><li>A) Returns 0</li><li>B) Returns NULL</li><li>C) UB — typically segfault</li><li>D) Compile error</li><li>E) Always works</li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q"><code class="i">int *p, q;</code> declares:</div>
+<ul><li>A) Two int pointers</li><li>B) p as int*, q as int</li><li>C) Two ints</li><li>D) Array</li><li>E) Compile error</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q"><code class="i">int *p = 0;</code>:</div>
+<ul><li>A) Compile error</li><li>B) Pointer to 0</li><li>C) NULL pointer</li><li>D) Random</li><li>E) Pointer to itself</li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q"><code class="i">void f(int *p) { *p = 0; }</code> does:</div>
+<ul><li>A) Sets pointer NULL</li><li>B) Writes 0 to int p points to</li><li>C) Frees</li><li>D) Returns 0</li><li>E) Crashes</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Uninitialized pointer is dangerous because:</div>
+<ul><li>A) Always NULL</li><li>B) Random address; deref = crash or corruption</li><li>C) Compile error</li><li>D) Always 0xDEADBEEF</li><li>E) Auto-NULL</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Reading <code class="i">int *p</code> in declaration vs expression:</div>
+<ul><li>A) Same</li><li>B) Decl: pointer; Expr: dereference</li><li>C) Decl: dereference</li><li>D) Expr: address-of</li><li>E) Always multiply</li></ul>
+<div class="ans">B.</div></div>
+</div>
+</div>
+</article>
+
+</section>
+
+<section class="tab" id="t4">
+<div class="tab-intro"><h2>Tab 4 · More Pointers &amp; malloc</h2><p>Lectures 11-12: pointer arithmetic, arrays as pointers, gdb basics, malloc/calloc/free.</p></div>
+
+<article class="lecture" id="L11">
+<div class="lec-header"><div class="num">LECTURE 11 · MORE POINTERS</div><h3>Pointer Arithmetic, Arrays, the Arrow Operator, gdb</h3></div>
+
+<div class="section">
+<h4>1. Definition vs Indirection — Same Symbol, Different Meaning</h4>
+<pre class="code"><span class="kw">int</span> x = <span class="num">7</span>;
+<span class="kw">int</span> *p = &amp;x;   <span class="cmt">// this * declares p as a pointer</span>
+*p = <span class="num">5</span>;       <span class="cmt">// this * dereferences p</span></pre>
+<p>The <code class="i">*</code> in declaration is part of the type. The <code class="i">*</code> in an expression is the dereference operator. Context tells you which.</p>
+</div>
+
+<div class="section">
+<h4>2. Pointers Behave Like Arrays</h4>
+<pre class="code"><span class="kw">int</span> arr[<span class="num">5</span>] = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>};
+<span class="kw">int</span> *p = arr;   <span class="cmt">// p points to first element</span>
+
+<span class="cmt">// All four are EQUIVALENT:</span>
+arr[<span class="num">2</span>]
+*(arr + <span class="num">2</span>)
+p[<span class="num">2</span>]
+*(p + <span class="num">2</span>)</pre>
+<p>This is why <code class="i">arr[i]</code> and <code class="i">*(arr + i)</code> are interchangeable. Even <code class="i">i[arr]</code> works (though never write it that way) — array subscript is just <code class="i">*(a + b)</code> with operands commutative.</p>
+</div>
+
+<div class="section">
+<h4>3. Arrays Decay to Pointers</h4>
+<p>An array name in most expressions automatically converts to a pointer to its first element. Three exceptions where the array stays an array:</p>
+<ul>
+<li><code class="i">sizeof(arr)</code> — gives total bytes of the array</li>
+<li><code class="i">&amp;arr</code> — gives a pointer to the WHOLE array (different type from <code class="i">&amp;arr[0]</code>)</li>
+<li>String literal initializing a char[] — <code class="i">char s[] = "hi";</code> initializes the array directly</li>
+</ul>
+<h5>Differences between arrays and pointers</h5>
+<pre class="code"><span class="kw">int</span> arr[<span class="num">100</span>];   <span class="cmt">// allocates space for 100 ints (400 bytes)</span>
+<span class="kw">int</span> *p;          <span class="cmt">// allocates space for ONE pointer (8 bytes on 64-bit)</span>
+
+p = arr;        <span class="cmt">// OK: pointer can hold an address</span>
+arr = p;        <span class="cmt">// COMPILE ERROR — array names are not assignable</span></pre>
+</div>
+
+<div class="section">
+<h4>4. Arrays as Function Parameters — A Lie</h4>
+<pre class="code"><span class="kw">int</span> sum(<span class="kw">int</span> arr[<span class="num">100</span>]) {  <span class="cmt">// the [100] is ignored!</span>
+    <span class="cmt">// inside, arr is just int*</span>
+    printf(<span class="str">"%zu\n"</span>, <span class="kw">sizeof</span>(arr));   <span class="cmt">// prints 8 (pointer size), not 400</span>
+}</pre>
+<p>Function parameters declared as arrays are SILENTLY rewritten to pointers. So you must pass the size separately:</p>
+<pre class="code"><span class="kw">int</span> sum(<span class="kw">int</span> *arr, <span class="kw">int</span> n) {
+    <span class="kw">int</span> total = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) total += arr[i];
+    <span class="kw">return</span> total;
+}</pre>
+</div>
+
+<div class="section">
+<h4>5. Pointer Arithmetic — In Element Units</h4>
+<pre class="code"><span class="kw">int</span> arr[<span class="num">10</span>];
+<span class="kw">int</span> *p = arr;
+p++;            <span class="cmt">// advances by sizeof(int) bytes — 4, not 1</span>
+p = p + <span class="num">3</span>;     <span class="cmt">// advances by 3 * sizeof(int) = 12 bytes</span>
+p--;            <span class="cmt">// back by sizeof(int)</span></pre>
+<p>The compiler scales by the pointed-to type's size. This is why <code class="i">arr[i]</code> works regardless of element size.</p>
+<h5>Pointer subtraction</h5>
+<pre class="code"><span class="kw">int</span> arr[<span class="num">100</span>];
+<span class="kw">int</span> *p1 = &amp;arr[<span class="num">10</span>];
+<span class="kw">int</span> *p2 = &amp;arr[<span class="num">20</span>];
+<span class="kw">long</span> diff = p2 - p1;   <span class="cmt">// = 10, NOT 40 bytes</span></pre>
+<p>Pointer subtraction returns the count of ELEMENTS between them.</p>
+</div>
+
+<div class="section">
+<h4>6. Pointers and Structs — the Arrow Operator</h4>
+<pre class="code"><span class="kw">struct</span> point { <span class="kw">int</span> x, y; };
+<span class="kw">struct</span> point pt = {<span class="num">3</span>, <span class="num">4</span>};
+<span class="kw">struct</span> point *pp = &amp;pt;
+
+<span class="cmt">// To access x via the pointer:</span>
+(*pp).x = <span class="num">10</span>;     <span class="cmt">// works but ugly</span>
+pp-&gt;x = <span class="num">10</span>;        <span class="cmt">// equivalent — preferred</span></pre>
+<div class="callout warn">
+<div class="callout-label">Parens matter</div>
+<code class="i">*pp.x</code> would parse as <code class="i">*(pp.x)</code> — try to use pp's x field as a pointer. Wrong! Use <code class="i">(*pp).x</code> or <code class="i">pp-&gt;x</code>. The arrow exists precisely to avoid this paren mistake.
+</div>
+</div>
+
+<div class="section">
+<h4>7. Debugging — gdb in 5 Steps</h4>
+<p>Kernighan: "Debugging is twice as hard as writing the code in the first place. So if you write the cleverest code possible, you are by definition not smart enough to debug it."</p>
+<pre class="code">$ gcc -g file.c -o file    <span class="cmt"># -g includes debug symbols</span>
+$ gdb file
+(gdb) run                  <span class="cmt"># execute; stops at error</span>
+(gdb) bt                   <span class="cmt"># backtrace shows call chain</span>
+(gdb) print var            <span class="cmt"># inspect a variable</span>
+(gdb) quit</pre>
+<h5>More gdb commands</h5>
+<table class="t">
+<tr><th>Command</th><th>Effect</th></tr>
+<tr><td><code class="i">break <i>fn</i></code> or <code class="i">break <i>file:line</i></code></td><td>Set breakpoint</td></tr>
+<tr><td><code class="i">continue</code> (c)</td><td>Resume after breakpoint</td></tr>
+<tr><td><code class="i">step</code> (s)</td><td>Step INTO function calls</td></tr>
+<tr><td><code class="i">next</code> (n)</td><td>Step OVER function calls</td></tr>
+<tr><td><code class="i">print <i>expr</i></code></td><td>Evaluate and print</td></tr>
+<tr><td><code class="i">list</code> (l)</td><td>Show source around current line</td></tr>
+<tr><td><code class="i">info locals</code></td><td>All local variables</td></tr>
+</table>
+<div class="callout deep">
+<div class="callout-label">Why -g matters</div>
+Without <code class="i">-g</code>, the compiled binary has no variable names, no line numbers — just raw addresses. gdb can show you "crash at 0x4005a2" but not "crash at file.c line 42 in function foo." Always compile with -g for debugging; strip symbols only for release builds.
+</div>
+</div>
+
+<div class="section">
+<h4>8. Pointers Are Dangerous — Common Crashes</h4>
+<pre class="code"><span class="kw">int</span> *p = NULL;
+*p = <span class="num">5</span>;            <span class="cmt">// SEGFAULT — null deref</span>
+
+<span class="kw">int</span> *q;
+*q = <span class="num">5</span>;            <span class="cmt">// CRASH or CORRUPTION — uninit pointer</span>
+
+<span class="kw">int</span> *r = malloc(<span class="num">4</span>);
+free(r);
+*r = <span class="num">5</span>;            <span class="cmt">// USE-AFTER-FREE — undefined</span>
+
+<span class="kw">int</span> arr[<span class="num">10</span>];
+arr[<span class="num">10</span>] = <span class="num">5</span>;        <span class="cmt">// OFF-BY-ONE — last valid index is 9</span>
+
+<span class="kw">int</span> *bad() {
+    <span class="kw">int</span> local = <span class="num">5</span>;
+    <span class="kw">return</span> &amp;local;   <span class="cmt">// DANGLING — local dies on return</span>
+}</pre>
+</div>
+
+<div class="section">
+<h4>How to approach a pointer/array question</h4>
+<div class="steps">
+<h6>Recipe</h6>
+<ol>
+<li>Identify what's a pointer vs an array — re-read the declaration</li>
+<li>Convert: <code class="i">arr[i]</code> ≡ <code class="i">*(arr + i)</code> ≡ <code class="i">*(&amp;arr[0] + i)</code></li>
+<li>To pass an array to a function: pass the name + the size separately</li>
+<li>To modify a struct via pointer: use <code class="i">-&gt;</code> not <code class="i">.</code></li>
+<li>Pointer arithmetic moves in units of the pointed-to type</li>
+<li>Always init pointers to NULL or a real address</li>
+<li>Always check pointers for NULL before dereferencing</li>
+</ol>
+</div>
+</div>
+
+<div class="practice">
+<h4>Practice — Lecture 11</h4>
+<h5>Free-Response</h5>
+
+<div class="frq"><strong>FRQ 1.</strong> Write 4 equivalent ways to access arr[3] using either <code class="i">arr</code> or a pointer <code class="i">p = arr</code>.
+<div class="frq-answer"><strong>Answer:</strong> <code class="i">arr[3]</code>, <code class="i">*(arr + 3)</code>, <code class="i">p[3]</code>, <code class="i">*(p + 3)</code>. Bonus: <code class="i">3[arr]</code> works (commutative subscript) but never write it.</div></div>
+
+<div class="frq debug"><strong>FRQ 2 (Debug).</strong> Why doesn't this give the array size?
+<pre class="code" style="margin-top:6px"><span class="kw">int</span> count(<span class="kw">int</span> arr[]) {
+    <span class="kw">return</span> <span class="kw">sizeof</span>(arr) / <span class="kw">sizeof</span>(arr[<span class="num">0</span>]);
+}</pre>
+<div class="frq-answer"><strong>Answer:</strong> Inside the function, <code class="i">arr</code> is a POINTER (parameter array decays). <code class="i">sizeof(arr)</code> = pointer size (8 on 64-bit), <code class="i">sizeof(arr[0])</code> = sizeof(int) = 4. Result: 2, not the array's true length. Fix: pass size as a separate parameter.</div></div>
+
+<div class="frq debug"><strong>FRQ 3 (Debug).</strong> Why segfault?
+<pre class="code" style="margin-top:6px"><span class="kw">struct</span> point { <span class="kw">int</span> x, y; };
+<span class="kw">int</span> main() {
+    <span class="kw">struct</span> point *p;
+    p-&gt;x = <span class="num">5</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+<div class="frq-answer"><strong>Answer:</strong> p is uninitialized — holds garbage. <code class="i">p-&gt;x = 5</code> dereferences that garbage address and writes 5 to a random location. Crash. Fix: <code class="i">struct point pt; struct point *p = &amp;pt;</code> OR <code class="i">struct point *p = malloc(sizeof(struct point));</code></div></div>
+
+<div class="frq debug"><strong>FRQ 4 (Debug).</strong> What's wrong?
+<pre class="code" style="margin-top:6px"><span class="kw">int</span> arr[<span class="num">5</span>] = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>};
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt;= <span class="num">5</span>; i++)
+    printf(<span class="str">"%d\n"</span>, arr[i]);</pre>
+<div class="frq-answer"><strong>Answer:</strong> Off-by-one. Valid indices are 0..4 (5 elements). <code class="i">i &lt;= 5</code> goes to i=5, reading arr[5] — past the end. Reads garbage from beyond the array; doesn't necessarily crash but is undefined behavior. Fix: <code class="i">i &lt; 5</code> (or <code class="i">i &lt; sizeof(arr)/sizeof(arr[0])</code> if arr is in scope as an array).</div></div>
+
+<div class="frq"><strong>FRQ 5.</strong> Compile a program with debug symbols and run gdb's backtrace.
+<div class="frq-answer"><strong>Answer:</strong> <code class="i">gcc -g file.c -o file</code>, then <code class="i">gdb file</code>, then <code class="i">(gdb) run</code>, then on crash <code class="i">(gdb) bt</code>, then <code class="i">(gdb) quit</code>.</div></div>
+
+<button class="toggle-all" onclick="toggleMCQs(this)">Show All Answers</button>
+<h5>Multiple-Choice</h5>
+<div class="mcq-list">
+<div class="mcq"><div class="q"><code class="i">arr[i]</code> equivalent to:</div>
+<ul><li>A) <code class="i">arr * i</code></li><li>B) <code class="i">*(arr + i)</code></li><li>C) <code class="i">&amp;arr[i]</code></li><li>D) <code class="i">arr - i</code></li><li>E) <code class="i">arr.i</code></li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Function param <code class="i">int arr[5]</code> is actually:</div>
+<ul><li>A) Array of 5 ints</li><li>B) Pointer to int (size lost)</li><li>C) Always NULL</li><li>D) An int</li><li>E) Compile error</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q"><code class="i">p-&gt;x</code> means:</div>
+<ul><li>A) Address of x in p</li><li>B) Same as <code class="i">(*p).x</code></li><li>C) Subtract x from p</li><li>D) p minus x</li><li>E) p increment by x</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q"><code class="i">arr = p;</code> for declared array arr:</div>
+<ul><li>A) Allowed</li><li>B) Compile error — array names not assignable</li><li>C) Sets ptr</li><li>D) Copies elements</li><li>E) Reverses</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">gdb flag for debug symbols:</div>
+<ul><li>A) -d</li><li>B) -g</li><li>C) -gdb</li><li>D) -debug</li><li>E) -O0</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">In gdb, "bt":</div>
+<ul><li>A) Begin trace</li><li>B) Break trap</li><li>C) Backtrace</li><li>D) Build target</li><li>E) Bit toggle</li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q">If <code class="i">int *p1, *p2;</code> point into same array, p1 - p2 is:</div>
+<ul><li>A) Bytes between</li><li>B) Elements between</li><li>C) Bits</li><li>D) Always 0</li><li>E) Undefined</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Dereferencing NULL:</div>
+<ul><li>A) Compile error</li><li>B) Returns NULL</li><li>C) Segfault (typically)</li><li>D) Returns 0</li><li>E) Returns -1</li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q">Array name in most expressions evaluates to:</div>
+<ul><li>A) Address of first element</li><li>B) The first element value</li><li>C) Number of elements</li><li>D) NULL</li><li>E) sizeof(array)</li></ul>
+<div class="ans">A.</div></div>
+<div class="mcq"><div class="q">Inside function with <code class="i">int arr[]</code>, sizeof(arr):</div>
+<ul><li>A) Total array bytes</li><li>B) Pointer size</li><li>C) Element count</li><li>D) 0</li><li>E) Undefined</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Address of array element 3:</div>
+<ul><li>A) <code class="i">&amp;arr[3]</code></li><li>B) <code class="i">arr + 3</code></li><li>C) Both equivalent</li><li>D) <code class="i">arr[&amp;3]</code></li><li>E) <code class="i">&amp;3 + arr</code></li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q">Why init pointers to NULL?</div>
+<ul><li>A) Required by C99</li><li>B) Helps catch usage before assignment</li><li>C) Faster</li><li>D) Saves memory</li><li>E) Required for malloc</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q"><code class="i">int *p = 0;</code>:</div>
+<ul><li>A) NULL pointer</li><li>B) Pointer to 0</li><li>C) Compile error</li><li>D) Random</li><li>E) Pointer to itself</li></ul>
+<div class="ans">A.</div></div>
+<div class="mcq"><div class="q"><code class="i">int *p = arr; p++;</code> twice — p points to:</div>
+<ul><li>A) arr[1]</li><li>B) arr[2]</li><li>C) arr[3]</li><li>D) Byte after arr</li><li>E) NULL</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">In gdb, "next" vs "step":</div>
+<ul><li>A) Identical</li><li>B) next steps OVER calls; step steps INTO</li><li>C) Reverse</li><li>D) Both quit</li><li>E) Both print</li></ul>
+<div class="ans">B.</div></div>
+</div>
+</div>
+</article>
+
+<article class="lecture" id="L12">
+<div class="lec-header"><div class="num">LECTURE 12 · MIDTERM 1 REVIEW + MALLOC</div><h3>Stack vs Heap, malloc / calloc / free</h3></div>
+
+<div class="section">
+<h4>1. The Stack-Local Pointer Trap</h4>
+<p>You can't return an array from a C function by returning a pointer to a local variable. The local lives on the stack, which is destroyed when the function returns.</p>
+<pre class="code"><span class="cmt">/* DO NOT DO THIS */</span>
+<span class="kw">int</span> *make_array() {
+    <span class="kw">int</span> arr[<span class="num">10</span>] = {<span class="num">0</span>};
+    <span class="kw">return</span> arr;             <span class="cmt">// dangling pointer!</span>
+}</pre>
+<div class="callout warn">
+<div class="callout-label">Why exactly is this broken?</div>
+When <code class="i">make_array</code> returns, the stack frame containing <code class="i">arr</code> is popped. The next function call REUSES that stack space — overwriting your data. The pointer returned is "dangling": it points to memory you no longer own. Reading or writing through it is undefined behavior.
+</div>
+<p>The fix: allocate on the HEAP with malloc. Heap memory persists until you free it.</p>
+</div>
+
+<div class="section">
+<h4>2. Stack vs Heap — What's the Difference</h4>
+<table class="t">
+<tr><th>Aspect</th><th>Stack</th><th>Heap</th></tr>
+<tr><td>Allocation</td><td>Automatic (function entry)</td><td>Manual (malloc)</td></tr>
+<tr><td>Deallocation</td><td>Automatic (function return)</td><td>Manual (free)</td></tr>
+<tr><td>Lifetime</td><td>Until function returns</td><td>Until you free</td></tr>
+<tr><td>Speed</td><td>Very fast (pointer bump)</td><td>Slower (allocator bookkeeping)</td></tr>
+<tr><td>Size</td><td>Small (~8 MB default)</td><td>Large (gigabytes)</td></tr>
+<tr><td>Allocation pattern</td><td>LIFO</td><td>Arbitrary</td></tr>
+<tr><td>Fragmentation</td><td>None</td><td>Possible</td></tr>
+</table>
+<div class="callout deep">
+<div class="callout-label">How malloc works under the hood</div>
+malloc is a USER-SPACE LIBRARY function. It maintains a pool of memory obtained from the OS via system calls (typically <code class="i">brk</code>/<code class="i">sbrk</code> for small allocations, <code class="i">mmap</code> for large ones). Internally it manages "free lists" of available blocks, tries to reuse freed memory, and only asks the OS for more when needed. Each malloc'd block has a small HEADER (typically 8-16 bytes) recording its size — that's how free knows how much to release without you telling it.
+</div>
+</div>
+
+<div class="section">
+<h4>3. malloc — Manual Allocation</h4>
+<pre class="code"><span class="kw">void</span> *malloc(<span class="kw">size_t</span> size);</pre>
+<ul>
+<li><strong>size_t</strong> is an unsigned integer type (typically <code class="i">unsigned long</code>)</li>
+<li>Returns <code class="i">void *</code> on success — implicitly converts to any pointer type in C</li>
+<li>Returns <code class="i">NULL</code> on failure (out of memory)</li>
+<li>Memory is <strong>uninitialized</strong> — contains garbage</li>
+<li>Lives on the heap until <code class="i">free()</code></li>
+</ul>
+<pre class="code"><span class="pp">#include &lt;stdlib.h&gt;</span>
+<span class="kw">int</span> *p = malloc(<span class="num">10</span> * <span class="kw">sizeof</span>(<span class="kw">int</span>));   <span class="cmt">// 10 ints (40 bytes on most systems)</span>
+<span class="kw">if</span> (p == NULL) {
+    fprintf(stderr, <span class="str">"out of memory\n"</span>);
+    <span class="kw">return</span> <span class="num">-1</span>;
+}
+p[<span class="num">0</span>] = <span class="num">42</span>;
+<span class="cmt">// ... use p ...</span>
+free(p);
+p = NULL;</pre>
+<div class="callout tip">
+<div class="callout-label">Idiom — sizeof(*p) is more robust</div>
+<pre class="code"><span class="kw">int</span> *p = malloc(N * <span class="kw">sizeof</span>(*p));   <span class="cmt">// not sizeof(int)</span></pre>
+If you later change p's type from <code class="i">int *</code> to <code class="i">long *</code>, the malloc call automatically updates. Less to keep in sync.
+</div>
+</div>
+
+<div class="section">
+<h4>4. calloc — Allocate AND Zero</h4>
+<pre class="code"><span class="kw">void</span> *calloc(<span class="kw">size_t</span> count, <span class="kw">size_t</span> size);</pre>
+<ul>
+<li>Allocates <code class="i">count * size</code> bytes</li>
+<li><strong>Zeros every byte</strong> — unlike malloc</li>
+<li>Two arguments, not one (count and per-element size)</li>
+<li>Returns NULL on failure</li>
+</ul>
+<pre class="code"><span class="kw">int</span> *p = calloc(<span class="num">10</span>, <span class="kw">sizeof</span>(<span class="kw">int</span>));   <span class="cmt">// 10 zeroed ints</span></pre>
+<h5>When to use calloc vs malloc + memset</h5>
+<p>Use calloc when you need zeros from the start. It's typically faster than <code class="i">malloc + memset</code> because the OS can hand you pre-zeroed memory pages.</p>
+</div>
+
+<div class="section">
+<h4>5. free — Return Memory to the Heap</h4>
+<pre class="code"><span class="kw">void</span> free(<span class="kw">void</span> *ptr);</pre>
+<ul>
+<li>Releases the block back to the heap allocator</li>
+<li><strong>free(NULL) is safe</strong> — defined as a no-op</li>
+<li>free does NOT set your pointer to NULL — you must do it</li>
+<li>Double-free = undefined behavior (crash or corruption)</li>
+<li>Use-after-free = read/write to memory you don't own</li>
+<li>free on a non-malloc'd pointer = undefined</li>
+</ul>
+<pre class="code">free(p);
+p = NULL;   <span class="cmt">// always do this</span></pre>
+<div class="callout warn">
+<div class="callout-label">Why set to NULL after free?</div>
+If you accidentally use p later, dereferencing NULL crashes IMMEDIATELY (clear bug). Without setting to NULL, p still holds the old (now-invalid) address — using it might silently work for a while (the memory hasn't been reused yet), then suddenly corrupt random data when the allocator reuses that block. Crash early, debug easily.
+</div>
+</div>
+
+<div class="section">
+<h4>6. Memory Leaks</h4>
+<p>If you malloc but never free, that memory stays allocated until the program exits. In a long-running program, leaks accumulate and the program eventually runs out of memory.</p>
+<pre class="code"><span class="kw">while</span> (<span class="num">1</span>) {
+    <span class="kw">int</span> *p = malloc(<span class="num">1000</span>);   <span class="cmt">// LEAK every iteration</span>
+    process(p);
+    <span class="cmt">// missing: free(p);</span>
+}   <span class="cmt">// process slowly grows in memory until OOM</span></pre>
+<p>Tools like <code class="i">valgrind</code> (Lecture 14) and the CS 240 custom malloc detect leaks at exit.</p>
+</div>
+
+<div class="section">
+<h4>7. Midterm 1 — What's Covered</h4>
+<ul>
+<li>Compilation pipeline; gcc flags</li>
+<li>Function prototypes; declaration vs definition</li>
+<li>File I/O — fopen, fclose, fprintf, fscanf, fread, fwrite</li>
+<li>argc / argv; EOF detection (use return value, not feof)</li>
+<li>scanf format specifiers, scansets, width</li>
+<li>assert; defensive programming</li>
+<li>fseek / ftell for random access</li>
+<li>Structures, typedef, struct assignment</li>
+<li>Arrays — initialization, partial init, auto-sizing</li>
+<li>The strncpy trap (always force \0)</li>
+<li>Memory layout — padding, alignment, struct sizing</li>
+<li>Bitwise operators, shifts, bit set/clear/test</li>
+<li>Unions, enums (and bitfields for awareness only)</li>
+<li>Pointers — &amp; and *, pass-by-pointer</li>
+<li>Pointer arithmetic, arrays as pointers, the arrow operator</li>
+<li>gdb basics</li>
+<li>malloc / calloc / free; stack vs heap</li>
+</ul>
+</div>
+
+<div class="section">
+<h4>How to approach a "make this function return a struct/array" question</h4>
+<div class="steps">
+<h6>Recipe</h6>
+<ol>
+<li>Don't declare the data as a stack-local variable</li>
+<li><code class="i">malloc</code> enough bytes for the data; cast not required in C</li>
+<li>Check the return for NULL (out-of-memory)</li>
+<li>Initialize the contents (or use calloc to zero)</li>
+<li>Return the pointer</li>
+<li>Document that the caller is responsible for free</li>
+<li>Caller eventually calls free, then sets pointer to NULL</li>
+</ol>
+</div>
+</div>
+
+<div class="practice">
+<h4>Practice — Lecture 12</h4>
+<h5>Free-Response</h5>
+
+<div class="frq"><strong>FRQ 1.</strong> Write a function returning a heap-allocated zeroed array of N ints.
+<div class="frq-answer"><strong>Answer:</strong>
+<pre class="code" style="margin-top:6px"><span class="kw">int</span> *make_zeros(<span class="kw">int</span> n) {
+    <span class="kw">return</span> calloc(n, <span class="kw">sizeof</span>(<span class="kw">int</span>));
+    <span class="cmt">// caller checks for NULL, eventually free()s</span>
+}</pre></div></div>
+
+<div class="frq debug"><strong>FRQ 2 (Debug).</strong> Why is this dangerous?
+<pre class="code" style="margin-top:6px"><span class="kw">int</span> *make_array() {
+    <span class="kw">int</span> arr[<span class="num">10</span>] = {<span class="num">0</span>};
+    <span class="kw">return</span> arr;
+}
+<span class="kw">int</span> main() {
+    <span class="kw">int</span> *p = make_array();
+    p[<span class="num">5</span>] = <span class="num">42</span>;
+}</pre>
+<div class="frq-answer"><strong>Answer:</strong> <code class="i">arr</code> is on make_array's stack frame; that frame is destroyed on return. <code class="i">p</code> now points to memory that may be reused at any moment. Writing to <code class="i">p[5]</code> is undefined behavior — corrupts whatever the next function call put there. Fix: <code class="i">int *arr = calloc(10, sizeof(int)); return arr;</code></div></div>
+
+<div class="frq debug"><strong>FRQ 3 (Debug).</strong> Find the bugs:
+<pre class="code" style="margin-top:6px"><span class="kw">int</span> *p = malloc(<span class="num">100</span>);
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">100</span>; i++)
+    p[i] = i;
+free(p);
+printf(<span class="str">"%d\n"</span>, p[<span class="num">0</span>]);
+free(p);</pre>
+<div class="frq-answer"><strong>Three bugs.</strong> (1) <code class="i">malloc(100)</code> only gives 100 BYTES, not 100 ints. The loop writes 400 bytes — buffer overflow. Fix: <code class="i">malloc(100 * sizeof(int))</code>. (2) Use-after-free: <code class="i">printf("%d", p[0])</code> reads from already-freed memory — UB. (3) Double-free: <code class="i">free(p)</code> called twice — UB. Always set to NULL after free; <code class="i">free(NULL)</code> is safe.</div></div>
+
+<div class="frq debug"><strong>FRQ 4 (Debug).</strong> Why is this a memory leak?
+<pre class="code" style="margin-top:6px"><span class="kw">void</span> process_lines(FILE *fp) {
+    <span class="kw">char</span> *line;
+    <span class="kw">while</span> ((line = read_one_line(fp)) != NULL) {
+        printf(<span class="str">"%s\n"</span>, line);
+    }
+}</pre>
+<div class="frq-answer"><strong>Answer:</strong> <code class="i">read_one_line</code> presumably returns a malloc'd string (otherwise it couldn't return one per call). The function never frees the returned strings — each iteration leaks. Fix: <code class="i">while ((line = read_one_line(fp)) != NULL) { printf(...); free(line); }</code></div></div>
+
+<div class="frq"><strong>FRQ 5.</strong> Difference between stack and heap allocation?
+<div class="frq-answer"><strong>Answer:</strong> Stack: automatic, lives until function returns, very fast, limited size (~8 MB), LIFO. Heap: manual via malloc/free, lives until freed, slower, large (gigabytes), arbitrary lifetime. Use stack for short-lived locals; heap for variable-size data, data that outlives the function, or large data.</div></div>
+
+<button class="toggle-all" onclick="toggleMCQs(this)">Show All Answers</button>
+<h5>Multiple-Choice</h5>
+<div class="mcq-list">
+<div class="mcq"><div class="q">malloc returns on failure:</div>
+<ul><li>A) -1</li><li>B) 0</li><li>C) NULL</li><li>D) errno</li><li>E) EOF</li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q">calloc differs from malloc by:</div>
+<ul><li>A) Faster</li><li>B) Zero-initializes the memory</li><li>C) Returns int</li><li>D) No free needed</li><li>E) Allocates from stack</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Returning pointer to local array:</div>
+<ul><li>A) Works fine</li><li>B) Compile error</li><li>C) Undefined behavior — dangling pointer</li><li>D) Auto-promoted to heap</li><li>E) NULL</li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q">Header for malloc/free:</div>
+<ul><li>A) &lt;stdio.h&gt;</li><li>B) &lt;stdlib.h&gt;</li><li>C) &lt;malloc.h&gt;</li><li>D) &lt;memory.h&gt;</li><li>E) &lt;mem.h&gt;</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">free(NULL):</div>
+<ul><li>A) Crashes</li><li>B) Frees the OS</li><li>C) Safe no-op</li><li>D) Returns -1</li><li>E) errno set</li></ul>
+<div class="ans">C.</div></div>
+<div class="mcq"><div class="q">Memory from malloc is:</div>
+<ul><li>A) Zeroed</li><li>B) Uninitialized (garbage)</li><li>C) NULL</li><li>D) -1</li><li>E) Undefined size</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Double-free is:</div>
+<ul><li>A) Allowed</li><li>B) Undefined behavior</li><li>C) Returns -1</li><li>D) Forces restart</li><li>E) Safe</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Best malloc idiom:</div>
+<ul><li>A) <code class="i">malloc(n)</code></li><li>B) <code class="i">malloc(n * sizeof(*p))</code></li><li>C) <code class="i">malloc(sizeof(int))</code></li><li>D) <code class="i">malloc()</code></li><li>E) <code class="i">malloc(n+1)</code></li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">A memory leak is:</div>
+<ul><li>A) Crash</li><li>B) Allocated memory never freed</li><li>C) Wrong return type</li><li>D) Stack overflow</li><li>E) Buffer overrun</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">size_t is:</div>
+<ul><li>A) Signed int</li><li>B) Unsigned int (typically unsigned long)</li><li>C) char</li><li>D) float</li><li>E) Pointer</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">malloc allocates from:</div>
+<ul><li>A) Stack</li><li>B) Heap</li><li>C) BSS</li><li>D) Code segment</li><li>E) ROM</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Cast required for malloc return in C:</div>
+<ul><li>A) Required</li><li>B) NOT required (void* converts implicitly)</li><li>C) Forbidden</li><li>D) Only for char</li><li>E) Only with -Wall</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">After <code class="i">free(p);</code> p is:</div>
+<ul><li>A) NULL</li><li>B) Unchanged (still points at freed mem)</li><li>C) -1</li><li>D) 0xDEADBEEF</li><li>E) Random</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">calloc(10, sizeof(int)) allocates:</div>
+<ul><li>A) 10 bytes</li><li>B) 40 bytes (with 4-byte int)</li><li>C) sizeof(int)</li><li>D) 100</li><li>E) 0</li></ul>
+<div class="ans">B.</div></div>
+<div class="mcq"><div class="q">Use-after-free is:</div>
+<ul><li>A) Compile error</li><li>B) Undefined behavior</li><li>C) Allowed</li><li>D) Returns NULL</li><li>E) Auto-fixed</li></ul>
+<div class="ans">B.</div></div>
+</div>
+</div>
+</article>
+
+</section>
+</main>
+<footer>
+  <div class="b">Boiler Up.</div>
+  <div>CS 240 STUDY GUIDE — LECTURES 2-12 COMPLETE</div>
+</footer>
+<script>
+document.querySelectorAll('nav.tabs button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+function toggleMCQs(btn) {
+  const list = btn.parentElement.querySelector('.mcq-list');
+  const showing = list.querySelector('.mcq.show-ans');
+  list.querySelectorAll('.mcq').forEach(m => {
+    if (showing) m.classList.remove('show-ans');
+    else m.classList.add('show-ans');
+  });
+  btn.textContent = showing ? 'Show All Answers' : 'Hide All Answers';
+}
+</script>
+</body>
+</html>
