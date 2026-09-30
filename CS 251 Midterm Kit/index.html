@@ -1,0 +1,2192 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>CS 251 Midterm Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: sticky left rail of topics + tests, one reading column (~70ch) for lessons, full-width for tests. */
+:root{
+  --bg:#f4f5f1; --panel:#ffffff; --ink:#1b2130; --muted:#5a6272; --line:#d8dbd3;
+  --accent:#2d4a8c; --accent-soft:#e3e9f6; --gold:#9c7412; --gold-soft:#f5ecd4;
+  --good:#23724a; --good-soft:#e1f1e7; --bad:#a93a28; --bad-soft:#f8e4df; --code:#eceee7;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#12151b; --panel:#1a1e26; --ink:#e6e8ed; --muted:#9ca4b3; --line:#2d333e;
+  --accent:#93acec; --accent-soft:#232c42; --gold:#dcbb62; --gold-soft:#2f2a1b;
+  --good:#6fc493; --good-soft:#1b2e24; --bad:#ec8c75; --bad-soft:#35201b; --code:#20252e; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#12151b; --panel:#1a1e26; --ink:#e6e8ed; --muted:#9ca4b3; --line:#2d333e;
+  --accent:#93acec; --accent-soft:#232c42; --gold:#dcbb62; --gold-soft:#2f2a1b;
+  --good:#6fc493; --good-soft:#1b2e24; --bad:#ec8c75; --bad-soft:#35201b; --code:#20252e; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;margin:0}
+.app{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+nav.rail{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;overflow-y:auto;border-right:1px solid var(--line);padding:22px 14px;background:var(--panel)}
+.brand{font-family:var(--f-display);font-weight:700;font-size:20px;line-height:1.15;padding:0 8px 4px}
+.brand small{display:block;font-family:var(--f-body);font-weight:400;font-size:12px;color:var(--muted);margin-top:4px}
+.rail h4{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:22px 8px 6px;font-weight:700}
+.rail a{display:flex;gap:10px;align-items:baseline;padding:6px 8px;border-radius:6px;color:var(--ink);text-decoration:none;font-size:14.5px}
+.rail a .n{font-family:var(--f-mono);font-size:11px;color:var(--muted);min-width:18px}
+.rail a:hover{background:var(--code)}
+.rail a.on{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.rail a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{padding-block:32px 80px;padding-inline:clamp(16px,4vw,56px);min-width:0}
+.col{max-width:760px}
+.wide{max-width:980px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(28px,4vw,40px);margin:0 0 8px;font-weight:700}
+h2{font-size:24px;margin:40px 0 10px;font-weight:700}
+h3{font-size:19px;margin:28px 0 8px;font-weight:700}
+.eyebrow{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.lede{color:var(--muted);font-size:17px;margin:0 0 8px}
+p{margin:10px 0}
+code,.m{font-family:var(--f-mono);font-size:.88em;background:var(--code);padding:1px 5px;border-radius:4px}
+pre{font-family:var(--f-mono);font-size:13.5px;line-height:1.55;background:var(--code);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;margin:12px 0}
+.tbl{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;font-size:14.5px;min-width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+th{background:var(--code);font-weight:700}
+td.mono,th.mono{font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.note{border-left:3px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:0 8px 8px 0;margin:14px 0}
+.trap{border-left:3px solid var(--bad);background:var(--bad-soft);padding:10px 14px;border-radius:0 8px 8px 0;margin:14px 0}
+.trap b:first-child,.note b:first-child{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
+ul,ol{padding-left:22px;margin:8px 0}
+li{margin:4px 0}
+.fig{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;margin:14px 0;overflow-x:auto}
+.fig .cap{font-size:13px;color:var(--muted);margin-top:4px}
+.figrow{display:flex;flex-wrap:wrap;gap:12px}
+.figrow .fig{flex:1 1 220px;margin:0;min-width:0}
+svg .edge{stroke:var(--muted);stroke-width:1.4;fill:none}
+svg .nodec{fill:var(--panel);stroke:var(--ink);stroke-width:1.5}
+svg .nodeb{fill:var(--panel);stroke:var(--ink);stroke-width:1.5}
+svg .hl{fill:var(--gold-soft);stroke:var(--gold);stroke-width:2}
+svg .div{stroke:var(--ink);stroke-width:1}
+svg text{fill:var(--ink);font-family:var(--f-mono);font-size:14px}
+svg text.idx{fill:var(--muted);font-size:10px}
+.arr{display:flex;flex-wrap:wrap;gap:0;margin:8px 0;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.arr span{display:flex;flex-direction:column;align-items:center;min-width:40px;border:1px solid var(--line);margin-left:-1px;background:var(--panel)}
+.arr span b{padding:4px 6px;font-weight:600}
+.arr span i{font-style:normal;font-size:10px;color:var(--muted);border-top:1px solid var(--line);width:100%;text-align:center;background:var(--code)}
+
+/* cheat box */
+.cheat{margin:36px 0 10px;border:2px solid var(--ink);border-radius:10px;padding:16px 18px;background:var(--panel)}
+.cheat h3{margin:0 0 6px;font-size:17px;display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.cheat h3 span{font-family:var(--f-body);font-size:12px;color:var(--muted);font-weight:400}
+.cheat ul{margin:4px 0}
+.cheat pre{font-size:12.5px}
+
+/* quiz */
+.quiz{margin-top:34px}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+.q .qh{display:flex;gap:10px;align-items:baseline;justify-content:space-between;flex-wrap:wrap}
+.q .qn{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.q .kind{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.q .qt{margin:6px 0 10px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;font:inherit;font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer;display:flex;gap:10px;align-items:baseline}
+.opt:hover{border-color:var(--accent)}
+.opt .l{font-family:var(--f-mono);font-size:12px;color:var(--muted);min-width:14px}
+.opt.right{background:var(--good-soft);border-color:var(--good)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opt[disabled]{cursor:default}
+.btn{font:inherit;font-size:14px;font-weight:700;border:1px solid var(--accent);color:var(--accent);background:transparent;border-radius:8px;padding:7px 14px;cursor:pointer}
+.btn:hover{background:var(--accent-soft)}
+.btn.solid{background:var(--accent);color:var(--panel)}
+.btn.solid:hover{opacity:.9}
+.ans{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}
+.ans .verdict{font-weight:700}
+.ans .verdict.ok{color:var(--good)} .ans .verdict.no{color:var(--bad)}
+.score{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.pts{font-family:var(--f-mono);font-size:12px;color:var(--gold);font-weight:600}
+
+/* tests */
+.testbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 0;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px}
+.clock{font-family:var(--f-mono);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}
+.clock.low{color:var(--bad)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.part{font-family:var(--f-display);font-size:20px;margin:30px 0 4px}
+.confirm{font-size:14px;color:var(--muted)}
+
+/* home */
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:16px 0}
+.plan a{display:block;text-decoration:none;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.plan a:hover{border-color:var(--accent)}
+.plan .t{font-family:var(--f-mono);font-size:12px;color:var(--gold);font-weight:600}
+.plan b{display:block;font-family:var(--f-display);font-size:17px;margin:2px 0}
+.plan span{font-size:14px;color:var(--muted)}
+
+/* lab */
+.lab{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;margin:18px 0}
+.lab input,.lab select{font:inherit;font-family:var(--f-mono);font-size:14px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);max-width:100%}
+.lab .log{font-family:var(--f-mono);font-size:12.5px;background:var(--code);border-radius:6px;padding:10px;max-height:220px;overflow:auto;white-space:pre-wrap;margin-top:10px}
+
+/* cheat sheet page: monochrome */
+.sheet{columns:2 340px;column-gap:22px}
+.sheet .cheat{break-inside:avoid;margin:0 0 18px;border-width:1.5px}
+.sheet .cheat *{color:var(--ink)!important}
+
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  nav.rail{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:14px 16px}
+  .rail .links{display:flex;flex-wrap:wrap;gap:4px}
+  .rail h4{margin:12px 4px 4px}
+  .rail a{padding:5px 8px;font-size:13.5px;background:var(--code)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="app">
+  <nav class="rail" id="rail"></nav>
+  <main id="main"></main>
+</div>
+
+<script type="text/plain" id="texsrc">% ======================================================================
+%  CS 251 Midterm Cheat Sheet  (4 pages: 2 sheets, front + back)
+%  Heaps · Heapify · HeapSort · Sorting · Counting/Bucket/Radix · BST · B-Tree · B-Tree Deletion
+%  Compile with pdfLaTeX (Overleaf default). Print at 100% / "Actual size".
+% ======================================================================
+\documentclass[9pt]{extarticle}
+\usepackage[letterpaper,margin=0.2in]{geometry}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{tabularx,booktabs}
+\usepackage{listings}
+\usepackage{forest}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+
+% ---------- colours ----------
+\definecolor{navy}{RGB}{26,50,110}
+\definecolor{howc}{RGB}{30,100,160}
+\definecolor{trapc}{RGB}{170,40,30}
+\definecolor{keyc}{RGB}{180,120,0}
+\definecolor{codebg}{RGB}{244,245,248}
+\definecolor{rowbg}{RGB}{236,240,250}
+
+% ---------- page layout ----------
+\setlength{\columnsep}{10pt}
+\setlength{\columnseprule}{0.4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.2pt}
+\pagestyle{empty}
+\setlist{nosep,leftmargin=10pt,labelsep=3pt,topsep=1pt,itemsep=0.8pt}
+\setlist[itemize]{label=\textcolor{navy}{\textbullet}}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.0}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- headings ----------
+
+\newcommand{\secbar}[1]{\colorbox{navy}{\parbox{\dimexpr\linewidth-2\fboxsep}{\strut\color{white}#1}}}
+\titleformat{\section}{\normalfont\bfseries\large}{}{0pt}{\secbar}
+\titlespacing*{\section}{0pt}{4pt}{2pt}
+\titleformat{\subsection}{\normalfont\bfseries\color{navy}}{}{0pt}{}[\vspace{-3pt}\textcolor{navy!40}{\rule{\linewidth}{0.5pt}}]
+
+\titlespacing*{\subsection}{0pt}{3pt}{1pt}
+
+% ---------- code ----------
+\lstset{basicstyle=\ttfamily\fontsize{6.9}{7.8}\selectfont,columns=fullflexible,keepspaces=true,
+  backgroundcolor=\color{codebg},frame=single,rulecolor=\color{navy!30},framesep=2.5pt,
+  xleftmargin=3pt,xrightmargin=3pt,aboveskip=2pt,belowskip=2pt,
+  showstringspaces=false,breaklines=true,breakindent=10pt,
+  morekeywords={algorithm,for,from,to,down,downto,DOWNTO,while,if,else,elif,return,do,and,or,not,null,let,in,then},
+  keywordstyle=\bfseries\color{navy},
+  morecomment=[l]{//},commentstyle=\itshape\color{gray!75!black}}
+\lstnewenvironment{code}{}{}
+
+% ---------- boxes ----------
+\tcbset{boxsty/.style={enhanced,boxrule=0.5pt,arc=1.5pt,left=3pt,right=3pt,top=2pt,bottom=2pt,
+  fonttitle=\bfseries\small,toptitle=0.5pt,bottomtitle=0.5pt,before skip=2.5pt,after skip=2.5pt}}
+\newtcolorbox{howto}[1]{boxsty,colback=howc!5,colframe=howc,title={How to: #1}}
+\newtcolorbox{trap}[1][]{boxsty,colback=trapc!5,colframe=trapc,title={Trap#1}}
+\newtcolorbox{keyb}[1]{boxsty,colback=keyc!7,colframe=keyc,title={#1}}
+
+% ---------- trees ----------
+\forestset{
+ hp/.style={for tree={circle,draw,thick,minimum size=12pt,inner sep=0.3pt,font=\footnotesize,
+   l sep=5pt,s sep=4pt,edge={thick,navy!70}}},
+ bt/.style={for tree={draw,thick,rounded corners=1pt,inner sep=1.6pt,font=\ttfamily\footnotesize,
+   l sep=6pt,s sep=3pt,edge={thick,navy!70}}}}
+\newcommand{\kk}{\kern0.8pt\textcolor{gray!70}{\textbar}\kern0.8pt}
+\newcommand{\hl}{fill=keyc!25}   % highlight a node
+
+% ---------- math shortcuts ----------
+\newcommand{\fl}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\cl}[1]{\left\lceil #1\right\rceil}
+\newcommand{\Th}{\Theta}
+\newcommand{\cp}[1]{\par\centering{\scriptsize\color{gray!80!black}#1}\par}
+
+\begin{document}
+\fontsize{7.5}{8.6}\selectfont\raggedright
+\setlength{\abovedisplayskip}{2pt}\setlength{\belowdisplayskip}{2pt}
+\setlength{\abovedisplayshortskip}{1pt}\setlength{\belowdisplayshortskip}{1pt}
+
+
+\begin{multicols*}{2}
+
+% =====================================================================
+\section{0 \quad Conventions \& Math Toolkit}
+\begin{itemize}
+\item \textbf{Height = number of edges} on the longest root-to-leaf path. Single node: $h=0$. Empty: $h=-1$.
+\item Heap arrays are \textbf{0-indexed}. BST insert sends \textbf{equal keys left}. BST delete uses the \textbf{successor}.
+\item B-tree \textbf{order $m$} (Knuth) = max children. PSO 5 uses \textbf{minimum degree $t$} (CLRS).
+\end{itemize}
+
+\subsection{Sums you need}
+\begin{align*}
+\sum_{i=1}^{n} i &= \frac{n(n+1)}{2} \in \Th(n^2)
+&\sum_{i=0}^{h} 2^i &= 2^{h+1}-1\\
+\sum_{i=0}^{\infty} \frac{1}{2^i} &= 2
+&\sum_{i=1}^{\infty} \frac{i}{2^i} &= 2 \quad(\text{a constant!})\\
+\sum_{i=1}^{n} \log i &= \log(n!) \in \Th(n\log n)
+&\log_b n &= \frac{\log_2 n}{\log_2 b}
+\end{align*}
+\textcolor{trapc}{\textbf{Trap:}} a geometric (or $\frac{i}{2^i}$-weighted) sum \textbf{converges to a constant}. It never produces a $\log n$ factor.
+
+\subsection{Asymptotic bounds}
+\[
+O = \text{upper bound } (\le) \qquad \Omega = \text{lower bound } (\ge) \qquad \Th = \text{both}
+\]
+\[
+n\log n \in O(n^2)\ \text{is TRUE} \qquad\qquad \Th(n\log n) \ne \Th(n^2)
+\]
+
+\begin{keyb}{Necessarily true / Possibly true / Necessarily false}
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item Does the claim depend on the \textbf{input} or a \textbf{parameter} ($k$, $m$, order, shape)? Find one YES case and one NO case $\Rightarrow$ \textbf{Possibly true}.
+\item It can \textbf{never fail} (definition, theorem, or $O(\text{something bigger})$) $\Rightarrow$ \textbf{Necessarily true}.
+\item It can \textbf{never hold} (contradicts a theorem or definition) $\Rightarrow$ \textbf{Necessarily false}.
+\end{enumerate}
+\textbf{Examples:} HeapSort is $O(n^2)$: \textbf{N.T.} \ HeapSort is $\Th(n^2)$: \textbf{N.F.} \ Counting sort is $O(n)$: \textbf{P.T.} \ BST search is $O(\log n)$: \textbf{P.T.} \ B-tree height is $O(\log n)$: \textbf{N.T.} \ Comparison sort in $O(n)$ worst case: \textbf{N.F.}\\[2pt]
+\textbf{How to justify:}
+\textbf{False:} ``Counterexample: input \dots\ produces \dots''\\
+\textbf{Necessarily true:} ``By the definition / theorem \dots, this holds for every input.''\\
+\textbf{Possibly true:} ``True when \dots\ (example), false when \dots\ (example).''\\
+\textbf{Runtime:} ``Loop 1 is $O(\cdot)$; loop 2 runs $\sum\dots$ times in total; so $O(\cdot)$.''
+\end{keyb}
+
+\begin{howto}{analyze a brand-new algorithm (Part A T/F)}
+\begin{enumerate}[label=\arabic*.]
+\item Cost each loop separately.
+\item \textbf{Nested-loop trap:} add up the inner loop's \emph{total} iterations over all outer iterations. If the inner loop runs $C[v]$ times, then $\sum_v C[v]=n$, so the total is $O(n+k)$, \textbf{not} $O(nk)$.
+\item Any extra array or list of size $n$ or $k$ $\Rightarrow$ \textbf{not in place}.
+\item Stable? Follow two equal keys. Does it move records, or just rewrite values from counts (losing payloads)?
+\item ``Best scenario'' = small key range $k$ and large $n$.
+\end{enumerate}
+\end{howto}
+
+% =====================================================================
+\section{1 \quad Binary Heap}
+\textbf{Definition.} A \textbf{complete} binary tree (every level full except the last, which fills left $\to$ right) with \textbf{heap order}:
+\begin{itemize}
+\item \textbf{Min-heap:} parent $\le$ each child. \quad \textbf{Max-heap:} parent $\ge$ each child.
+\item Siblings are \textbf{unordered}. A heap is \textbf{not} a BST, and its array is \textbf{not} sorted.
+\item Priority-queue ADT: \texttt{Insert}, \texttt{Extract/Delete Min/Max}, \texttt{Peek}, \texttt{IsEmpty}, \texttt{Size}.
+\end{itemize}
+
+\subsection{Array formulas (root at index 0)}
+\begin{keyb}{Index math}
+\vspace{-6pt}
+\begin{align*}
+\text{left}(i) &= 2i+1 & \text{right}(i) &= 2i+2\\[2pt]
+\text{parent}(i) &= \fl{\frac{i-1}{2}} & \text{last internal} &= \fl{\frac n2}-1\\[2pt]
+\text{leaves} &: \fl{\frac n2}\ \text{to}\ n-1 & \#\text{leaves} &= \cl{\frac n2}\\[2pt]
+\text{height } h &= \fl{\log_2 n} & 2^h \le\ &n \le 2^{h+1}-1
+\end{align*}
+\end{keyb}
+\textbf{Example:} $i=23$: left $=47$, right $=48$, parent $=11$. \quad $n=99$: last internal $=48$, and $64 \le 99 \le 127 \Rightarrow h=6$.
+
+\begin{center}
+\begin{forest} hp
+[0 [1 [3 [7] [8]] [4 [9] [10]]] [2 [5 [11] [12]] [6 [13] [14]]]]
+\end{forest}
+\cp{Array index picture. Row $d$ holds indices $2^d-1$ to $2^{d+1}-2$.}
+\end{center}
+
+\subsection{Code (min-heap; for a max-heap flip every comparison)}
+\begin{code}
+SiftUp(A, i):
+  while i > 0 and A[parent(i)] > A[i]:     // child smaller -> swap
+    swap(A, i, parent(i));  i <- parent(i)
+
+Insert(x):
+  if n = capacity: A <- Resize(A, 2*capacity)   // amortized O(1)
+  A[n] <- x;  n <- n + 1;  SiftUp(A, n - 1)
+
+MinChildIndex(A, n, i):
+  lc <- 2i + 1;  if lc >= n: return n      // no children
+  rc <- 2i + 2;  if rc >= n: return lc     // only a left child
+  if A[lc] < A[rc]: return lc  else: return rc   // TIE -> RIGHT
+
+SiftDown(A, n, i):
+  m <- MinChildIndex(A, n, i)
+  while m < n and A[i] > A[m]:
+    swap(A, i, m);  i <- m;  m <- MinChildIndex(A, n, i)
+
+ExtractMin():
+  if n = 0: throw EmptyHeap
+  t <- A[0];  A[0] <- A[n-1]
+  SiftDown(A, n - 1, 0);  n <- n - 1;  return t
+\end{code}
+\begin{trap}[: slide typo]
+The slide prints \texttt{A[p] < A[i]} in the \emph{min}-heap SiftUp. That is the \textbf{max}-heap comparison. Reason from the rule, not the symbol.
+\end{trap}
+
+\subsection{Costs}
+\begin{tabularx}{\linewidth}{@{}Yl@{}}
+\toprule
+\textbf{Operation} & \textbf{Cost}\\\midrule
+Peek (min in min-heap) & $O(1)$\\
+Insert, Extract & $O(\log n)$ \ (one root--leaf path)\\
+Build with $n$ inserts (top-down) & $O(n\log n)$\\
+Build with Heapify (bottom-up) & $O(n)$\\
+Search any key; find max in a min-heap & $O(n)$\\\bottomrule
+\end{tabularx}
+
+\subsection{Worked example: min-heap inserts 23, 10, 17, 28, 34, 89, 22, 9}
+\begin{center}
+\begin{forest} hp
+[9,\hl [10 [23 [28]] [34]] [17 [89] [22]]]
+\end{forest}\qquad
+\begin{forest} hp
+[10 [23 [28] [34]] [17 [89] [22]]]
+\end{forest}
+\cp{Left: after all inserts, array [9,10,17,23,34,89,22,28]. Right: after ExtractMin (returns 9): 28 moves to the root, swaps with 10, then 23.}
+\end{center}
+
+\subsection{Facts that become trick questions}
+\begin{itemize}
+\item The \textbf{max of a min-heap is a leaf} (could be any leaf).
+\item Distinct keys: the 2nd smallest is a \textbf{child of the root}; the 3rd smallest is at depth 1 or 2; the $k$-th smallest is at depth $\le k-1$.
+\item A sorted ascending array \textbf{is} a min-heap. A min-heap array is only \emph{possibly} sorted.
+\item \textbf{Number of places a new item can end up} $= h+1$, where $h$ is the height \emph{after} inserting. ($n=99 \to 100$ nodes, $h=6$, answer 7.)
+\end{itemize}
+
+\begin{howto}{heap trace questions}
+\textbf{Insert:} put at index $n$; compare with parent $\fl{\frac{i-1}{2}}$; swap while order is violated. Write the array after \emph{every} insert.\\[1pt]
+\textbf{Extract:} save root; move last item to root; shrink; swap with the \textbf{smaller} child (min) or \textbf{larger} child (max) until it fits.\\[1pt]
+\textbf{Is it a heap?} For each $i \le \fl{n/2}-1$ compare $A[i]$ with $A[2i+1]$ and $A[2i+2]$.
+Example: $[10,20,15,30,40,50,12]$: $A[2]=15 > A[6]=12$, so \textbf{not} a heap.\\[1pt]
+\textbf{Traversal of a heap:} draw the tree level by level from the array, then traverse. PSO 3: max-heap inserts $8,11,3,10,7,4,12 \to [12,10,11,8,7,3,4]$, in-order $8,10,7,12,3,11,4$.
+\end{howto}
+
+% =====================================================================
+\section{2 \quad Heapify (build a heap in place)}
+\begin{code}
+Heapify(A):
+  n <- size of A
+  for i from floor(n/2) - 1 down to 0:
+    SiftDown(A, n, i)          // leaves are already heaps
+\end{code}
+\begin{itemize}
+\item Bottom-up, in place, \textbf{$\Th(n)$}.
+\item Number of SiftDown calls $= \fl{n/2}$. First index $= \fl{n/2}-1$ \ (e.g.\ $n=13 \to 5$).
+\item Max swaps in one SiftDown from the root $= h$.
+\end{itemize}
+
+\begin{keyb}{Why Heapify is $O(n)$}
+At most $\cl{n/2^{h+1}}$ nodes have height $h$, and each does $O(h)$ work:
+\[
+\sum_{h=0}^{\fl{\log_2 n}} \frac{n}{2^{h+1}}\cdot h
+\;=\; \frac n2 \sum_{h\ge 0}\frac{h}{2^h}
+\;=\; \frac n2 \cdot 2 \;=\; n \;\in O(n)
+\]
+\end{keyb}
+
+\subsection{Worked example: max-heapify $[4,6,3,5,7,1]$ \quad ($n=6$, $i=2,1,0$)}
+\begin{tabularx}{\linewidth}{@{}clY@{}}
+\toprule
+$i$ & \textbf{Array after} & \textbf{What happened}\\\midrule
+2 & $[4,6,3,5,7,1]$ & 3 vs child 1: no swap\\
+1 & $[4,7,3,5,6,1]$ & 6 vs 5, 7: swap with 7\\
+0 & $[7,6,3,5,4,1]$ & 4 $\leftrightarrow$ 7, then 4 $\leftrightarrow$ 6 (keep sinking!)\\\bottomrule
+\end{tabularx}
+\begin{trap}[: Heapify $\ne$ inserting one by one]
+Inserting 4, 6, 3, 5, 7, 1 into a max-heap gives $[7,6,3,4,5,1]$, but Heapify gives $[7,6,3,5,4,1]$. Both are valid. ``Same result'' is only \textbf{possibly} true.
+\end{trap}
+
+
+% =====================================================================
+\section{3 \quad HeapSort}
+\begin{code}
+HeapSort(A):
+  n <- size of A
+  Heapify(A)                   // MAX-heap for ascending order
+  for i from n-1 down to 1:
+    swap(A, 0, i)              // current max -> its final slot
+    n <- n - 1                 // shrink heap: protects sorted part
+    SiftDown(A, n, 0)          // MaxChildIndex; swap if A[i] < A[m]
+\end{code}
+\begin{itemize}
+\item Ascending $\Rightarrow$ \textbf{max}-heap. Descending $\Rightarrow$ min-heap.
+\item The array is always \textbf{[ heap $\mid$ sorted suffix ]}.
+\end{itemize}
+\[
+T(n) = \underbrace{O(n)}_{\text{Heapify}} + \underbrace{(n-1)\cdot O(\log n)}_{\text{sort-down}} = O(n\log n)
+\]
+\begin{tabularx}{\linewidth}{@{}Yl@{}}
+\toprule
+Worst / average time & $O(n\log n)$\\
+All keys equal & $\Th(n)$ \ (SiftDown stops immediately)\\
+Extra space & $\Th(1)$ \ (in place)\\
+Stable & \textbf{No}\\
+In practice & poor cache behaviour\\\bottomrule
+\end{tabularx}
+
+\subsection{Trace: sort-down from the heap $[7,6,3,5,4,1]$}
+\begin{tabularx}{\linewidth}{@{}clY@{}}
+\toprule
+$i$ & \textbf{After swap} & \textbf{After SiftDown}\\\midrule
+5 & $[1,6,3,5,4\mid 7]$ & $[6,5,3,1,4\mid 7]$\\
+4 & $[4,5,3,1\mid 6,7]$ & $[5,4,3,1\mid 6,7]$\\
+3 & $[1,4,3\mid 5,6,7]$ & $[4,1,3\mid 5,6,7]$\\
+2 & $[3,1\mid 4,5,6,7]$ & $[3,1\mid 4,5,6,7]$\\
+1 & $[1\mid 3,4,5,6,7]$ & done: $[1,3,4,5,6,7]$\\\bottomrule
+\end{tabularx}
+
+\begin{keyb}{Not stable: counterexample}
+Input $[2_a, 2_b, 1]$. Heapify: $2_a$ is not smaller than $2_b$, so no swap.\\
+$i=2$: swap $\to [1,2_b,2_a]$, sift $\to [2_b,1,2_a]$. \quad $i=1$: swap $\to [1,2_b,2_a]$.\\
+Output has $2_b$ before $2_a$: the order of equal keys changed.
+\end{keyb}
+
+\subsection{Variants from the PSOs / tests}
+\begin{itemize}
+\item \textbf{PSO 4 bags:} $n/k$ bags of $k$. HeapSort each ($O(n\log k)$), merge pairwise ($O(n\log\frac nk)$): total $O(n\log n)$.
+\item \textbf{MinHeapSort} (insert all into heap $H$, extract into $B$): $O(n\log n)$ time, $\Th(n)$ extra space, not stable. Using Heapify instead of inserts does \textbf{not} improve the worst case, because the $n$ extractions are still $\Th(n\log n)$.
+\item \textbf{$k$-sorted array} (each item at most $k$ from its final slot): keep a min-heap of $k+1$ items $\Rightarrow O(n\log k)$ time, $\Th(k)$ space. No contradiction with the lower bound: only $\le (2k+1)^n$ inputs are possible.
+\end{itemize}
+
+% =====================================================================
+\section{4 \quad Sorting Fundamentals}
+\textbf{Four things to analyze:} correctness, running time (\# compares and swaps), \textbf{stability}, space (\textbf{in place} = $O(1)$ extra).
+
+\textbf{Stable:} equal keys keep their input order. Stability is what makes radix sort work.
+
+\subsection{Decision-tree lower bound}
+A tree of height $h$ has at most $2^h$ leaves, and it needs at least $n!$ leaves:
+\begin{align*}
+2^h \ge n! \;\Rightarrow\; h &\ge \log_2(n!) = \sum_{i=1}^{n}\log_2 i\\
+&\ge \sum_{i=n/2}^{n}\log_2 i \;\ge\; \frac n2\log_2\frac n2 \;\in\; \Omega(n\log n)
+\end{align*}
+\begin{keyb}{Theorem}
+Every \textbf{comparison} sort needs $\Omega(n\log n)$ comparisons in the \textbf{worst case}. HeapSort and MergeSort are optimal.\\
+Smallest possible worst case $=\cl{\log_2 n!}$: \quad $n=3{:}\ 3$ \quad $n=4{:}\ 5$ \quad $n=5{:}\ 7$ \quad $n=6{:}\ 10$.
+\end{keyb}
+\textbf{Ways around it:} non-comparison sorts (counting, bucket, pigeonhole, radix) use keys as indices. Restricted inputs (e.g.\ $k$-sorted) have fewer possible permutations.
+
+\subsection{Master comparison table}
+\begin{tabularx}{\linewidth}{@{}lYccc@{}}
+\toprule
+\textbf{Sort} & \textbf{Time} & \textbf{Space} & \textbf{Stable} & \textbf{Compares}\\\midrule
+HeapSort & $O(n\log n)$ & $\Th(1)$ & No & Yes\\
+\rowcolor{rowbg}MergeSort & $\Th(n\log n)$ & $\Th(n)$ & Yes & Yes\\
+QuickSort & avg $n\log n$, worst $n^2$ & $O(\log n)$ & No & Yes\\
+\rowcolor{rowbg}Insertion & $O(n^2)$, best $O(n)$ & $\Th(1)$ & Yes & Yes\\
+Counting & $\Th(n+k)$ & $\Th(n+k)$ & Yes & No\\
+\rowcolor{rowbg}Pigeonhole & $O(n+m)$ & $O(n+m)$ & Yes & No\\
+Bucket & avg $O(n+\frac{n^2}{k}+k)$, worst $O(n^2)$ & $O(n+k)$ & if inner is & inner sort\\
+\rowcolor{rowbg}Radix (LSD) & $O(d(n+b))$ & $O(n+b)$ & Yes & No\\\bottomrule
+\end{tabularx}
+
+\begin{howto}{pick the right sort}
+\begin{itemize}
+\item Small integer range ($k \in O(n)$), needs stability $\to$ \textbf{counting sort}.
+\item Huge range, few items (e.g.\ IDs up to $10^9$) $\to$ \textbf{merge / heap / quick}.
+\item Uniform reals in $[0,1)$ $\to$ \textbf{bucket sort}. \ Fixed number of digits $\to$ \textbf{radix}.
+\item $O(1)$ extra space + guaranteed $n\log n$ $\to$ \textbf{heap}. \ Stable comparison sort $\to$ \textbf{merge}.
+\end{itemize}
+\end{howto}
+
+% =====================================================================
+\section{5 \quad Counting Sort}
+\textbf{Requirement:} keys are \textbf{integers in $[0,k]$}.
+\begin{code}
+CountingSort(A, k):
+  C <- array of k+1 zeros                // O(k)
+  for i from 0 to n-1:  C[A[i]]++        // O(n)  C[v] = # equal to v
+  for i from 1 to k:    C[i] += C[i-1]   // O(k)  C[v] = # <= v
+  B <- array of size n
+  for i from n-1 DOWNTO 0:               // O(n)  BACKWARDS = stable
+    B[C[A[i]] - 1] <- A[i]
+    C[A[i]] <- C[A[i]] - 1
+  return B                               // optional: copy B into A
+\end{code}
+\[ \text{Time } \Th(n+k) \qquad \text{Space } \Th(n+k) \qquad \text{Stable} \qquad \text{Not in place} \]
+\textbf{It is $O(n)$ only when $k \in O(n)$.}
+After prefix sums, $C[v]$ is one past the last slot for $v$. After placement, $C[v]$ is the first slot of $v$'s block.
+
+\subsection{Lecture trace ($k=5$)}
+$A = (2,A)\ (5,C)\ (3,H)\ (0,B)\ (2,X)\ (3,B)\ (0,X)\ (3,D)$
+\begin{center}
+\begin{tabular}{@{}lcccccc@{}}\toprule
+$v$ & 0 & 1 & 2 & 3 & 4 & 5\\\midrule
+counts & 2 & 0 & 2 & 3 & 0 & 1\\
+prefix sums & 2 & 2 & 4 & 7 & 7 & 8\\\bottomrule
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{@{}lcccccccc@{}}\toprule
+$i$ & 7 & 6 & 5 & 4 & 3 & 2 & 1 & 0\\\midrule
+$A[i]$ & 3D & 0X & 3B & 2X & 0B & 3H & 5C & 2A\\
+$C[\text{key}]$ before & 7 & 2 & 6 & 4 & 1 & 5 & 8 & 3\\
+slot $= C-1$ & 6 & 1 & 5 & 3 & 0 & 4 & 7 & 2\\\bottomrule
+\end{tabular}
+\end{center}
+\textbf{Result:} $B = (0,B)(0,X)(2,A)(2,X)(3,H)(3,B)(3,D)(5,C)$.
+
+\begin{trap}[: forward last loop breaks stability]
+$A=[(3,a),(1,b),(3,c)]$, prefix $C=[0,1,1,3]$.\\
+Forward: $(3,a)\to B[2]$, $(1,b)\to B[0]$, $(3,c)\to B[1]$ $\Rightarrow (1,b),(3,c),(3,a)$: \textbf{unstable}.\\
+Backward: $(1,b),(3,a),(3,c)$: \textbf{stable}.
+\end{trap}
+
+\subsection{Offsets, range queries, bad cases}
+\textbf{Negative / shifted keys:}
+\[ \text{index}(v) = v - \min \qquad \text{array size} = \max - \min + 1 \]
+$[-100,20]$: index $= v+100$, size 121. \quad $[-50,30]$: size 81, and $-7 \mapsto 43$.
+
+\textbf{Range query in $O(1)$} after $\Th(n+k)$ prep (prefix sums):
+\[ \#\{a \le x \le b\} = C[b]-C[a-1] \quad (\text{or } C[b] \text{ if } a=0) \]
+\[ \#\{x \ge a\} = n - C[a-1] \]
+\begin{trap}[: check your $k$]
+\begin{itemize}
+\item 1{,}000 IDs in $[0,10^9]$: a $10^9$-entry array ($\approx$ 4 GB) and $10^9$ steps to zero it, vs.\ $n\log n \approx 10^4$. Use merge / heap / quick.
+\item $k$-digit numbers with $k\in\Th(n)$: max value $10^k-1$, so time $O(n+10^n)$, \textbf{exponential}.
+\item Keys in $[0,n^2]$: time $\Th(n^2)$, never $O(n)$.
+\end{itemize}
+\end{trap}
+\textbf{TallySort} (rebuild $A$ from counts): $O(n+k)$, \textbf{not} $O(nk)$; loses payloads, so it cannot sort records.
+
+% =====================================================================
+\section{6 \quad Bucket, Pigeonhole \& Radix Sort}
+\begin{code}
+BucketSort(A, k):                // k buckets
+  B <- array of k empty lists
+  M <- max(A) + 1
+  for i from 0 to n-1:
+    j <- floor(k * A[i] / M)     // bucket index 0..k-1
+    B[j].insert(A[i])
+  for i from 0 to k-1:  sort list B[i]
+  return B[0] ++ B[1] ++ ... ++ B[k-1]
+\end{code}
+\[ j = \fl{\frac{k\cdot A[i]}{M}}, \qquad M = \max(A)+1 \]
+Classic version: keys in $[0,1)$, $k=n$, $j=\fl{n\cdot A[i]}$. Correct because $j$ never decreases as the key grows.
+
+\subsection{Trace: $[29,25,3,49,9,37,21,43]$, $k=8$, $M=50$}
+\begin{center}
+\begin{tabular}{@{}lcccccccc@{}}\toprule
+key & 29 & 25 & 3 & 49 & 9 & 37 & 21 & 43\\
+$8x/50$ & 4.64 & 4.0 & 0.48 & 7.84 & 1.44 & 5.92 & 3.36 & 6.88\\
+bucket & 4 & 4 & 0 & 7 & 1 & 5 & 3 & 6\\\bottomrule
+\end{tabular}
+\end{center}
+Bucket 4 $=[29,25] \to [25,29]$. Result $[3,9,21,25,29,37,43,49]$.
+
+\begin{keyb}{Running time}
+\vspace{-4pt}
+\begin{align*}
+\text{Best:}&\ O(n) \text{ (about one item per bucket)}\\
+\text{Average (uniform):}&\ O\!\left(n+\tfrac{n^2}{k}+k\right) \xrightarrow{\ k=n\ } O(n)\\
+\text{Worst:}&\ O(n^2) \text{ (all in one bucket + insertion sort)}\\
+\text{One \emph{key} per bucket:}&\ O(n+k)
+\end{align*}
+With heap/merge sort inside the buckets, the worst case drops to $O(n\log n)$.
+\end{keyb}
+\textbf{Stable} if and only if the inner sort is stable and inserts append. Counting sort = one bucket per value.
+
+\begin{howto}{bucket-index questions}
+Compute $\fl{k x / M}$ exactly. Check with multiplication: $5\cdot 55=275 < 276=3\cdot 92$, so $\fl{275/92}=2$. Insert in \textbf{input order}; sort each bucket; concatenate. The max always lands in bucket $k-1$, never $k$.
+\end{howto}
+\textbf{Words by length in $O(n)$:} 45 lists (longest word), a word of length $l$ goes in list $l-1$, join the 45 lists (a constant).
+
+\subsection{Pigeonhole sort (Problem Set 2)}
+$m = \max-\min+1$ holes; append $A[i]$ to hole $H[A[i]-\min]$; read holes in order.
+\begin{itemize}
+\item Time and space $O(n+m)$, stable, not in place.
+\item \textbf{Never $O(n^2)$}: no sorting inside holes; all $n$ in one hole is fine $\Rightarrow$ ``degrades to $n^2$'' is \textbf{N.F.}
+\item \textbf{Can waste memory}: $[10,1,1,\dots,1]$. Best: huge $n$, tiny range (500k ints in 1..100). Bad: few items with a huge range; floats.
+\end{itemize}
+
+\subsection{Radix sort (LSD)}
+Stable counting sort on each digit, least significant first. $d$ digits in base $b$:
+\[ T = O\big(d\,(n+b)\big) \]
+\textbf{PSO 5} ($m$ integers, 1 to $k$ digits, $k\in\Th(m)$, $n$ total digits, uniform lengths): bucket by digit count ($B[d_i-1]$), radix-sort each bucket, concatenate (fewer digits $\Rightarrow$ smaller).
+\[ \sum_{i=0}^{k-1}(i+1)\cdot\frac mk = O(n) \quad\text{since } \tfrac mk \text{ is a constant} \]
+
+% =====================================================================
+\section{7 \quad Binary Search Tree}
+\textbf{Definition:} null, or a root with left and right BSTs where \textbf{every} key in the left subtree $\le$ root $<$ \textbf{every} key in the right subtree. \textbf{In-order traversal = sorted.}
+\begin{code}
+search(r, x):
+  if r = null: return null
+  if x = r.item: return r
+  if x < r.item: return search(r.left, x)
+  return search(r.right, x)
+
+insert(r, x):
+  if r = null: return new Node(x)
+  if x <= r.item: r.left  <- insert(r.left, x)    // equal -> LEFT
+  else:           r.right <- insert(r.right, x)
+  return r
+
+delete(r, x):
+  if r = null: return null
+  if x < r.item:   r.left  <- delete(r.left, x)
+  elif x > r.item: r.right <- delete(r.right, x)
+  else:
+    if r.left = null:  return r.right     // 0 or 1 child
+    if r.right = null: return r.left
+    s <- findmin(r.right)                 // in-order successor
+    r.item <- s.item
+    r.right <- delete(r.right, s.item)
+  return r
+
+findmin(r):  while r.left != null: r <- r.left
+             return r
+
+generateBST(A, l, r):                     // A is sorted
+  if r < l: return null
+  m <- floor((l + r) / 2)
+  root <- new Node(A[m])
+  root.left  <- generateBST(A, l, m - 1)
+  root.right <- generateBST(A, m + 1, r)
+  return root
+\end{code}
+
+\begin{center}
+\begin{forest} hp
+[5,\hl [3 [1 [,phantom] [2]] [4]] [8 [7] [9]]]
+\end{forest}\quad$\xrightarrow{\text{delete } 5}$\quad
+\begin{forest} hp
+[7,\hl [3 [1 [,phantom] [2]] [4]] [8 [,phantom] [9]]]
+\end{forest}
+\cp{Two children: copy successor 7 (min of right subtree) into the root, then delete leaf 7.}
+\end{center}
+
+\subsection{Running time and height}
+\begin{tabularx}{\linewidth}{@{}Ycc@{}}
+\toprule
+& \textbf{Unbalanced (worst)} & \textbf{Balanced}\\\midrule
+search / insert / delete one & $O(n)$ & $O(\log n)$\\
+insert all $n$ & $O(n^2)$ & $O(n\log n)$\\\bottomrule
+\end{tabularx}
+\[ \text{Balanced: } \big|h(\text{left})-h(\text{right})\big| \le 1 \text{ at every node} \;\Rightarrow\; h\in O(\log n) \]
+\[ h+1 \;\le\; n \;\le\; 2^{h+1}-1 \qquad\Rightarrow\qquad \fl{\log_2 n} \le h \le n-1 \]
+Sorted (or reverse-sorted) inserts build a list, $h=n-1$:
+\[ \text{total cost} = \sum_{i=1}^{n}(i-1) = \frac{n(n-1)}{2} \in \Th(n^2) \]
+
+\subsection{Facts}
+\begin{itemize}
+\item The successor of a node with two children (min of right subtree) has \textbf{no left child}.
+\item The max node has no right child. Shape depends on insertion order.
+\item Inserting a BST's pre-order sequence rebuilds the same tree.
+\item Heap vs BST vs B-tree: heap search $O(n)$, BST $O(h)$, B-tree $O(\log n)$. Heaps and BSTs grow at the bottom; B-trees grow at the \textbf{top}.
+\end{itemize}
+\begin{trap}[: ``search-path'' claim is FALSE (PSO 5)]
+\begin{minipage}{0.3\linewidth}\centering
+\begin{forest} hp
+[1,\hl [,phantom] [3,\hl [2] [4,\hl]]]
+\end{forest}
+\end{minipage}\hfill
+\begin{minipage}{0.66\linewidth}
+Search for 4. Left of the path $A=\{2\}$, on the path $B=\{1,3,4\}$, right $C=\emptyset$. The claim $a\le b\le c$ fails because $2 > 1$.
+\end{minipage}
+\end{trap}
+
+\begin{howto}{BST problem types}
+\textbf{Build + height:} insert each key from the root ($\le$ goes left); height = longest path in \emph{edges}. PS 2: $4,2,8,0,1,3 \to h=3$ (4-2-0-1). A balanced BST on 6 keys has $h=\fl{\log_2 6}=2$.\\[1pt]
+\textbf{Delete (two children):} successor = go right once, then left until null. Copy it up, delete it from the right subtree (it has at most one child).\\[1pt]
+\textbf{Traversals:} pre = N L R, in = L N R, post = L R N, level-order = BFS.\\[1pt]
+\textbf{generateBST:} root $=A\big[\fl{(l+r)/2}\big]$, recurse on halves; height $\fl{\log_2 n}$.
+\end{howto}
+
+% =====================================================================
+\section{8 \quad B-Tree}
+Bayer \& McCreight (1972), for data on disk: 1 node = 1 disk block, so nodes are wide and the tree is shallow. \textbf{Always perfectly balanced}; grows at the \textbf{root}.
+
+\subsection{Rules for order $m$}
+\begin{tabularx}{\linewidth}{@{}Yccc@{}}
+\toprule
+& \textbf{Order $m$} & \textbf{2-3 ($m=3$)} & \textbf{2-3-4 ($m=4$)}\\\midrule
+max children & $m$ & 3 & 4\\
+\rowcolor{rowbg}max keys & $m-1$ & 2 & 3\\
+min children (internal, non-root) & $\cl{m/2}$ & 2 & 2\\
+\rowcolor{rowbg}min keys (non-root) & $\cl{m/2}-1$ & 1 & 1\\
+root & \multicolumn{3}{c}{$\ge 2$ children unless it is a leaf ($\ge 1$ key)}\\\bottomrule
+\end{tabularx}
+\begin{itemize}
+\item A node with $c$ children has exactly $c-1$ keys, kept sorted.
+\item Key $i$ separates child $i$ (smaller keys) from child $i+1$ (larger keys).
+\item \textbf{All leaves are at the same depth}; internal nodes have no null children.
+\end{itemize}
+
+\subsection{Minimum degree $t$ (PSO 5) and key counts}
+Non-root nodes hold $t-1$ to $2t-1$ keys ($t$ to $2t$ children); the root holds $\ge 1$ key. $t=2$ is the 2-3-4 tree.
+\begin{keyb}{Keys in a B-tree of height $h$}
+\vspace{-6pt}
+\begin{align*}
+\text{max keys} &= (2t)^{h+1}-1 & \text{min keys} &= 2t^{h}-1\\[2pt]
+\text{order } m\text{, max} &= m^{h+1}-1 & \text{2-3 tree} &: \ 2^{h+1}-1 \text{ to } 3^{h+1}-1
+\end{align*}
+Check ($t=2$): $h=1$: 3 to 15 keys. \ $h=2$: 7 to 63 keys.\\
+2-3 tree height: $\log_3 n \le h \le \log_2 n$, so $h \in \Th(\log n)$.
+\end{keyb}
+
+\subsection{Search}
+\begin{code}
+search(r, x):
+  i <- 0
+  while i < r.nitems and x > r.item[i]:  i <- i + 1
+  if i < r.nitems and x = r.item[i]:     return (r, i)
+  if r is a leaf:                        return null
+  return search(r.children[i], x)
+\end{code}
+
+\subsection{Insert}
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item Walk down to the correct \textbf{leaf} and insert the key in sorted position.
+\item If the node now has $m$ keys (overflow), \textbf{split}: the \textbf{median goes up} to the parent; smaller keys form the left node, larger keys the right node.
+\item If the parent overflows, split it too, and so on upward.
+\item If the \textbf{root} splits, the median becomes a new root: \textbf{height $+1$} (the only way a B-tree gets taller).
+\end{enumerate}
+For even $m$ there are two middle candidates; follow the stated convention.
+
+\subsection{Trace: 2-3 tree, insert 8, 2, 3, 4, 0, 9, 6, 5, 1}
+\begin{center}
+\begin{forest} bt
+[3,\hl [2] [8]]
+\end{forest}\ \
+\begin{forest} bt
+[3 [0\kk 2] [4\kk 8]]
+\end{forest}\ \
+\begin{forest} bt
+[3\kk 8,\hl [0\kk 2] [4] [9]]
+\end{forest}\ \
+\begin{forest} bt
+[3\kk 8 [0\kk 2] [4\kk 6] [9]]
+\end{forest}
+\cp{After 8,2,3 (split) \quad after 4,0 \quad after 9 (split [4 8 9]) \quad after 6}
+\end{center}
+\begin{center}
+\begin{forest} bt
+[5,\hl [3 [0\kk 2] [4]] [8 [6] [9]]]
+\end{forest}\qquad
+\begin{forest} bt
+[5 [1\kk 3,\hl [0] [2] [4]] [8 [6] [9]]]
+\end{forest}
+\cp{Insert 5: [4 5 6] splits, then [3 5 8] splits (new root). \quad Insert 1: [0 1 2] splits. Final tree = \textbf{T0}.}
+\end{center}
+
+\begin{howto}{count the B-trees on a key set (PS 2 Q15)}
+For each height, check the min/max key counts. For each root size, count ways to split the remaining keys among leaves with legal sizes. Each size pattern gives exactly one tree.\\[1pt]
+$\{0,1,2,3,4,8\}$ as 2-3 trees: only height 1 with a 2-key root works; leaves $(2,1,1),(1,2,1),(1,1,2)$ $\Rightarrow$ \textbf{3}.\\
+$\{1..4\}$: 2. \ $\{1..5\}$ (2-3): 2. \ $\{1..5\}$ (2-3-4): 4.\\[1pt]
+PS 2: order 4, insert $4,2,8,0,1,3 \Rightarrow h=1$ (either median choice).
+\end{howto}
+
+% =====================================================================
+\section{9 \quad B-Tree Deletion}
+\begin{keyb}{Algorithm}
+\textbf{Step 1: reach a leaf.} Key in a leaf: remove it. Key in an internal node: replace it with its in-order \textbf{successor} (min of the subtree to its right, always in a leaf) and delete that key from its leaf.\\[2pt]
+\textbf{Step 2:} if the leaf still has $\ge$ the min number of keys, stop. (In a 2-3 tree, deleting from a 2-key leaf is free.)\\[2pt]
+\textbf{Step 3: fix underflow, in this order}
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item \textbf{Rotate left} (right sibling has a spare key): separator moves \textbf{down} to the \textbf{end} of the deficient node; the right sibling's \textbf{first} key moves \textbf{up}.
+\item \textbf{Rotate right} (left sibling has a spare): separator moves down to the \textbf{front}; the left sibling's \textbf{last} key moves up.
+\item \textbf{Merge} (both adjacent siblings at the minimum): left node + separator + right node become one node. The parent loses a key.
+\begin{itemize}
+\item Parent is the root and is now empty: delete it. \textbf{Height $-1$} (the only way it shrinks).
+\item Parent is now deficient: repeat Step 3 on the parent.
+\end{itemize}
+\end{enumerate}
+\end{keyb}
+\begin{itemize}
+\item Siblings = \textbf{adjacent} children of the \textbf{same} parent only.
+\item \textbf{Internal-node rotation:} the child next to the key that moves up goes along to the deficient node.
+\end{itemize}
+
+\subsection{Lecture examples, starting from T0}
+\textbf{Delete 3:} successor 4 replaces it; leaf [4] empties. No right sibling; left sibling [2] is at the minimum, so merge [2] + 4.
+\begin{center}
+\begin{forest} bt
+[5 [1\kk 3 [0] [2] [4]] [8 [6] [9]]]
+\end{forest}\quad$\xrightarrow{\text{del } 3}$\quad
+\begin{forest} bt
+[5 [1 [0] [2\kk 4,\hl]] [8 [6] [9]]]
+\end{forest}
+\cp{T0 (left) and T0 after deleting 3 (right)}
+\end{center}
+\textbf{Then delete 9:} [9] empties; left sibling [6] is minimal, so merge to [6 8]. Node [8] is empty; its sibling [1] is minimal, so merge [1] + 5. The root is empty and is removed: height drops.
+\begin{center}
+\begin{forest} bt
+[1\kk 5,\hl [0] [2\kk 4] [6\kk 8]]
+\end{forest}
+\qquad
+\begin{forest} bt
+[1\kk 6,\hl [0] [2\kk 4] [8]]
+\end{forest}
+\cp{After deleting 9 \qquad Then delete 5: successor 6 comes from [6 8], which has a spare.}
+\end{center}
+
+\subsection{Rotation examples}
+\textbf{Leaf rotation:} delete 20 from [15 25]([5 10][20][30 35]). The right sibling has a spare, so rotate left.
+\begin{center}
+\begin{forest} bt
+[15\kk 25 [5\kk 10] [20,\hl] [30\kk 35]]
+\end{forest}\ $\to$\
+\begin{forest} bt
+[15\kk 30,\hl [5\kk 10] [25,\hl] [35]]
+\end{forest}
+\end{center}
+\textbf{Internal rotation:} delete 8 from T0. Successor 9; merge to [6 9]; node [9] is now empty. Left sibling [1 3] has a spare, so rotate right: 5 comes down, 3 goes up, and child [4] moves across.
+\begin{center}
+\begin{forest} bt
+[3,\hl [1 [0] [2]] [5,\hl [4] [6\kk 9]]]
+\end{forest}
+\end{center}
+\begin{howto}{any delete trace}
+\begin{enumerate}[label=(\arabic*)]
+\item Find the key; if internal, swap in the successor.
+\item Remove it from the leaf.
+\item Compare the key count to the minimum.
+\item Check the \textbf{right} sibling, then the \textbf{left}, then \textbf{merge}.
+\item Re-check the parent; repeat upward.
+\item Verify the invariants.
+\end{enumerate}
+\end{howto}
+\textbf{Invariants:} internal nodes have 2 (root) or $\cl{m/2}$ to $m$ children; no null children; $k+1$ children $\Leftrightarrow$ $k$ sorted keys; all leaves on the same level.
+
+% =====================================================================
+\section{10 \quad Pseudocode Questions They Can Ask}
+\textbf{Q1. Is this Heapify correct?}
+\begin{code}
+for i from 0 to floor(n/2) - 1:   SiftDown(A, n, i)    // top-down order
+\end{code}
+\textbf{No.} Max-heap on $[1,2,3,4]$: $i=0$ gives $[3,2,1,4]$; $i=1$ gives $[3,4,1,2]$. Root $3 < 4$. A node must be sifted \emph{after} its subtrees are heaps, so go bottom-up.
+
+\textbf{Q2. Min-heap SiftDown swaps with the \emph{larger} child. Still correct?}\\
+\textbf{No.} $[9,1,2]$: swapping 9 with 2 gives $[2,1,9]$, and root $2 > 1$.
+
+\textbf{Q3. What does this return?}
+\begin{code}
+Mystery(r):  if r = null: return 0
+             return 1 + max(Mystery(r.left), Mystery(r.right))
+\end{code}
+The number of \textbf{nodes} on the longest path $=$ height (in edges) $+1$. For one node it returns 1, but $h=0$.
+
+\textbf{Q4. What does this print, and in what time?}
+\begin{code}
+F(r):  if r = null: return
+       F(r.left);  print(r.item);  F(r.right)
+\end{code}
+In-order traversal: a BST's keys in \textbf{sorted} order, $\Th(n)$ (each node once).
+
+\textbf{Q5. Is this a correct BST check?}
+\begin{code}
+isBST(r):  if r = null: return true
+  if r.left != null and r.left.item > r.item:   return false
+  if r.right != null and r.right.item <= r.item: return false
+  return isBST(r.left) and isBST(r.right)
+\end{code}
+\textbf{No.} It only checks children. Counterexample: 5 with left child 3, and 3 has right child 6 (6 is in 5's left subtree). Fix: pass bounds down.
+\begin{code}
+isBST(r, lo, hi):  if r = null: return true
+  if r.item < lo or r.item > hi: return false
+  return isBST(r.left, lo, r.item) and isBST(r.right, r.item, hi)
+\end{code}
+
+\textbf{Q6. Write isHeap for a min-heap array.}
+\begin{code}
+isMinHeap(A, n):
+  for i from 0 to floor(n/2) - 1:
+    if 2i+1 < n and A[i] > A[2i+1]: return false
+    if 2i+2 < n and A[i] > A[2i+2]: return false
+  return true                                   // Theta(n)
+\end{code}
+
+% =====================================================================
+
+
+% =====================================================================
+
+\end{multicols*}
+\end{document}
+</script>
+<script>
+/* ---------- tiny tree notation parser ----------
+   "5(1,3(0|2|4)|8(6|9))"  → B-tree: keys comma-separated, children in (...) split by |
+   "_" = null child (for BSTs)                                                     */
+function parseTree(s){
+  let i=0;
+  function node(){
+    if(s[i]==='_'){i++;return null;}
+    let t='';
+    while(i<s.length && !'(|)'.includes(s[i])) t+=s[i++];
+    const n={k:t.split(',').map(x=>x.trim()),c:[]};
+    if(s[i]==='('){ i++; n.c.push(node()); while(s[i]==='|'){i++; n.c.push(node());} i++; }
+    return n;
+  }
+  return node();
+}
+function heapToTree(arr,i=0){
+  if(i>=arr.length) return null;
+  const n={k:[String(arr[i])],idx:i,c:[]};
+  const l=heapToTree(arr,2*i+1), r=heapToTree(arr,2*i+2);
+  if(l||r){ n.c=[l,r]; }
+  return n;
+}
+const CW=26, NULLW=26, GAP=14, LV=64;
+function nodeW(n,round){ return round? 34 : Math.max(34, n.k.length*CW+10); }
+function layout(n,depth,x0,round){
+  if(n===null) return {w:NULLW,center:x0+NULLW/2};
+  n.depth=depth;
+  const kids=n.c;
+  if(!kids.length || kids.every(k=>k===null)){
+    const w=nodeW(n,round); n.x=x0+w/2; return {w,center:n.x};
+  }
+  let x=x0, centers=[];
+  kids.forEach((k,j)=>{ const r=layout(k,depth+1,x,round); centers.push(r.center); x+=r.w+GAP; });
+  let total=x-GAP-x0;
+  n.x=(centers[0]+centers[centers.length-1])/2;
+  const w=nodeW(n,round);
+  if(total<w){ total=w; }
+  return {w:total,center:n.x};
+}
+function drawTree(root,opts={}){
+  const round=!!opts.round;
+  if(!root) return '<div class="cap">(empty)</div>';
+  const r=layout(root,0,8,round);
+  let maxD=0; (function f(n){ if(!n) return; maxD=Math.max(maxD,n.depth); n.c.forEach(f); })(root);
+  const W=r.w+16, H=(maxD)*LV+ (opts.idx?62:52);
+  const hl=new Set((opts.hl||[]).map(String));
+  let edges='', nodes='';
+  (function f(n){
+    if(!n) return;
+    const y=n.depth*LV+24, w=nodeW(n,round);
+    n.c.forEach((c,j)=>{
+      if(!c) return;
+      const cy=c.depth*LV+24;
+      let sx=n.x;
+      if(!round && n.c.length>1){ sx = n.x - w/2 + 5 + j*((w-10)/(n.c.length-1)); }
+      edges+=`<line class="edge" x1="${sx}" y1="${y+14}" x2="${c.x}" y2="${cy-14}"/>`;
+      f(c);
+    });
+    const isH = n.k.some(k=>hl.has(k));
+    if(round){
+      nodes+=`<circle class="${isH?'hl':'nodec'}" cx="${n.x}" cy="${y}" r="16"/><text x="${n.x}" y="${y+5}" text-anchor="middle">${n.k[0]}</text>`;
+      if(opts.idx && n.idx!==undefined) nodes+=`<text class="idx" x="${n.x}" y="${y+30}" text-anchor="middle">[${n.idx}]</text>`;
+    } else {
+      const x0=n.x-w/2;
+      nodes+=`<rect class="${isH?'hl':'nodeb'}" x="${x0}" y="${y-14}" width="${w}" height="28" rx="5"/>`;
+      const cell=(w-10)/n.k.length;
+      n.k.forEach((k,j)=>{
+        nodes+=`<text x="${x0+5+cell*(j+.5)}" y="${y+5}" text-anchor="middle">${k}</text>`;
+        if(j>0) nodes+=`<line class="div" x1="${x0+5+cell*j}" y1="${y-14}" x2="${x0+5+cell*j}" y2="${y+14}"/>`;
+      });
+    }
+  })(root);
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="tree diagram">${edges}${nodes}</svg>`;
+}
+function arrHTML(a){ return '<div class="arr">'+a.map((v,i)=>`<span><b>${v}</b><i>${i}</i></span>`).join('')+'</div>'; }
+function hydrate(root){
+  root.querySelectorAll('[data-heap]').forEach(el=>{
+    const a=el.dataset.heap.split(',').map(s=>s.trim());
+    el.innerHTML=drawTree(heapToTree(a),{round:true,idx:true,hl:el.dataset.hl?el.dataset.hl.split(','):[]})+arrHTML(a)+(el.dataset.cap?`<div class="cap">${el.dataset.cap}</div>`:'');
+  });
+  root.querySelectorAll('[data-bst]').forEach(el=>{
+    el.innerHTML=drawTree(parseTree(el.dataset.bst),{round:true,hl:el.dataset.hl?el.dataset.hl.split(','):[]})+(el.dataset.cap?`<div class="cap">${el.dataset.cap}</div>`:'');
+  });
+  root.querySelectorAll('[data-bt]').forEach(el=>{
+    el.innerHTML=drawTree(parseTree(el.dataset.bt),{hl:el.dataset.hl?el.dataset.hl.split(','):[]})+(el.dataset.cap?`<div class="cap">${el.dataset.cap}</div>`:'');
+  });
+}
+const H = (a,cap,hl)=>`<div class="fig" data-heap="${a}"${cap?` data-cap="${cap}"`:''}${hl?` data-hl="${hl}"`:''}></div>`;
+const B = (t,cap,hl)=>`<div class="fig" data-bst="${t}"${cap?` data-cap="${cap}"`:''}${hl?` data-hl="${hl}"`:''}></div>`;
+const T = (t,cap,hl)=>`<div class="fig" data-bt="${t}"${cap?` data-cap="${cap}"`:''}${hl?` data-hl="${hl}"`:''}></div>`;
+const NPF=['Necessarily true','Possibly true','Necessarily false'];
+
+/* =====================================================================
+   TOPICS
+   ===================================================================== */
+const TOPICS=[
+/* ------------------------------------------------------------------ */
+{id:'heap', title:'Binary Heap', time:'35 min',
+lesson:`
+<p class="lede">A heap answers one question fast: <em>what is the smallest (or largest) thing I have right now?</em> It is the standard way to build a priority queue.</p>
+
+<h3>Why not just sort?</h3>
+<p>Items arrive in random order and you keep asking for the minimum. Sorting every time costs O(n log n). Keeping a sorted array costs O(n) per insert (shifting). A binary heap gets both insert and remove-min down to <b>O(log n)</b>, and peeking at the min is <b>O(1)</b>.</p>
+
+<h3>The two rules</h3>
+<ol>
+<li><b>Shape rule: the tree is complete.</b> Every level is full except possibly the last, and the last level fills from left to right with no gaps.</li>
+<li><b>Order rule.</b> Min-heap: every parent ≤ its children. Max-heap: every parent ≥ its children.</li>
+</ol>
+<div class="note"><b>Key idea</b>The order rule only compares a parent with its own children. Siblings have no order, and a node on the left is not necessarily smaller than one on the right. A heap is <b>not</b> a BST and its array is <b>not</b> sorted.</div>
+${H('9,10,17,23,34,89,22,28','Min-heap after inserting 23, 10, 17, 28, 34, 89, 22, 9. The index of each node is under it.')}
+
+<h3>Storing it in an array</h3>
+<p>Because the tree is complete, you can read it level by level into an array with no gaps. With the root at index 0:</p>
+<div class="tbl"><table>
+<tr><th>Relation</th><th>Formula</th><th>Example (i = 23)</th></tr>
+<tr><td>left child</td><td class="mono">2i + 1</td><td class="mono">47</td></tr>
+<tr><td>right child</td><td class="mono">2i + 2</td><td class="mono">48</td></tr>
+<tr><td>parent</td><td class="mono">⌊(i − 1) / 2⌋</td><td class="mono">11</td></tr>
+<tr><td>last internal (non-leaf) node</td><td class="mono">⌊n/2⌋ − 1</td><td class="mono">n = 99 → 48</td></tr>
+<tr><td>leaves</td><td class="mono">⌊n/2⌋ … n−1</td><td class="mono">there are ⌈n/2⌉ of them</td></tr>
+</table></div>
+
+<h3>Height</h3>
+<p>This course counts height in <b>edges</b> (a single node has height 0). A complete tree with n nodes has height <code>h = ⌊log₂ n⌋</code>, so every heap is balanced and h ∈ Θ(log n).</p>
+<ul>
+<li>Fewest nodes at height h: <code>2^h</code> (levels 0..h−1 full, one node on level h).</li>
+<li>Most nodes at height h: <code>2^(h+1) − 1</code> (every level full).</li>
+</ul>
+<p>Example from PSO 3: n = 99 sits between 64 = 2⁶ and 127 = 2⁷ − 1, so h = 6.</p>
+
+<h3>Insert: add at the end, then sift up</h3>
+<p>Put the new item in the first free slot (index n) so the shape rule holds. Then, while it is smaller than its parent (min-heap), swap it with the parent. This is called <em>swim</em> or <em>sift up</em>.</p>
+<pre>algorithm SiftUp(A, i)            // min-heap
+  p ← parent(i)
+  while i > 0 and A[p] > A[i] do  // child smaller than parent → swap
+    Swap(A, i, p)
+    i ← p
+    p ← parent(i)
+
+algorithm Insert(B, x)
+  if n = capacity then A ← Resize(A, 2·capacity)
+  A[n] ← x ;  n ← n + 1
+  SiftUp(A, n − 1)</pre>
+<div class="trap"><b>Watch the sign</b>The lecture slide prints <code>A[p] &lt; A[i]</code> in the min-heap SiftUp. That comparison is the <em>max</em>-heap version. For a min-heap you swap when the parent is bigger. On the exam, reason from the rule, not from memorized symbols.</div>
+<p>Cost: the item moves up at most one root-to-leaf path, so O(log n).</p>
+
+<div class="tbl"><table>
+<tr><th>Insert</th><th>Array after sift-up</th><th>What happened</th></tr>
+<tr><td class="mono">23</td><td class="mono">[23]</td><td>root</td></tr>
+<tr><td class="mono">10</td><td class="mono">[10, 23]</td><td>10 &lt; 23, swap</td></tr>
+<tr><td class="mono">17</td><td class="mono">[10, 23, 17]</td><td>17 &gt; 10, stays</td></tr>
+<tr><td class="mono">28</td><td class="mono">[10, 23, 17, 28]</td><td>28 &gt; 23, stays</td></tr>
+<tr><td class="mono">34</td><td class="mono">[10, 23, 17, 28, 34]</td><td>stays</td></tr>
+<tr><td class="mono">89</td><td class="mono">[10, 23, 17, 28, 34, 89]</td><td>stays</td></tr>
+<tr><td class="mono">22</td><td class="mono">[10, 23, 17, 28, 34, 89, 22]</td><td>22 &gt; 17, stays</td></tr>
+<tr><td class="mono">9</td><td class="mono">[9, 10, 17, 23, 34, 89, 22, 28]</td><td>9 lands at [7]; swaps with 28, 23, 10 up to the root</td></tr>
+</table></div>
+
+<h3>Extract-min: swap in the last item, then sift down</h3>
+<p>Save the root (the answer). Move the <b>last</b> item into the root and shrink n. Now the root may be too big, so repeatedly swap it with its <b>smaller</b> child until it is ≤ both children. This is <em>sink</em> or <em>sift down</em>.</p>
+<pre>algorithm MinChildIndex(A, n, i)
+  lc ← 2i+1 ; if lc ≥ n return n       // no children
+  rc ← 2i+2 ; if rc ≥ n return lc      // only a left child
+  if A[lc] &lt; A[rc] return lc else return rc   // tie → right child
+
+algorithm SiftDown(A, n, i)
+  m ← MinChildIndex(A, n, i)
+  while m &lt; n and A[i] > A[m] do
+    Swap(A, i, m) ; i ← m ; m ← MinChildIndex(A, n, i)
+
+algorithm ExtractMin(B)
+  if n = 0 throw EmptyHeap
+  t ← A[0] ; A[0] ← A[n−1]
+  SiftDown(A, n−1, 0) ; n ← n − 1
+  return t</pre>
+<div class="figrow">
+${H('28,10,17,23,34,89,22','Step 1: 9 removed, last item 28 moved to the root.','28')}
+${H('10,23,17,28,34,89,22','Step 2: 28 swaps with 10 (smaller child), then with 23. Return 9.','28')}
+</div>
+<p>Why the smaller child? After the swap that child becomes the parent of the other child, so it has to be the smaller of the two.</p>
+
+<h3>Cost summary</h3>
+<div class="tbl"><table>
+<tr><th>Operation</th><th>Cost</th><th>Why</th></tr>
+<tr><td>Peek (min/max)</td><td class="mono">O(1)</td><td>it is A[0]</td></tr>
+<tr><td>Insert</td><td class="mono">O(log n)</td><td>one path up; resize is amortized O(1)</td></tr>
+<tr><td>Extract min/max</td><td class="mono">O(log n)</td><td>one path down</td></tr>
+<tr><td>Build by n inserts</td><td class="mono">O(n log n)</td><td>n × O(log n)</td></tr>
+<tr><td>Build by heapify</td><td class="mono">O(n)</td><td>next topic</td></tr>
+<tr><td>Search for arbitrary key</td><td class="mono">O(n)</td><td>order rule does not guide a search</td></tr>
+</table></div>
+
+<h3>Facts that show up as trick questions</h3>
+<ul>
+<li>The <b>max</b> of a min-heap is always a <b>leaf</b> (indices ⌊n/2⌋ … n−1), but it could be any leaf.</li>
+<li>With distinct keys, the 2nd smallest in a min-heap is always a child of the root. The 3rd smallest is at depth 1 or 2.</li>
+<li>A sorted ascending array <b>is</b> a valid min-heap. A min-heap array is <b>possibly</b> sorted.</li>
+<li><b>How many places can a newly inserted item end up?</b> It starts at index n and can stop at any ancestor, so h + 1 places, where h is the height after inserting. PSO 3: n = 99, insert → 100 nodes, h = 6, answer 7.</li>
+<li>Min-heap and max-heap code differ only in the comparison signs.</li>
+</ul>
+
+<h3>Reading a heap as a tree (PSO 3 style)</h3>
+<p>Questions like "what is the in-order traversal of the heap" just want you to build the heap, draw it from the array, and traverse the tree. Max-heap from inserting 8, 11, 3, 10, 7, 4, 12 gives [12, 10, 11, 8, 7, 3, 4], whose in-order traversal is 8, 10, 7, 12, 3, 11, 4.</p>
+${H('12,10,11,8,7,3,4','PSO 3 Q3 final max-heap. In-order: left subtree, root, right subtree.')}
+`,
+cheat:`
+<ul>
+<li>Complete tree + heap order (parent ≤ kids for min). Siblings unordered.</li>
+<li>Root at 0: <b>L = 2i+1, R = 2i+2, P = ⌊(i−1)/2⌋</b></li>
+<li>Last internal node ⌊n/2⌋−1; leaves ⌊n/2⌋…n−1 (⌈n/2⌉ leaves)</li>
+<li>Height (edges) = ⌊log₂ n⌋; nodes at height h: 2^h … 2^(h+1)−1</li>
+<li>Insert: put at A[n], sift <b>up</b> while smaller than parent. O(log n)</li>
+<li>Extract: save A[0], A[0]←A[n−1], n−−, sift <b>down</b> swapping with <b>smaller</b> child (tie → right). O(log n)</li>
+<li>Peek O(1); search O(n); n inserts O(n log n)</li>
+<li>Max of min-heap is a leaf. Sorted array is a min-heap.</li>
+<li># final spots for an insert = h+1 (h after insert)</li>
+</ul>`,
+quiz:[
+{t:'mc',q:'A heap is stored in an array with the root at index 0. Where is the parent of the node at index 50?',o:['23','24','25','26'],a:1,e:'⌊(50 − 1)/2⌋ = ⌊24.5⌋ = 24.'},
+{t:'mc',q:'Where is the right child of the node at index 31?',o:['62','63','64','65'],a:2,e:'2·31 + 2 = 64. (Left child would be 63.)'},
+{t:'mc',q:'A heap has n = 50 items. What is the index of the last non-leaf node?',o:['23','24','25','49'],a:1,e:'⌊50/2⌋ − 1 = 24. Check: its left child is 2·24+1 = 49, the last index. Index 25 would have a left child at 51, which does not exist.'},
+{t:'mc',q:'Insert 5, 3, 8, 1, 4, 7 (in that order) into an empty min-heap. What is the array?',o:['[1, 3, 4, 5, 7, 8]','[1, 3, 7, 5, 4, 8]','[1, 3, 8, 5, 4, 7]','[1, 4, 3, 5, 8, 7]'],a:1,e:'[5] → [3,5] → [3,5,8] → 1 lands at [3], swaps with 5 then 3 → [1,3,8,5] → 4 at [4], parent 3 is smaller, stays → [1,3,8,5,4] → 7 at [5], parent 8 is bigger, swap → [1,3,7,5,4,8]. Option 1 is sorted, which is a heap, but not the one this insertion order builds.'},
+{t:'mc',q:'Run ExtractMin once on the min-heap [1, 3, 7, 5, 4, 8]. What is the array afterward?',o:['[3, 4, 7, 5, 8]','[3, 5, 7, 8, 4]','[3, 8, 7, 5, 4]','[4, 3, 7, 5, 8]'],a:0,e:'Move 8 to the root: [8,3,7,5,4]. Children 3 and 7 → swap with 3: [3,8,7,5,4]. Now 8 at index 1 has children 5 and 4 → swap with 4 (smaller): [3,4,7,5,8].'},
+{t:'npf',q:'In a min-heap with distinct keys, the second-smallest key is a child of the root.',a:0,e:'The 2nd smallest has only the minimum above it in value, so its parent must be the root (its parent has to be smaller than it). Always true.'},
+{t:'npf',q:'The array representation of a min-heap is sorted in ascending order.',a:1,e:'It can be (e.g. [1,2,3]) but usually is not (e.g. [1,3,2]).'},
+{t:'npf',q:'In a min-heap of n ≥ 2 distinct keys, the largest key is stored at index 0.',a:2,e:'The root holds the minimum. The largest key is always at a leaf.'},
+{t:'mc',q:'A min-heap has 20 items and you insert one more. How many different indices could the new item end up at?',o:['4','5','6','21'],a:1,e:'It starts at index 20. Its ancestors are 9, 4, 1, 0. So it can stop at 20, 9, 4, 1 or 0: five places. Same as h + 1 with h = ⌊log₂ 21⌋ = 4.'},
+{t:'w',q:'Explain in one or two sentences why both Insert and ExtractMin on a binary heap are O(log n).',a:'Each operation moves one item along a single root-to-leaf path, doing O(1) work per level. A complete binary tree with n nodes has height ⌊log₂ n⌋, so there are O(log n) levels.'}
+]},
+
+/* ------------------------------------------------------------------ */
+{id:'heapify', title:'Heapify', time:'25 min',
+lesson:`
+<p class="lede">Heapify turns an arbitrary array into a heap <b>in place</b> in <b>O(n)</b> time, which beats n separate inserts at O(n log n).</p>
+
+<h3>The idea: fix it from the bottom up</h3>
+<p>Leaves are already valid one-node heaps. So start at the last internal node and move backwards to the root, calling SiftDown on each one. When you sift down node i, both of its subtrees are already heaps, so one SiftDown makes the subtree rooted at i a heap too.</p>
+<pre>algorithm Heapify(A)
+  n ← size of A
+  for i from ⌊n/2⌋ − 1 down to 0 do
+    SiftDown(A, n, i)</pre>
+<p>This is also called <b>bottom-up</b> heap construction. Inserting items one at a time is <b>top-down</b>.</p>
+
+<h3>Walkthrough: max-heapify [4, 6, 3, 5, 7, 1]</h3>
+<p>n = 6, so i runs 2, 1, 0.</p>
+${H('4,6,3,5,7,1','Start. Indices 3, 4, 5 are leaves.')}
+<div class="tbl"><table>
+<tr><th>i</th><th>Node</th><th>Action</th><th>Array</th></tr>
+<tr><td class="mono">2</td><td>3</td><td>only child is 1; 3 ≥ 1, no swap</td><td class="mono">[4, 6, 3, 5, 7, 1]</td></tr>
+<tr><td class="mono">1</td><td>6</td><td>children 5, 7; bigger is 7; swap</td><td class="mono">[4, 7, 3, 5, 6, 1]</td></tr>
+<tr><td class="mono">0</td><td>4</td><td>children 7, 3; swap with 7</td><td class="mono">[7, 4, 3, 5, 6, 1]</td></tr>
+<tr><td class="mono">(cont.)</td><td>4 now at [1]</td><td>children 5, 6; swap with 6</td><td class="mono">[7, 6, 3, 5, 4, 1]</td></tr>
+</table></div>
+${H('7,6,3,5,4,1','Result of heapify: [7, 6, 3, 5, 4, 1].')}
+
+<h3>Same input, different heap</h3>
+<p>Inserting 4, 6, 3, 5, 7, 1 one at a time into a max-heap gives <code>[7, 6, 3, 4, 5, 1]</code>. Heapify gives <code>[7, 6, 3, 5, 4, 1]</code>. Both are valid max-heaps. The two methods are <b>possibly</b> the same, not necessarily.</p>
+
+<h3>Why is it O(n) and not O(n log n)?</h3>
+<p>SiftDown from a node at height h does at most h swaps. Most nodes are near the bottom, where h is small:</p>
+<ul>
+<li>about n/2 nodes are leaves: 0 work (we skip them)</li>
+<li>about n/4 nodes have height 1: at most 1 swap each</li>
+<li>about n/8 nodes have height 2: at most 2 swaps each</li>
+</ul>
+<p>Total ≤ n·(1/4 + 2/8 + 3/16 + …) = n · Σ h/2^(h+1) ≤ n. The series Σ h/2^h converges to 2, a <b>constant</b>, so the total is O(n).</p>
+<div class="trap"><b>Common mistake</b>That series is a (weighted) geometric sum. It converges to a constant. It does not give a log n factor.</div>
+
+<h3>Second example: min-heapify [9, 4, 7, 1, 2, 6, 3]</h3>
+<div class="tbl"><table>
+<tr><th>i</th><th>Action</th><th>Array</th></tr>
+<tr><td class="mono">2</td><td>7 vs children 6, 3 → swap with 3</td><td class="mono">[9, 4, 3, 1, 2, 6, 7]</td></tr>
+<tr><td class="mono">1</td><td>4 vs children 1, 2 → swap with 1</td><td class="mono">[9, 1, 3, 4, 2, 6, 7]</td></tr>
+<tr><td class="mono">0</td><td>9 vs 1, 3 → swap with 1; then 9 vs 4, 2 → swap with 2</td><td class="mono">[1, 2, 3, 4, 9, 6, 7]</td></tr>
+</table></div>
+
+<h3>Counting questions</h3>
+<ul>
+<li>First index SiftDown is called on: ⌊n/2⌋ − 1. For n = 13 that is 5.</li>
+<li>Number of SiftDown calls: ⌊n/2⌋. For n = 100 that is 50.</li>
+<li>Max swaps in a single SiftDown from the root of a heap of height h: h.</li>
+</ul>
+
+<h3>Heap lab</h3>
+<p>Type an array, pick min or max, and watch each swap. Use it to check your hand traces.</p>
+<div class="lab" id="heaplab">
+  <div class="row">
+    <label for="hl-in">Array</label>
+    <input id="hl-in" value="4, 6, 3, 5, 7, 1" size="26">
+    <label for="hl-mode">Order</label>
+    <select id="hl-mode"><option value="max">max-heap</option><option value="min">min-heap</option></select>
+  </div>
+  <div class="row" style="margin-top:10px">
+    <button class="btn" data-act="heapify">Heapify (bottom-up)</button>
+    <button class="btn" data-act="insert">Build by inserting</button>
+    <button class="btn" data-act="extract">Extract root</button>
+    <button class="btn" data-act="sort">Heap sort</button>
+  </div>
+  <div id="hl-fig" class="fig"></div>
+  <div id="hl-log" class="log"></div>
+</div>
+`,
+cheat:`
+<pre>for i = ⌊n/2⌋−1 down to 0: SiftDown(A, n, i)</pre>
+<ul>
+<li>Bottom-up, in place, <b>O(n)</b>. n inserts (top-down) = O(n log n).</li>
+<li>Leaves (⌊n/2⌋…n−1) skipped. # SiftDown calls = ⌊n/2⌋.</li>
+<li>Why O(n): Σ (n/2^(h+1))·h = n·Σ h/2^(h+1) ≤ n. Converges, no log.</li>
+<li>Heapify and repeated inserts can give <b>different</b> valid heaps.</li>
+<li>Ex (max): [4,6,3,5,7,1] → [7,6,3,5,4,1]; inserts → [7,6,3,4,5,1]</li>
+</ul>`,
+quiz:[
+{t:'mc',q:'Max-heapify the array [2, 8, 5, 3, 9, 1]. Result?',o:['[9, 8, 5, 3, 2, 1]','[9, 8, 5, 2, 3, 1]','[9, 2, 5, 3, 8, 1]','[8, 9, 5, 3, 2, 1]'],a:0,e:'n = 6, i = 2, 1, 0. i=2: 5 vs child 1, no swap. i=1: 8 vs 3, 9 → swap with 9: [2,9,5,3,8,1]. i=0: 2 vs 9, 5 → swap with 9: [9,2,5,3,8,1]; 2 now at [1] vs 3, 8 → swap with 8: [9,8,5,3,2,1].'},
+{t:'mc',q:'Heapify is called on an array of n = 13 items. On which index is SiftDown called first?',o:['4','5','6','12'],a:1,e:'⌊13/2⌋ − 1 = 6 − 1 = 5.'},
+{t:'mc',q:'How many times does Heapify call SiftDown on an array of 100 items?',o:['49','50','99','100'],a:1,e:'It loops from ⌊100/2⌋ − 1 = 49 down to 0, which is 50 calls.'},
+{t:'mc',q:'What is the worst-case running time of Heapify?',o:['Θ(log n)','Θ(n)','Θ(n log n)','Θ(n²)'],a:1,e:'Bottom-up heap construction is linear. The sum over heights converges.'},
+{t:'npf',q:'Building a heap by Heapify and by inserting the same items one at a time produces the same array.',a:1,e:'Sometimes yes, sometimes no. [4,6,3,5,7,1] gives [7,6,3,5,4,1] with heapify but [7,6,3,4,5,1] with inserts.'},
+{t:'w',q:'Min-heapify [8, 6, 5, 2, 3, 1, 4]. Show the array after each iteration of the loop.',a:'n = 7, i = 2, 1, 0.<br>i=2: 5 vs 1, 4 → swap with 1 → [8, 6, 1, 2, 3, 5, 4]<br>i=1: 6 vs 2, 3 → swap with 2 → [8, 2, 1, 6, 3, 5, 4]<br>i=0: 8 vs 2, 1 → swap with 1 → [1, 2, 8, 6, 3, 5, 4]; 8 at [2] vs 5, 4 → swap with 4 → <b>[1, 2, 4, 6, 3, 5, 8]</b>'},
+{t:'w',q:'Why does Heapify start at index ⌊n/2⌋ − 1 instead of n − 1?',a:'Indices ⌊n/2⌋ through n − 1 are leaves (their left child 2i + 1 would be ≥ n). A single node already satisfies the heap order, so calling SiftDown on it would do nothing.'}
+]},
+
+/* ------------------------------------------------------------------ */
+{id:'heapsort', title:'HeapSort', time:'25 min',
+lesson:`
+<p class="lede">HeapSort = Heapify, then repeatedly move the root to the end of the array. O(n log n) time, O(1) extra space, not stable.</p>
+
+<h3>Which heap?</h3>
+<ul>
+<li>Ascending (non-descending) output → <b>max-heap</b>. The biggest item goes to the last slot first.</li>
+<li>Descending output → min-heap.</li>
+</ul>
+
+<h3>Algorithm</h3>
+<pre>algorithm HeapSort(A)
+  n ← size of A
+  Heapify(A)                       // max-heap, O(n)
+  for i from n−1 down to 1 do      // "sort down"
+    Swap(A, 0, i)                  // max goes to its final slot
+    n ← n − 1                      // shrink the heap; A[i..] is sorted
+    SiftDown(A, n, 0)              // repair the heap, O(log n)</pre>
+<p>The array has two parts during sort-down: a heap on the left and a sorted suffix on the right. Shrinking n is what keeps SiftDown from touching the sorted suffix.</p>
+
+<h3>Full trace on [4, 6, 3, 5, 7, 1]</h3>
+<p>After Heapify: <code>[7, 6, 3, 5, 4, 1]</code>. Sorted suffix shown after the bar.</p>
+<div class="tbl"><table>
+<tr><th>i</th><th>Swap A[0] ↔ A[i]</th><th>After SiftDown on first n−1 items</th></tr>
+<tr><td class="mono">5</td><td class="mono">[1, 6, 3, 5, 4 | 7]</td><td class="mono">[6, 5, 3, 1, 4 | 7]</td></tr>
+<tr><td class="mono">4</td><td class="mono">[4, 5, 3, 1 | 6, 7]</td><td class="mono">[5, 4, 3, 1 | 6, 7]</td></tr>
+<tr><td class="mono">3</td><td class="mono">[1, 4, 3 | 5, 6, 7]</td><td class="mono">[4, 1, 3 | 5, 6, 7]</td></tr>
+<tr><td class="mono">2</td><td class="mono">[3, 1 | 4, 5, 6, 7]</td><td class="mono">[3, 1 | 4, 5, 6, 7]</td></tr>
+<tr><td class="mono">1</td><td class="mono">[1 | 3, 4, 5, 6, 7]</td><td class="mono">done → [1, 3, 4, 5, 6, 7]</td></tr>
+</table></div>
+
+<h3>Running time</h3>
+<p>Heapify O(n) + (n − 1) SiftDowns at O(log n) each = <b>O(n log n)</b>. Space is <b>Θ(1)</b> extra (in place).</p>
+<p><b>Special case (PSO 4):</b> if all items are equal, every SiftDown stops immediately (no child is bigger), so each sort-down step is O(1) and HeapSort runs in <b>Θ(n)</b>.</p>
+
+<h3>HeapSort is not stable</h3>
+<p>Counterexample with two 2s, labelled a and b: input <code>[2a, 2b, 1]</code>.</p>
+<ul>
+<li>Heapify: root 2a vs children 2b, 1. 2a is not smaller than 2b, so no swap. Heap = [2a, 2b, 1].</li>
+<li>i = 2: swap → [1, 2b, 2a]; SiftDown on first 2 → [2b, 1, 2a].</li>
+<li>i = 1: swap → [1, 2b, 2a].</li>
+</ul>
+<p>Output 1, 2b, 2a: the two 2s swapped their original order. The long-distance swap of the root with the last item is what breaks stability.</p>
+
+<h3>Good and bad</h3>
+<ul>
+<li>Good: guaranteed O(n log n) worst case, in place, short code.</li>
+<li>Bad: poor cache behaviour in practice (jumps around the array); not stable.</li>
+</ul>
+
+<h3>PSO 4 idea: many small bags</h3>
+<p>n items split into n/k bags of k items each. HeapSort each bag: (n/k)·O(k log k) = O(n log k). Then merge bags pairwise: log(n/k) rounds, O(n) per round = O(n log(n/k)). Total O(n log k + n log(n/k)) = O(n log n) at either extreme of k.</p>
+`,
+cheat:`
+<pre>Heapify(A)  // MAX-heap for ascending
+for i = n−1 down to 1:
+  Swap(A,0,i); n−−; SiftDown(A,n,0)</pre>
+<ul>
+<li>Time O(n log n) worst; Space Θ(1) (in place); <b>NOT stable</b></li>
+<li>All keys equal → Θ(n) (SiftDown stops at once)</li>
+<li>Unstable ex: [2a,2b,1] → 1,2b,2a</li>
+<li>Shrinking n protects the sorted suffix</li>
+<li>O(n²) is a valid (loose) upper bound; Θ(n²) is false</li>
+</ul>`,
+quiz:[
+{t:'mc',q:'To sort in ascending order with HeapSort as taught, which heap do you build?',o:['Min-heap','Max-heap','Either works the same','A BST'],a:1,e:'Each step moves the root to the end of the array, so the root must be the largest remaining item.'},
+{t:'mc',q:'HeapSort on [3, 1, 4, 2, 5]: what is the array after Heapify and exactly one sort-down iteration?',o:['[4, 3, 1, 2, 5]','[4, 2, 3, 1, 5]','[5, 3, 4, 2, 1]','[1, 3, 4, 2, 5]'],a:0,e:'Heapify: i=1: 1 vs 2, 5 → swap with 5 → [3,5,4,2,1]. i=0: 3 vs 5, 4 → swap with 5 → [5,3,4,2,1]; 3 vs 2, 1 → stays. Sort-down i=4: swap → [1,3,4,2,5], n=4, SiftDown: 1 vs 3, 4 → swap with 4 → [4,3,1,2,5].'},
+{t:'mc',q:'How much extra space does HeapSort use?',o:['Θ(1)','Θ(log n)','Θ(n)','Θ(n + k)'],a:0,e:'Everything happens by swaps inside the input array.'},
+{t:'mc',q:'Worst-case running time of HeapSort when all n items are identical?',o:['Θ(1)','Θ(n)','Θ(n log n)','Θ(n²)'],a:1,e:'PSO 4 Q1: SiftDown never swaps because no child is strictly bigger, so each of the n−1 steps is O(1).'},
+{t:'npf',q:'The worst-case running time of HeapSort is O(n²).',a:0,e:'Big-O is an upper bound. HeapSort is O(n log n), and n log n ∈ O(n²), so this is always true. It would be false if it said Θ(n²).'},
+{t:'npf',q:'HeapSort preserves the relative order of equal keys on a given input.',a:1,e:'Not guaranteed (it is not a stable algorithm), but on some inputs, such as all-distinct keys or lucky arrangements, equal keys do end up in order.'},
+{t:'w',q:'Give a small input that shows HeapSort is not stable, and trace it.',a:'[2a, 2b, 1]. Heapify leaves it as [2a, 2b, 1] (no child is strictly bigger than 2a). i=2: swap → [1, 2b, 2a], SiftDown → [2b, 1, 2a]. i=1: swap → [1, 2b, 2a]. Output order 2b before 2a, but the input had 2a first.'},
+{t:'w',q:'During sort-down, why does SiftDown never move items that are already in the sorted suffix?',a:'Each iteration decrements n before calling SiftDown(A, n, 0). SiftDown only looks at children with index &lt; n, so the positions i, i+1, …, holding the already-placed maxima, are outside the heap.'}
+]},
+
+/* ------------------------------------------------------------------ */
+{id:'sorting', title:'Sorting Fundamentals', time:'25 min',
+lesson:`
+<p class="lede">What makes a sorting algorithm good, what "stable" means, and why no comparison sort can beat n log n.</p>
+
+<h3>Four things to analyze</h3>
+<div class="tbl"><table>
+<tr><th>Property</th><th>Question it answers</th></tr>
+<tr><td>Correctness (certification)</td><td>Is the output always sorted?</td></tr>
+<tr><td>Running time</td><td>How many compares and swaps?</td></tr>
+<tr><td>Stability</td><td>Do equal keys keep their input order?</td></tr>
+<tr><td>Space</td><td>In place (O(1) extra) or needs a copy?</td></tr>
+</table></div>
+
+<h3>Stability</h3>
+<p>A sort is <b>stable</b> if equal keys come out in the same relative order they went in. Tag duplicates to see it:</p>
+<p>Input <code>[4, 3₁, 2₁, 7, 2₂, 1, 8, 3₂]</code>. Four outputs are sorted by value, but only <code>[1, 2₁, 2₂, 3₁, 3₂, 4, 7, 8]</code> is the stable one.</p>
+<p>It matters when you sort records by one field and want an earlier sort by another field preserved (this is how radix sort works).</p>
+
+<h3>Sorting = picking one permutation</h3>
+<p>n items have n! orderings. A sorting algorithm figures out which one puts them in order. A comparison sort can only learn things by asking "is aᵢ ≤ aⱼ?".</p>
+
+<h3>Decision-tree lower bound</h3>
+<p>Draw every possible run of a comparison sort as a binary tree: each internal node is a comparison, each leaf is a final answer (a permutation).</p>
+<ul>
+<li>It needs at least <b>n!</b> leaves, one per possible input order.</li>
+<li>A binary tree of height h has at most <b>2^h</b> leaves.</li>
+<li>So 2^h ≥ n!, giving h ≥ log₂(n!). The height is the worst-case number of comparisons.</li>
+</ul>
+<p><b>log₂(n!) ∈ Ω(n log n):</b></p>
+<pre>log₂(n!) = log 1 + log 2 + … + log n
+         ≥ log(n/2) + … + log n        (keep only the top n/2 terms)
+         ≥ (n/2) · log(n/2)            (each kept term ≥ log(n/2))
+         ∈ Ω(n log n)</pre>
+<div class="note"><b>Theorem</b>Every comparison sort needs Ω(n log n) comparisons in the worst case. HeapSort and MergeSort are therefore asymptotically optimal comparison sorts.</div>
+<p>Small cases: n = 3 has 6 leaves, so ≥ ⌈log₂ 6⌉ = 3 comparisons. n = 4: ⌈log₂ 24⌉ = 5. n = 5: ⌈log₂ 120⌉ = 7.</p>
+<p><b>The escape hatch:</b> the bound only applies to algorithms that compare items. Counting, bucket, pigeonhole and radix sort look at the key values directly (use them as indices), so they can run in linear time when the key range is small.</p>
+<p>It is also a <b>worst case over all inputs</b>. If inputs are restricted (for example, every item is at most k slots from its sorted position), there are fewer possible permutations and you can go faster.</p>
+
+<h3>Reference table</h3>
+<div class="tbl"><table>
+<tr><th>Algorithm</th><th>Time</th><th>Extra space</th><th>Stable</th><th>Compares?</th></tr>
+<tr><td>HeapSort</td><td class="mono">O(n log n)</td><td class="mono">Θ(1)</td><td>No</td><td>Yes</td></tr>
+<tr><td>MergeSort</td><td class="mono">Θ(n log n)</td><td class="mono">Θ(n)</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>QuickSort</td><td class="mono">avg n log n, worst n²</td><td class="mono">O(log n) stack</td><td>No</td><td>Yes</td></tr>
+<tr><td>Insertion sort</td><td class="mono">O(n²), best O(n)</td><td class="mono">Θ(1)</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Counting sort</td><td class="mono">Θ(n + k)</td><td class="mono">Θ(n + k)</td><td>Yes</td><td>No</td></tr>
+<tr><td>Pigeonhole sort</td><td class="mono">O(n + m)</td><td class="mono">O(n + m)</td><td>Yes</td><td>No</td></tr>
+<tr><td>Bucket sort</td><td class="mono">avg O(n + n²/k + k), worst O(n²)</td><td class="mono">O(n + k)</td><td>If inner sort is</td><td>Inner sort may</td></tr>
+<tr><td>Radix sort (LSD)</td><td class="mono">O(d(n + b))</td><td class="mono">O(n + b)</td><td>Yes</td><td>No</td></tr>
+</table></div>
+
+<h3>Necessarily / Possibly / Necessarily false</h3>
+<p>These show up on every problem set. Decide like this:</p>
+<ol>
+<li><b>Necessarily true</b>: true for every input and every case the setup allows. You should be able to say why it can never fail.</li>
+<li><b>Necessarily false</b>: can never be true. Find the reason it always fails.</li>
+<li><b>Possibly true</b>: find one case where it holds and one where it does not.</li>
+</ol>
+<div class="trap"><b>Big-O traps</b>O is an upper bound. "HeapSort is O(n²)" is <b>necessarily true</b>. "HeapSort is Θ(n²)" is necessarily false. "Counting sort runs in O(n)" is possibly true (only when k ∈ O(n)). Always ask whether the claim depends on an input or on a parameter like k.</div>
+`,
+cheat:`
+<ul>
+<li>Stable = equal keys keep input order. Matters for multi-key / radix sorts.</li>
+<li>n! permutations → decision tree ≥ n! leaves; 2^h ≥ n! → h ≥ log₂ n!</li>
+<li>log₂ n! ≥ (n/2)log₂(n/2) ∈ Ω(n log n)</li>
+<li><b>Any comparison sort: Ω(n log n) worst case.</b> Non-comparison sorts (counting, bucket, radix) escape by indexing on keys.</li>
+<li>Min worst-case compares: n=3→3, n=4→5, n=5→7 (⌈log₂ n!⌉)</li>
+<li>N/P/NF: "O(bigger)" = necessarily true; depends on k or input = possibly</li>
+</ul>
+<div class="tbl"><table>
+<tr><th>Sort</th><th>Time</th><th>Space</th><th>Stable</th></tr>
+<tr><td>Heap</td><td>n log n</td><td>1</td><td>N</td></tr>
+<tr><td>Merge</td><td>n log n</td><td>n</td><td>Y</td></tr>
+<tr><td>Counting</td><td>n+k</td><td>n+k</td><td>Y</td></tr>
+<tr><td>Bucket</td><td>n avg / n² worst</td><td>n+k</td><td>if inner</td></tr>
+<tr><td>Radix</td><td>d(n+b)</td><td>n+b</td><td>Y</td></tr>
+</table></div>`,
+quiz:[
+{t:'mc',q:'What is the smallest possible worst-case number of comparisons for a comparison sort on 4 items?',o:['3','4','5','6'],a:2,e:'4! = 24 leaves. 2^h ≥ 24 → h ≥ log₂ 24 ≈ 4.58, so at least 5.'},
+{t:'mc',q:'Input [3a, 1, 3b, 2]. Which output is the stable sorted result?',o:['[1, 2, 3b, 3a]','[1, 2, 3a, 3b]','[3a, 3b, 1, 2]','Both of the first two are stable'],a:1,e:'3a came before 3b in the input, so a stable sort keeps 3a first.'},
+{t:'npf',q:'Some comparison-based algorithm sorts any array of n integers in O(n) worst-case time.',a:2,e:'The decision-tree bound says every comparison sort needs Ω(n log n) comparisons in the worst case.'},
+{t:'npf',q:'A non-comparison sorting algorithm sorts n integers in O(n) time.',a:1,e:'Counting sort is Θ(n + k). That is O(n) only when the key range k is O(n).'},
+{t:'npf',q:'A comparison sort finishes on an already-sorted input in O(n) time.',a:1,e:'Insertion sort does (one comparison per item). HeapSort does not; it still does Θ(n log n) work on sorted distinct keys.'},
+{t:'mc',q:'Which of these sorts is in place?',o:['Counting sort','MergeSort','HeapSort','Bucket sort'],a:2,e:'HeapSort uses Θ(1) extra space. The others need auxiliary arrays or lists.'},
+{t:'w',q:'Sketch why log₂(n!) ∈ Ω(n log n).',a:'log₂(n!) = Σ_{i=1..n} log₂ i ≥ Σ_{i=n/2..n} log₂ i ≥ (n/2)·log₂(n/2) = (n/2)(log₂ n − 1), which is Ω(n log n).'},
+{t:'w',q:'Why does the Ω(n log n) lower bound not apply to counting sort?',a:'The bound is for algorithms whose only way to learn about the input is comparing pairs of items. Counting sort never compares items; it uses each key directly as an array index, so the decision-tree argument does not describe it.'}
+]},
+
+/* ------------------------------------------------------------------ */
+{id:'counting', title:'Counting Sort', time:'35 min',
+lesson:`
+<p class="lede">If keys are small integers 0…k, you can sort without comparing anything: count how many of each value there are, then compute where each value's block starts.</p>
+
+<h3>Algorithm</h3>
+<pre>algorithm CountingSort(A, k)             // keys in 0..k
+  C ← array of k+1 zeros                  // Step 1   O(k)
+  for i from 0 to n−1:                    // Step 2   O(n)
+    C[A[i]] ← C[A[i]] + 1                 //   C[v] = # of items equal to v
+  for i from 1 to k:                      // Step 3   O(k)
+    C[i] ← C[i] + C[i−1]                  //   C[v] = # of items ≤ v
+  B ← array of size n
+  for i from n−1 down to 0:               // Step 4   O(n)  (BACKWARDS)
+    B[C[A[i]] − 1] ← A[i]
+    C[A[i]] ← C[A[i]] − 1
+  return B</pre>
+<p>After step 3, <code>C[v]</code> is one past the last slot where a v can go. Going backwards, the last v in A takes that last slot, then C[v] drops so the next v (earlier in A) goes just before it.</p>
+
+<h3>Full trace (lecture example), k = 5</h3>
+<p>A = (2,A) (5,C) (3,H) (0,B) (2,X) (3,B) (0,X) (3,D). The letter is a payload so you can see stability.</p>
+<div class="tbl"><table>
+<tr><th></th><th class="mono">0</th><th class="mono">1</th><th class="mono">2</th><th class="mono">3</th><th class="mono">4</th><th class="mono">5</th></tr>
+<tr><td>Counts (step 2)</td><td class="mono">2</td><td class="mono">0</td><td class="mono">2</td><td class="mono">3</td><td class="mono">0</td><td class="mono">1</td></tr>
+<tr><td>Prefix sums (step 3)</td><td class="mono">2</td><td class="mono">2</td><td class="mono">4</td><td class="mono">7</td><td class="mono">7</td><td class="mono">8</td></tr>
+</table></div>
+<div class="tbl"><table>
+<tr><th>i</th><th>A[i]</th><th>C[key] before</th><th>Placed at B[…]</th><th>C[key] after</th></tr>
+<tr><td class="mono">7</td><td class="mono">(3,D)</td><td class="mono">7</td><td class="mono">6</td><td class="mono">6</td></tr>
+<tr><td class="mono">6</td><td class="mono">(0,X)</td><td class="mono">2</td><td class="mono">1</td><td class="mono">1</td></tr>
+<tr><td class="mono">5</td><td class="mono">(3,B)</td><td class="mono">6</td><td class="mono">5</td><td class="mono">5</td></tr>
+<tr><td class="mono">4</td><td class="mono">(2,X)</td><td class="mono">4</td><td class="mono">3</td><td class="mono">3</td></tr>
+<tr><td class="mono">3</td><td class="mono">(0,B)</td><td class="mono">1</td><td class="mono">0</td><td class="mono">0</td></tr>
+<tr><td class="mono">2</td><td class="mono">(3,H)</td><td class="mono">5</td><td class="mono">4</td><td class="mono">4</td></tr>
+<tr><td class="mono">1</td><td class="mono">(5,C)</td><td class="mono">8</td><td class="mono">7</td><td class="mono">7</td></tr>
+<tr><td class="mono">0</td><td class="mono">(2,A)</td><td class="mono">3</td><td class="mono">2</td><td class="mono">2</td></tr>
+</table></div>
+<p>B = (0,B) (0,X) (2,A) (2,X) (3,H) (3,B) (3,D) (5,C). Equal keys kept their input order: stable.</p>
+
+<h3>Why the last loop must go backwards</h3>
+<p>Forward order breaks stability. PS 2 Q10 counterexample: A = [(3,a), (1,b), (3,c)], prefix sums C[1] = 1, C[3] = 3.</p>
+<ul>
+<li>Forward: (3,a) → B[2], (1,b) → B[0], (3,c) → B[1]. Output (1,b) (3,c) (3,a). The 3s flipped: <b>unstable</b>.</li>
+<li>Backward: (3,c) → B[2], (1,b) → B[0], (3,a) → B[1]. Output (1,b) (3,a) (3,c). <b>Stable</b>.</li>
+</ul>
+<p>(Filling forward works only if you use the <em>start</em> of each block, i.e. shifted prefix sums, and increment.)</p>
+
+<h3>Cost</h3>
+<ul>
+<li>Time <b>Θ(n + k)</b>. It is Θ(n) only when k ∈ O(n).</li>
+<li>Space <b>Θ(n + k)</b> (arrays B and C). Not in place.</li>
+<li>Stable, because of the backwards placement loop.</li>
+</ul>
+<div class="trap"><b>Check your k</b>n = 1,000 unique IDs in 0…10⁹ (PS 2 Q11): C has a billion entries (~4 GB), and zeroing it alone is 10⁹ steps, versus about n log n ≈ 10⁴ for MergeSort/HeapSort/QuickSort. Counting sort is a terrible choice there.</div>
+<div class="trap"><b>Digit-count trap (PSO 4)</b>Integers with up to k digits, where k ∈ Θ(n): the largest value is 99…9 (k nines) = 10^k − 1, so counting sort costs O(n + 10^n): exponential. A comparison sort at O(n log n) wins.</div>
+
+<h3>Negative or offset keys</h3>
+<p>Shift every key by the minimum: <code>index(v) = v − min</code>, and use <code>max − min + 1</code> counters. Temperatures in [−100, 20]: index = v + 100, array size 121 (PS 2 Q8, Q9).</p>
+
+<h3>Range-count queries in O(1) (PSO 4)</h3>
+<p>Do steps 1 to 3 once (Θ(n + k)). Then the number of items in [a, b] is <code>C[b] − C[a−1]</code> (or just <code>C[b]</code> if a = 0).</p>
+`,
+cheat:`
+<pre>C[0..k]=0; for x in A: C[x]++
+for v=1..k: C[v]+=C[v−1]       // C[v] = # ≤ v
+for i=n−1 DOWNTO 0:            // backwards → stable
+  B[C[A[i]]−1]=A[i]; C[A[i]]−−</pre>
+<ul>
+<li>Θ(n+k) time, Θ(n+k) space, <b>stable</b>, not in place</li>
+<li>Forward last loop → unstable. Ex [(3,a),(1,b),(3,c)] → (1,b),(3,c),(3,a)</li>
+<li>Negative range: idx = v − min; size = max − min + 1</li>
+<li># in [a,b] = C[b] − C[a−1] after prefix sums (O(1) query)</li>
+<li>Bad when k ≫ n (IDs up to 10⁹; k-digit numbers → 10^k)</li>
+</ul>`,
+quiz:[
+{t:'mc',q:'A = [3, 0, 2, 3, 1, 0], k = 3. What is C after the prefix-sum step?',o:['[2, 1, 1, 2]','[2, 3, 4, 6]','[0, 2, 3, 4]','[2, 3, 5, 6]'],a:1,e:'Counts: two 0s, one 1, one 2, two 3s → [2,1,1,2]. Running totals → [2, 3, 4, 6].'},
+{t:'mc',q:'Continuing: the placement loop starts at i = 5 (A[5] = 0). Which index of B does it write?',o:['0','1','2','5'],a:1,e:'C[0] = 2, so B[2 − 1] = B[1]. Then C[0] becomes 1, so the earlier 0 at A[1] will go to B[0].'},
+{t:'mc',q:'Keys are integers in [−50, 30]. How large must the count array be, and what index does −7 map to?',o:['80 and 43','81 and 43','81 and 57','80 and 42'],a:1,e:'Size = 30 − (−50) + 1 = 81. Index = −7 − (−50) = 43.'},
+{t:'npf',q:'Counting sort runs in O(n) time.',a:1,e:'It is Θ(n + k). Linear only if k ∈ O(n).'},
+{t:'npf',q:'Counting sort (as written in lecture) sorts in place.',a:2,e:'It always allocates C (size k+1) and B (size n).'},
+{t:'npf',q:'Counting sort on n integers in the range [0, n²] runs in O(n) time.',a:2,e:'Here k = n², and the algorithm spends Θ(k) just initializing and summing C, so the time is Θ(n²), never O(n).'},
+{t:'w',q:'Using A = [3, 0, 2, 3, 1, 0] and its prefix-sum array, how many items lie in the range [1, 3]? Show the formula.',a:'C = [2, 3, 4, 6]. Count = C[3] − C[0] = 6 − 2 = 4 (the items 3, 2, 3, 1).'},
+{t:'w',q:'Your intern wrote the placement loop forwards (i = 0 to n−1). Show with a small example that the result is no longer stable.',a:'A = [(3,a), (1,b), (3,c)]. Prefix sums: C[1] = 1, C[3] = 3. Forward: (3,a) → B[2], C[3]=2; (1,b) → B[0]; (3,c) → B[1]. B = (1,b), (3,c), (3,a): the two 3s reversed.'},
+{t:'w',q:'Why is counting sort a bad choice for 1,000 unique user IDs in 0…10⁹, and what should you use instead?',a:'Time and space are Θ(n + k) with k = 10⁹. You must allocate and zero a billion-entry array (gigabytes of memory, 10⁹ steps) to sort only 1,000 items. A comparison sort (MergeSort, HeapSort, QuickSort) takes about n log n ≈ 10⁴ steps.'}
+]},
+
+/* ------------------------------------------------------------------ */
+{id:'bucket', title:'Bucket Sort', time:'30 min',
+lesson:`
+<p class="lede">Split the key range into buckets, drop each item into its bucket, sort each bucket, and concatenate. Fast when items spread evenly.</p>
+
+<h3>Warm-up: sort words by length in O(n)</h3>
+<p>No dictionary word is longer than 45 letters. Make 45 linked lists. Put a word of length l into list l − 1 (O(1) each). Join the 45 lists in order (45 is a constant). Total O(n). Same words keep their input order inside a list, so it is stable.</p>
+
+<h3>Algorithm (k buckets)</h3>
+<pre>algorithm BucketSort(A, k)
+  B ← array of k empty lists
+  M ← (max key in A) + 1
+  for i from 0 to n−1:
+    j ← ⌊k · A[i] / M⌋          // bucket index 0..k−1
+    B[j].insert(A[i])
+  for i from 0 to k−1:
+    sort list B[i]
+  return concatenation B[0], B[1], …, B[k−1]</pre>
+<p>The classic version assumes keys in [0, 1) and uses k = n buckets with j = ⌊n·A[i]⌋. Dividing by M = max + 1 maps integer keys into [0, 1) first.</p>
+
+<h3>Trace: [29, 25, 3, 49, 9, 37, 21, 43], n = k = 8, M = 50</h3>
+<div class="tbl"><table>
+<tr><th>Key</th><td class="mono">29</td><td class="mono">25</td><td class="mono">3</td><td class="mono">49</td><td class="mono">9</td><td class="mono">37</td><td class="mono">21</td><td class="mono">43</td></tr>
+<tr><th>8·key/50</th><td class="mono">4.64</td><td class="mono">4.0</td><td class="mono">0.48</td><td class="mono">7.84</td><td class="mono">1.44</td><td class="mono">5.92</td><td class="mono">3.36</td><td class="mono">6.88</td></tr>
+<tr><th>Bucket</th><td class="mono">4</td><td class="mono">4</td><td class="mono">0</td><td class="mono">7</td><td class="mono">1</td><td class="mono">5</td><td class="mono">3</td><td class="mono">6</td></tr>
+</table></div>
+<p>Buckets: 0:[3] 1:[9] 2:[] 3:[21] 4:[29, 25] 5:[37] 6:[43] 7:[49]. Sort bucket 4 → [25, 29]. Concatenate → [3, 9, 21, 25, 29, 37, 43, 49].</p>
+
+<h3>Why it is correct</h3>
+<p>The bucket formula is monotone: a bigger key never lands in a smaller-numbered bucket. So every key in bucket i is ≤ every key in bucket i + 1. Sort inside each bucket and concatenate in order, and the whole thing is sorted.</p>
+
+<h3>Running time depends on four things</h3>
+<p>n, k, how evenly keys spread, and which sort you use inside buckets.</p>
+<div class="tbl"><table>
+<tr><th>Case</th><th>Time</th><th>Example</th></tr>
+<tr><td>Best</td><td class="mono">O(n)</td><td>about one item per bucket</td></tr>
+<tr><td>Average (uniform keys)</td><td class="mono">O(n + n²/k + k)</td><td>k = n → O(n)</td></tr>
+<tr><td>Worst</td><td class="mono">O(n²)</td><td>all items in one bucket, sorted with insertion sort</td></tr>
+</table></div>
+<p>Use MergeSort or HeapSort inside the buckets and the worst case drops to O(n log n). Bucket sort is <b>stable if</b> the inner sort is stable and inserts append.</p>
+<p>Relationship: counting sort is bucket sort with one bucket per possible value.</p>
+
+<h3>Pigeonhole sort (Problem Set 2)</h3>
+<p>One "pigeonhole" per value in [min, max], m = max − min + 1 holes. Append each item to hole A[i] − min, then read the holes in order. No sorting inside holes, because every item in a hole has the same key.</p>
+<ul>
+<li>Time O(n + m), space O(n + m), stable, not in place.</li>
+<li>It <b>cannot</b> degrade to O(n²): appends are O(1) and holes are never sorted (PS 2 Q7: necessarily false).</li>
+<li>It can waste memory: [10, 1, 1, …, 1] allocates 10 holes to use 2.</li>
+<li>Best fit: many items, tiny range (500,000 integers in 1…100). Worst fit: few items, huge range; floats (no integer holes).</li>
+</ul>
+
+<h3>Radix sort and the PSO 5 problem</h3>
+<p><b>LSD radix sort:</b> sort by the last digit, then the next digit, and so on, each pass using a <b>stable</b> counting sort on one digit (base b = 10). d digits → O(d(n + b)). Stability is what keeps the earlier passes' work.</p>
+<p><b>PSO 5:</b> m integers with 1…k digits each (k ∈ Θ(m)), n total digits, lengths uniform. Bucket by digit count into k buckets (B[dᵢ − 1]), radix sort each bucket, concatenate. Shorter numbers are smaller, so bucket order is correct. Bucket i holds ≈ m/k numbers of i + 1 digits, so the work is Σ (i+1)(m/k) = O(n) because m/k is a constant.</p>
+`,
+cheat:`
+<pre>M = max+1; j = ⌊k·A[i]/M⌋; B[j].insert(A[i])
+sort each B[j]; concatenate B[0..k−1]</pre>
+<ul>
+<li>Best O(n); avg O(n + n²/k + k) (uniform, k=n → O(n)); worst O(n²) (one bucket + insertion sort)</li>
+<li>Stable iff inner sort stable. Counting sort = 1 bucket per value.</li>
+<li><b>Pigeonhole</b>: m = max−min+1 holes, O(n+m) time & space, stable, never n², can waste memory; best: huge n, tiny range</li>
+<li>Radix LSD: stable counting sort per digit, O(d(n+b))</li>
+<li>PSO5: bucket by #digits, radix each → O(total digits)</li>
+</ul>`,
+quiz:[
+{t:'mc',q:'BucketSort with k = 5 buckets on A = [12, 45, 3, 30, 27]. Which bucket does 27 go into? (M = max + 1 = 46)',o:['1','2','3','4'],a:1,e:'⌊5·27/46⌋ = ⌊135/46⌋ = ⌊2.93⌋ = 2.'},
+{t:'mc',q:'BucketSort with k = 4 on A = [7, 1, 5, 9, 3] (M = 10). What does bucket 2 hold before the buckets are sorted?',o:['[5]','[5, 7]','[7, 5]','[7]'],a:2,e:'j = ⌊4·A/10⌋: 7 → 2, 1 → 0, 5 → 2, 9 → 3, 3 → 1. Items are inserted in input order, so bucket 2 is [7, 5] until it is sorted.'},
+{t:'mc',q:'Worst-case running time of bucket sort if insertion sort is used inside the buckets?',o:['O(n)','O(n log n)','O(n + k)','O(n²)'],a:3,e:'Every item can land in the same bucket, and insertion sort on n items is O(n²).'},
+{t:'npf',q:'The running time of pigeonhole sort degrades to O(n²) when all n items fall in the same pigeonhole.',a:2,e:'Items in one hole all have the same key and are only appended (O(1)). There is no sorting inside holes, so the time stays O(n + m). (PS 2 Q7)'},
+{t:'npf',q:'Bucket sort is stable.',a:1,e:'It depends on the sort used inside each bucket. With a stable inner sort and appending inserts, yes; with HeapSort inside, not guaranteed.'},
+{t:'mc',q:'Which input is the best fit for pigeonhole sort?',o:['200 integers from 0 to 50,000,000','1,000,000 ages from 0 to 120','10,000 floats in [0, 1)','60 integers from 1 to 1,000'],a:1,e:'Pigeonhole is O(n + m). Large n with tiny m = 121 makes it essentially linear. A huge range wastes space; floats have no integer holes.'},
+{t:'w',q:'Describe an O(n) algorithm to sort n English words by length (assume length is O(1) to read).',a:'Create 45 empty lists (max word length). For each word of length l, append it to list l − 1: O(1) each, O(n) total. Concatenate the 45 lists in order: a constant number of O(1) joins. Total O(n), and it is stable.'},
+{t:'w',q:'In PSO 5, why does bucketing by number of digits and then radix-sorting each bucket give a correctly sorted array?',a:'A number with fewer digits is always smaller than one with more digits (no leading zeros), so every number in bucket i is smaller than every number in bucket i+1. Radix sort correctly sorts inside a bucket, so concatenating the buckets in order is sorted.'}
+]},
+
+/* ------------------------------------------------------------------ */
+{id:'bst', title:'Binary Search Tree', time:'35 min',
+lesson:`
+<p class="lede">A binary tree where every node is bigger than everything in its left subtree and smaller than everything in its right subtree. Search, insert and delete all follow one root-to-leaf path.</p>
+
+<h3>Definition</h3>
+<p>A binary tree is null or a root with a left and right binary tree. A <b>BST</b> adds the order rule: for every node, all keys in its left subtree are ≤ it and all keys in its right subtree are &gt; it. (The lecture's insert sends <b>equal keys left</b>.)</p>
+<p>In-order traversal of a BST lists the keys in <b>sorted</b> order.</p>
+
+<h3>Search</h3>
+<pre>algorithm search(root, x)
+  if root is null return null
+  if x = root.item return root
+  if x &lt; root.item return search(root.left, x)
+  return search(root.right, x)</pre>
+
+<h3>Insert</h3>
+<p>Search for x until you hit a null link, and hang a new node there. The shape depends entirely on insertion order.</p>
+<pre>algorithm insert(root, x)
+  if root is null return new node(x)
+  if x ≤ root.item: root.left ← insert(root.left, x)
+  else:             root.right ← insert(root.right, x)
+  return root</pre>
+<div class="figrow">
+${B('4(2(1(0|_)|3)|6(5|7(_|8(_|9))))','Insert 4, 2, 6, 1, 3, 5, 7, 0, 8, 9. Height 4 (4→6→7→8→9).')}
+${B('A(_|C(_|E(_|H(_|R(_|S(_|X))))))','Insert sorted keys A…X: a linked list, height n − 1.')}
+</div>
+
+<h3>Delete: three cases</h3>
+<ol>
+<li><b>Leaf</b>: remove it.</li>
+<li><b>One child</b>: replace the node with its child.</li>
+<li><b>Two children</b>: copy in the <b>in-order successor</b> (the minimum of the right subtree), then delete that successor from the right subtree. The successor has no left child, so its deletion is case 1 or 2.</li>
+</ol>
+<pre>algorithm delete(root, x)
+  if root is null return null
+  if x &lt; root.item:  root.left  ← delete(root.left, x)
+  elif x > root.item: root.right ← delete(root.right, x)
+  else
+    if root.left is null  return root.right
+    if root.right is null return root.left
+    s ← findmin(root.right)
+    root.item ← s.item
+    root.right ← delete(root.right, s.item)
+  return root</pre>
+<div class="figrow">
+${B('5(3(1(_|2)|4)|8(7|9))','Before: delete 5 (two children).','5')}
+${B('7(3(1(_|2)|4)|8(_|9))','After: successor 7 (min of right subtree) moves up.','7')}
+</div>
+<p>You could also use the in-order <em>predecessor</em> (max of left subtree). Both are valid; the lecture code uses the successor.</p>
+
+<h3>Sorted array → balanced BST</h3>
+<p>Make the middle element the root and recurse on each half.</p>
+<pre>algorithm generateBST(A, l, r)
+  if r &lt; l return null
+  m ← ⌊(l + r)/2⌋
+  root ← new node(A[m])
+  root.left  ← generateBST(A, l, m−1)
+  root.right ← generateBST(A, m+1, r)
+  return root</pre>
+${B('H(C(A|E)|S(R|X))','generateBST on [A, C, E, H, R, S, X].')}
+
+<h3>Height decides everything</h3>
+<p>Height counts edges (PS 2 Q12: inserting 4, 2, 8, 0, 1, 3 gives height 3 along 4→2→0→1). Balanced means |height(left) − height(right)| ≤ 1 at every node, which forces height O(log n).</p>
+<div class="tbl"><table>
+<tr><th>Operation</th><th>Unbalanced (worst)</th><th>Balanced</th></tr>
+<tr><td>Search / insert / delete one</td><td class="mono">O(n)</td><td class="mono">O(log n)</td></tr>
+<tr><td>Insert all n</td><td class="mono">O(n²)</td><td class="mono">O(n log n)</td></tr>
+</table></div>
+<p>PSO 5 Q2(1): inserting keys in descending order puts each new key left of the leftmost node, so insert i costs i: Σ i = Θ(n²).</p>
+
+<h3>A property that looks true but is not (PSO 5)</h3>
+<p>Claim: searching for a key that ends at a leaf splits keys into A (left of the path), B (on the path), C (right of the path), with a ≤ b ≤ c always. Counterexample: search for 4 below. A = {2}, B = {1, 3, 4}, C = ∅. But 2 &gt; 1, so a ≤ b fails.</p>
+${B('1(_|3(2|4))','Search path 1 → 3 → 4.','1,3,4')}
+<p>Minimum number of nodes for height h: h + 1. Maximum: 2^(h+1) − 1.</p>
+`,
+cheat:`
+<ul>
+<li>left ≤ node &lt; right (lecture insert: x ≤ root → left). In-order = sorted.</li>
+<li>Search/insert/delete follow 1 path: O(h). h ∈ [⌊log₂ n⌋, n−1]</li>
+<li>Delete: leaf → remove; 1 child → splice; 2 children → copy <b>successor = min(right)</b>, delete it from right</li>
+<li>Successor of a 2-child node has no left child</li>
+<li>Sorted / reverse-sorted inserts → height n−1, total Θ(n²)</li>
+<li>generateBST: root = A[⌊(l+r)/2⌋], recurse halves → height ⌊log₂ n⌋</li>
+<li>Height = edges. Balanced: |h(L)−h(R)| ≤ 1 everywhere</li>
+<li>Search-path "A ≤ B ≤ C" is false: tree 1→3→(2,4), search 4</li>
+</ul>`,
+quiz:[
+{t:'mc',q:'Insert 5, 3, 8, 1, 4, 7, 9, 2 into an empty BST. What is the height?',o:['2','3','4','7'],a:1,e:'2 goes 5 → 3 → 1 → right of 1. Longest path 5 → 3 → 1 → 2 has 3 edges.'},
+{t:'mc',q:'Same tree. What is the pre-order traversal?',o:['5, 3, 1, 2, 4, 8, 7, 9','1, 2, 3, 4, 5, 7, 8, 9','5, 3, 8, 1, 4, 7, 9, 2','2, 1, 4, 3, 7, 9, 8, 5'],a:0,e:'Root, then left subtree (3, 1, 2, 4), then right (8, 7, 9). Option 2 is in-order; option 3 is level-order; option 4 is post-order.'},
+{t:'mc',q:'Delete 5 (the root) from that tree using the successor rule. What is the new pre-order?',o:['4, 3, 1, 2, 8, 7, 9','7, 3, 1, 2, 4, 8, 9','8, 3, 1, 2, 4, 7, 9','7, 3, 1, 2, 4, 9, 8'],a:1,e:'Successor = min of right subtree {8, 7, 9} = 7. Copy 7 into the root and remove the leaf 7. New tree: 7 with left 3(1(_,2), 4) and right 8(_, 9).'},
+{t:'mc',q:'generateBST on [1, 2, 3, 4, 5, 6, 7, 8]. What is the root and the height?',o:['Root 4, height 3','Root 5, height 3','Root 4, height 2','Root 5, height 2'],a:0,e:'m = ⌊(0+7)/2⌋ = 3 → A[3] = 4. Right half [5,6,7,8] → root 6, then [7,8] → root 7 with right child 8. Path 4 → 6 → 7 → 8 = 3 edges.'},
+{t:'mc',q:'Insert 10, 5, 15, 3, 7, 12, 20, 6 into an empty BST. Height?',o:['2','3','4','5'],a:1,e:'6 goes 10 → 5 → 7 → left of 7. That path has 3 edges.'},
+{t:'npf',q:'Searching a BST with n nodes takes O(log n) time.',a:1,e:'True if the tree is balanced, false for a degenerate (list-shaped) tree where search is Θ(n).'},
+{t:'npf',q:'The in-order successor of a node that has two children has no left child.',a:0,e:'The successor is the minimum of the right subtree. If it had a left child, that child would be smaller and still in the right subtree.'},
+{t:'w',q:'What is the total cost of inserting n keys in decreasing order into an empty BST? Justify.',a:'Θ(n²). Each new key is smaller than all previous ones, so it walks all the way down the left spine. The i-th insert visits i − 1 nodes; Σ (i − 1) = n(n−1)/2 ∈ Θ(n²).'}
+]},
+
+/* ------------------------------------------------------------------ */
+{id:'btree', title:'B-Tree', time:'40 min',
+lesson:`
+<p class="lede">A search tree whose nodes hold several keys. It stays perfectly balanced (every leaf at the same depth) by splitting full nodes and growing <b>upward</b> from the root.</p>
+
+<h3>Why</h3>
+<p>Designed by Bayer and McCreight (1972) for data on disk. Reading one node is one slow disk access, so you want wide, shallow trees: many keys per node, few levels.</p>
+
+<h3>Properties of a B-tree of order m (Knuth)</h3>
+<div class="tbl"><table>
+<tr><th>Rule</th><th>Order m</th><th>2-3 tree (m = 3)</th><th>2-3-4 tree (m = 4)</th></tr>
+<tr><td>Max children per node</td><td class="mono">m</td><td class="mono">3</td><td class="mono">4</td></tr>
+<tr><td>Max keys per node</td><td class="mono">m − 1</td><td class="mono">2</td><td class="mono">3</td></tr>
+<tr><td>Min children, internal non-root</td><td class="mono">⌈m/2⌉</td><td class="mono">2</td><td class="mono">2</td></tr>
+<tr><td>Min keys, non-root</td><td class="mono">⌈m/2⌉ − 1</td><td class="mono">1</td><td class="mono">1</td></tr>
+<tr><td>Root</td><td colspan="3">at least 2 children unless it is a leaf (so ≥ 1 key)</td></tr>
+<tr><td>Keys vs children</td><td colspan="3">a non-leaf with c children has exactly c − 1 keys</td></tr>
+<tr><td>Leaves</td><td colspan="3">all on the same level</td></tr>
+</table></div>
+<p>Keys inside a node are sorted. Key i is a separator: everything in child i is smaller, everything in child i+1 is larger.</p>
+${T('M(E,J(A,C|H|L)|R(P|S,X))','A 2-3 tree. 2-nodes have 1 key and 2 children; 3-nodes have 2 keys and 3 children.')}
+
+<h3>Height</h3>
+<p>For a 2-3 tree with n nodes, height is between log₃ n and log₂ n, so Θ(log n). In general a B-tree has height O(log n); bigger m means flatter.</p>
+
+<h3>Search</h3>
+<pre>algorithm search(root, x)
+  i ← 0
+  while i &lt; root.nitems and x > root.item[i]: i ← i + 1
+  if i &lt; root.nitems and x = root.item[i]: return (root, i)
+  if root is a leaf: return null
+  return search(root.children[i], x)</pre>
+<p>Scan the keys in the node; stop at the first key ≥ x. If equal, found. Otherwise go down child i.</p>
+
+<h3>Insert: always at a leaf, split upward</h3>
+<ol>
+<li>Search down to the leaf where x belongs and insert it in sorted position.</li>
+<li>If the leaf now has m keys (one too many), <b>split</b>: the <b>median</b> key moves up into the parent; keys left of it form one node, keys right of it form another.</li>
+<li>If that overflows the parent, split the parent the same way, and so on.</li>
+<li>If the root splits, the median becomes a <b>new root</b>. This is the only way a B-tree gets taller.</li>
+</ol>
+<div class="note"><b>Even m</b>For order 4, an overflowing node has 4 keys and two middle candidates. The PS 2 question on order 4 only asks for the height, which is the same either way. If a question depends on the choice, it will state the convention; the lecture points to the USFCA visualizer for practice.</div>
+
+<h3>Full trace: 2-3 tree, insert 8, 2, 3, 4, 0, 9, 6, 5, 1</h3>
+<div class="figrow">
+${T('3(2|8)','8, 2, then 3: leaf [2,3,8] overflows, 3 goes up as new root.','3')}
+${T('3(0,2|4,8)','4 and 0 fit in leaves.')}
+${T('3,8(0,2|4|9)','9: leaf [4,8,9] splits, 8 goes up.','8')}
+${T('3,8(0,2|4,6|9)','6 fits in [4, 6].')}
+</div>
+<div class="figrow">
+${T('5(3(0,2|4)|8(6|9))','5: leaf [4,5,6] splits (5 up) → root [3,5,8] splits (5 up, new root). Height grows to 2.','5')}
+${T('5(1,3(0|2|4)|8(6|9))','1: leaf [0,1,2] splits, 1 goes up into [1, 3].','1')}
+</div>
+
+<h3>Counting B-trees (PS 2 Q15)</h3>
+<p>How many 2-3 trees store {0, 1, 2, 3, 4, 8}? Count by height.</p>
+<ul>
+<li>Height 0: a single node holds at most 2 keys. No.</li>
+<li>Height 1, root with 1 key: 2 leaves with at most 2 keys each hold ≤ 4, total ≤ 5. No.</li>
+<li>Height 1, root with 2 keys: 3 leaves must hold the other 4 keys, each 1 or 2 keys: sizes (2,1,1), (1,2,1), (1,1,2). <b>3 trees.</b></li>
+<li>Height 2: needs at least 7 keys. No.</li>
+</ul>
+<p>Once you fix the node sizes, the key sorting fixes which key goes where, so each size pattern is exactly one tree.</p>
+
+<h3>Minimum degree t (CLRS style, PSO 5)</h3>
+<ul>
+<li>Every non-root node: t − 1 to 2t − 1 keys (t to 2t children).</li>
+<li>Root: at least 1 key.</li>
+<li>t = 2 is the <b>2-3-4 tree</b> (order 4). A 2-3 tree does not fit this definition (it would need max 2t − 1 = 2 keys with t = 1.5).</li>
+<li>Max keys at height h: every node full with 2t children: <b>(2t)^(h+1) − 1</b>.</li>
+<li>Min keys at height h: root 1 key, others t − 1 keys with t children: <b>2t^h − 1</b>.</li>
+</ul>
+<p>Check with t = 2, h = 1: max 4² − 1 = 15 (root 3 keys + 4 leaves × 3). Min 2·2 − 1 = 3 (root 1 key + 2 leaves × 1). The 2-3-4 trees storing {1, 2, 3, 4, 5}: 4 of them.</p>
+`,
+cheat:`
+<ul>
+<li>Order m: ≤ m children, ≤ m−1 keys; internal non-root ≥ ⌈m/2⌉ children (≥ ⌈m/2⌉−1 keys); root ≥ 2 children unless leaf; c children ↔ c−1 keys; all leaves same depth</li>
+<li>2-3 tree = order 3 (1–2 keys); 2-3-4 = order 4 = min degree t=2 (1–3 keys)</li>
+<li>Height Θ(log n); 2-3 tree: log₃ n … log₂ n</li>
+<li>Search: first key ≥ x in node; equal → found; else child i</li>
+<li><b>Insert</b>: into leaf; overflow (m keys) → split, median up; root split → new root (only way height grows)</li>
+<li>Min degree t: t−1…2t−1 keys; max keys (2t)^(h+1)−1; min keys 2t^h−1</li>
+<li>Count trees: enumerate heights, then node-size patterns</li>
+</ul>`,
+quiz:[
+{t:'mc',q:'Insert 1, 2, 3, 4, 5, 6, 7 in order into an empty 2-3 tree. What is the final root, and the height?',o:['Root [4], height 2','Root [2, 4], height 1','Root [4], height 1','Root [3, 5], height 1'],a:0,e:'3 splits [1,2,3] → root 2. 5 splits [3,4,5] → root [2,4]. 7 splits [5,6,7] → 6 goes up → [2,4,6] overflows → 4 becomes new root. Final: 4 / (2: [1],[3]) and (6: [5],[7]). Height 2.'},
+{t:'mc',q:'In a B-tree of order 5, what are the max keys per node and the min keys in a non-root internal node?',o:['5 and 2','4 and 2','4 and 3','5 and 3'],a:1,e:'Max keys m − 1 = 4. Min children ⌈5/2⌉ = 3, so min keys 2.'},
+{t:'mc',q:'Insert 10, 20, 30, 40, 50 into an empty 2-3 tree. What does the root hold?',o:['[30]','[20, 40]','[20, 30]','[40]'],a:1,e:'30 splits [10,20,30] → root 20, leaves [10], [30]. 40 → [30,40]. 50 → [30,40,50] splits, 40 goes up → root [20, 40] with leaves [10], [30], [50].'},
+{t:'mc',q:'Which event makes a B-tree taller?',o:['Any leaf split','Splitting the root','Inserting into a full leaf','Inserting the new maximum key'],a:1,e:'Height only increases when the root splits and a new root is created above it. Leaves always stay at the same depth.'},
+{t:'mc',q:'A B-tree has minimum degree t = 3. Max keys per node, and max children?',o:['5 keys, 6 children','3 keys, 4 children','6 keys, 7 children','5 keys, 5 children'],a:0,e:'Max keys 2t − 1 = 5; max children 2t = 6.'},
+{t:'mc',q:'A 2-3-4 tree (t = 2) has height 1. What are the minimum and maximum number of keys?',o:['3 and 15','2 and 12','3 and 12','1 and 15'],a:0,e:'Min: root 1 key + 2 leaves of 1 key = 3 = 2t^h − 1. Max: root 3 keys + 4 leaves of 3 keys = 15 = (2t)^(h+1) − 1.'},
+{t:'npf',q:'All leaves of a B-tree are at the same depth.',a:0,e:'It is part of the definition, and both insertion (growing at the root) and deletion (shrinking at the root) preserve it.'},
+{t:'mc',q:'How many different 2-3 trees store exactly the keys {1, 2, 3, 4}?',o:['1','2','3','4'],a:1,e:'Height 0 holds ≤ 2 keys. Height 1 with root of 1 key: 3 keys split into 2 leaves as (2,1) or (1,2): 2 trees. Root with 2 keys needs ≥ 3 leaf keys, but only 2 remain. Height 2 needs ≥ 7 keys. Total 2.'},
+{t:'w',q:'In the 2-3 tree M / (E,J: [A,C] [H] [L]) / (R: [P] [S,X]), list the nodes visited when searching for L.',a:'[M] → L &lt; M, go to child 0 → [E, J] → L &gt; J, go to child 2 → [L] found. Three nodes visited.'}
+]},
+
+/* ------------------------------------------------------------------ */
+{id:'bdelete', title:'B-Tree Deletion', time:'40 min',
+lesson:`
+<p class="lede">Remove the key, then repair any node that dropped below the minimum by borrowing from a sibling (rotation) or merging with one.</p>
+
+<h3>Step 1: get the deletion down to a leaf</h3>
+<ul>
+<li><b>Key is in a leaf</b>: remove it.</li>
+<li><b>Key is in an internal node</b>: it is a separator, so you can't just drop it. Replace it with its in-order <b>successor</b> (the smallest key in the subtree to its right, always in a leaf) or predecessor. That removes a key from a leaf instead. The lecture examples use the successor.</li>
+</ul>
+<p>If the leaf still has at least the minimum number of keys, you are done. In a 2-3 tree that means deleting from a leaf with 2 keys is free.</p>
+
+<h3>Step 2: fix underflow (in this order)</h3>
+<ol>
+<li><b>Rotate left</b>: if the right sibling has a spare key, move the parent's separator <em>down</em> to the end of the deficient node, and move the right sibling's <em>first</em> key <em>up</em> to replace it.</li>
+<li><b>Rotate right</b>: otherwise, if the left sibling has a spare key, move the separator down to the front of the deficient node and the left sibling's <em>last</em> key up.</li>
+<li><b>Merge</b>: otherwise (both immediate siblings are at the minimum), glue the deficient node, the separator between them, and a sibling into one node. The parent loses a key.
+  <ul>
+  <li>If the parent is the root and is now empty, delete it; the merged node is the new root. <b>The tree gets shorter.</b></li>
+  <li>If the parent is now deficient, repeat step 2 on the parent.</li>
+  </ul></li>
+</ol>
+<div class="note"><b>Rotations on internal nodes</b>When the deficient node is internal, a rotation also moves one child pointer: the child next to the key that moved up goes along to the deficient node (the right sibling's first child in a left rotation; the left sibling's last child in a right rotation). Otherwise the key/child counts would not match.</div>
+<div class="note"><b>Direction words</b>"Rotate left" means keys flow leftward: right sibling → parent → deficient node. Siblings only count if they are <b>adjacent</b> under the same parent.</div>
+
+<h3>Lecture example: start tree</h3>
+${T('5(1,3(0|2|4)|8(6|9))','The tree built by inserting 8, 2, 3, 4, 0, 9, 6, 5, 1.')}
+
+<h3>Delete 3 (internal key)</h3>
+<ul>
+<li>Replace 3 with its successor 4. The leaf [4] becomes empty.</li>
+<li>That leaf is the last child, so it has no right sibling. Left sibling [2] has only 1 key (the minimum). Merge: [2] + separator 4 → [2, 4].</li>
+<li>Parent [1, 4] loses the 4 → [1], still legal.</li>
+</ul>
+${T('5(1(0|2,4)|8(6|9))','After deleting 3.','2,4')}
+
+<h3>Delete 9 (cascading merge, tree shrinks)</h3>
+<ul>
+<li>Leaf [9] becomes empty. No right sibling; left sibling [6] is minimal. Merge [6] + 8 → [6, 8].</li>
+<li>Parent [8] is now empty (0 keys, 1 child): deficient. Its sibling [1] has only 1 key: merge [1] + separator 5 + (empty) → [1, 5], taking all 3 children.</li>
+<li>The root lost its only key, so it disappears. Height drops from 2 to 1.</li>
+</ul>
+${T('1,5(0|2,4|6,8)','After deleting 9.','1,5')}
+
+<h3>Delete 5 (internal key, leaf has a spare)</h3>
+<ul>
+<li>Successor of 5 is 6 (min of the subtree to its right, [6, 8]). Copy 6 into the root; remove it from [6, 8] → [8]. Still legal. Done.</li>
+</ul>
+${T('1,6(0|2,4|8)','After deleting 5.','6')}
+
+<h3>Example with a rotation</h3>
+<p>From root [15, 25] with leaves [5, 10] [20] [30, 35], delete 20. Leaf [20] empties. Right sibling [30, 35] has a spare, so rotate left: separator 25 comes down → [25]; 30 goes up. Result root [15, 30] with leaves [5, 10] [25] [35].</p>
+<div class="figrow">
+${T('15,25(5,10|20|30,35)','Before.','20')}
+${T('15,30(5,10|25|35)','After rotate left.','25,30')}
+</div>
+
+<h3>Invariants to check after any deletion</h3>
+<ol>
+<li>Every internal node has between 2 (root) or ⌈m/2⌉ and m children.</li>
+<li>No internal node has a null child.</li>
+<li>A node with k + 1 children has exactly k sorted keys.</li>
+<li>All leaves are on the same level.</li>
+</ol>
+`,
+cheat:`
+<ul>
+<li>Internal key → replace with <b>successor</b> (min of right subtree, a leaf key), delete that from leaf</li>
+<li>Leaf still ≥ min keys → done (2-3: deleting from a 2-key leaf is free)</li>
+<li>Underflow fix order: <b>(1) rotate left</b> from right sibling w/ spare; <b>(2) rotate right</b> from left sibling w/ spare; <b>(3) merge</b> node + separator + sibling</li>
+<li>Rotate: separator down, sibling's end key up (internal: move adjacent child too)</li>
+<li>Merge → parent loses key → may cascade; empty root removed → height −1 (only way it shrinks)</li>
+<li>Lecture: T0 = 5 / [1,3]([0][2][4]) / [8]([6][9]); del 3 → 5/[1]([0][2,4])/[8]([6][9]); del 9 → [1,5]([0][2,4][6,8]); del 5 → [1,6]([0][2,4][8])</li>
+</ul>`,
+quiz:[
+{t:'mc',q:'Start from T0 = root [5]; left [1, 3] with leaves [0] [2] [4]; right [8] with leaves [6] [9]. Delete 3. Result?',o:['Root [5]; left [1] with [0] [2, 4]; right [8] with [6] [9]','Root [5]; left [1, 4] with [0] [2] []; right [8] with [6] [9]','Root [1, 5] with [0] [2, 4] [6, 8]','Root [4]; left [1] with [0] [2]; right [8] with [5, 6] [9]'],a:0,e:'3 is replaced by successor 4; leaf [4] empties; left sibling [2] is minimal → merge [2] + 4 = [2, 4]; parent becomes [1].'},
+{t:'w',q:'From T0, delete 0. Draw the result.',a:'Leaf [0] empties. It is the first child, so no left sibling; right sibling [2] is minimal (1 key), so merge: [] + separator 1 + [2] = [1, 2]. Parent [1, 3] becomes [3] with children [1, 2] and [4].<br><b>Result:</b> root [5]; left [3] with [1, 2] [4]; right [8] with [6] [9].'},
+{t:'w',q:'From T0, delete 8. Draw the result.',a:'8 is internal. Successor = 9, so the node becomes [9] and leaf [9] empties. Left sibling [6] is minimal → merge [6] + 9 = [6, 9]. Now node [9] has 0 keys and 1 child: deficient. Its left sibling [1, 3] has a spare key → rotate right: separator 5 moves down into the deficient node → [5]; 3 moves up to the root; child [4] (the left sibling\'s last child) moves over as the first child of [5].<br><b>Result:</b> root [3]; left [1] with [0] [2]; right [5] with [4] [6, 9].'},
+{t:'w',q:'From T0, delete 6. Draw the result.',a:'Leaf [6] empties. It is the first child of [8]; right sibling [9] is minimal → merge [] + 8 + [9] = [8, 9]. Node [8] now has 0 keys → deficient. Left sibling [1, 3] has a spare → rotate right: 5 moves down → [5] with children [4] and [8, 9]; 3 moves up to the root.<br><b>Result:</b> root [3]; left [1] with [0] [2]; right [5] with [4] [8, 9].'},
+{t:'mc',q:'Which deletion step can make a B-tree shorter?',o:['Rotating from a sibling','Removing a key from a leaf with a spare key','Merging the root\'s last two children so the root becomes empty','Replacing an internal key with its successor'],a:2,e:'Height drops only when the root loses its last key during a merge, and the merged child becomes the new root.'},
+{t:'npf',q:'Deleting a key from a 2-3 tree requires restructuring the tree.',a:1,e:'Deleting from a leaf with 2 keys needs no restructuring. Deleting from a 1-key leaf does.'},
+{t:'mc',q:'A deficient node has both a left sibling with a spare key and a right sibling with a spare key. Following the lecture order, what happens?',o:['Rotate right (borrow from left)','Rotate left (borrow from right)','Merge with the left sibling','Merge with the right sibling'],a:1,e:'The lecture checks the right sibling first: rotate left.'}
+]}
+];
+
+/* =====================================================================
+   PRACTICE TESTS  (each ≈ 60 min, 100 pts)
+   ===================================================================== */
+const TESTS=[
+{id:'t1',title:'Practice Test 1',parts:[
+{name:'Part A · TallySort (22 pts)',intro:`<p>Consider this algorithm for arrays of non-negative integers.</p><pre>1: function TallySort(A : array of ℤ≥0)
+2:   k ← max(A);  n ← size of A
+3:   Let C be an array of k+1 zeros
+4:   for i from 0 to n−1 do
+5:     C[A[i]] ← C[A[i]] + 1
+6:   end for
+7:   idx ← 0
+8:   for v from 0 to k do
+9:     for j from 1 to C[v] do
+10:      A[idx] ← v ;  idx ← idx + 1
+11:    end for
+12:  end for
+13:  return A</pre><p>True or False. Justify each answer.</p>`,qs:[
+{t:'tf',pts:4,q:'TallySort runs in O(n + k) time.',a:true,e:'Lines 4–6 are O(n). The outer loop on line 8 runs k+1 times, and the inner loop runs C[v] times; Σ C[v] = n, so lines 8–12 are O(n + k) in total.'},
+{t:'tf',pts:4,q:'Because of the nested loops on lines 8–9, TallySort runs in Θ(n·k) time in the worst case.',a:false,e:'The inner loop does not run n times per v. Across all v it runs exactly n times altogether. Total is Θ(n + k).'},
+{t:'tf',pts:4,q:'TallySort sorts in place.',a:false,e:'It allocates C with k + 1 entries, so it uses Θ(k) extra space.'},
+{t:'tf',pts:4,q:'TallySort can be used to stably sort records (key, payload) by key.',a:false,e:'It never moves the original items. It rewrites values from counts, so payloads are lost. Stability does not even make sense for its output. Use real counting sort (with output array B) for records.'},
+{t:'npf',pts:3,q:'TallySort sorts a given input faster than HeapSort does.',a:1,e:'With small k (e.g. k ∈ O(n)) it is linear and beats HeapSort\'s n log n. With huge k (e.g. [0, 10⁹]) it is far slower.'},
+{t:'mc',pts:3,q:'Which input is the best fit for TallySort?',o:['100 integers in [0, 10,000,000]','2,000,000 dice rolls in [1, 6]','10,000 floats in [0, 1)','Strings sorted by alphabetical order'],a:1,e:'Huge n, tiny k: O(n + 6) = O(n). Large k wastes time and memory; floats and strings can\'t be array indices.'}
+]},
+{name:'Part B · Heaps and HeapSort (32 pts)',qs:[
+{t:'w',pts:6,q:'Insert 15, 9, 12, 3, 7, 1, 10 (in that order) into an empty min-heap. Give the final array.',a:'[15] → [9,15] → [9,15,12] → 3 at [3] swaps with 15, then 9 → [3,9,12,15] → 7 at [4] swaps with 9 → [3,7,12,15,9] → 1 at [5] swaps with 12, then 3 → [1,7,3,15,9,12] → 10 at [6], parent 3 smaller, stays.<br><b>[1, 7, 3, 15, 9, 12, 10]</b>'},
+{t:'w',pts:6,q:'Call ExtractMin twice on your heap from the previous question. What values are returned, and what is the final array?',a:'1st: return 1. Move 10 to root: [10,7,3,15,9,12]; swap with smaller child 3 → [3,7,10,15,9,12]; 10 at [2] has child 12, stop.<br>2nd: return 3. Move 12 to root: [12,7,10,15,9]; swap with 7 → [7,12,10,15,9]; 12 at [1] has children 15, 9 → swap with 9 → [7,9,10,15,12].<br><b>Returns 1 then 3; final [7, 9, 10, 15, 12]</b>'},
+{t:'w',pts:6,q:'Max-heapify [1, 5, 3, 8, 2, 9, 4]. Show the array after each loop iteration.',a:'n = 7, i = 2, 1, 0.<br>i=2: 3 vs 9, 4 → swap with 9 → [1, 5, 9, 8, 2, 3, 4]<br>i=1: 5 vs 8, 2 → swap with 8 → [1, 8, 9, 5, 2, 3, 4]<br>i=0: 1 vs 8, 9 → swap with 9 → [9, 8, 1, 5, 2, 3, 4]; 1 at [2] vs 3, 4 → swap with 4 → <b>[9, 8, 4, 5, 2, 3, 1]</b>'},
+{t:'w',pts:6,q:'Continue HeapSort from the heap [9, 8, 4, 5, 2, 3, 1]. Show the array after each of the first two sort-down iterations.',a:'i=6: swap → [1,8,4,5,2,3 | 9]; SiftDown: 1 vs 8,4 → 8; 1 vs 5,2 → 5 → <b>[8, 5, 4, 1, 2, 3 | 9]</b><br>i=5: swap → [3,5,4,1,2 | 8,9]; SiftDown: 3 vs 5,4 → 5; 3 vs 1,2 → stop → <b>[5, 3, 4, 1, 2 | 8, 9]</b>'},
+{t:'mc',pts:4,q:'A heap has n = 200 items (root at 0). Which triple is (parent of 150, left child of 60, last non-leaf index)?',o:['(74, 121, 99)','(75, 121, 99)','(74, 120, 100)','(74, 121, 100)'],a:0,e:'⌊149/2⌋ = 74; 2·60 + 1 = 121; ⌊200/2⌋ − 1 = 99.'},
+{t:'npf',pts:4,q:'The minimum key of a max-heap with n distinct keys is at index n − 1.',a:1,e:'The minimum is at some leaf. It may be the last one (e.g. [3,2,1]) or not (e.g. [3,1,2]).'}
+]},
+{name:'Part C · Search trees (32 pts)',qs:[
+{t:'mc',pts:4,q:'Insert 50, 30, 70, 20, 40, 60, 80, 35, 45, 65 into an empty BST. What is its height?',o:['2','3','4','9'],a:1,e:'35 and 45 hang under 40; 65 hangs under 60. Longest paths like 50 → 30 → 40 → 35 have 3 edges.'},
+{t:'w',pts:6,q:'Delete 30 from that BST (use the in-order successor). Give the pre-order traversal of the result.',a:'30 has two children. Successor = min of its right subtree {40, 35, 45} = 35. Copy 35 into 30\'s spot and delete the leaf 35.<br><b>Pre-order: 50, 35, 20, 40, 45, 70, 60, 65, 80</b>'},
+{t:'w',pts:6,q:'Insert 5, 15, 25, 10, 20, 30, 35 into an empty 2-3 tree. Draw the final tree.',a:'25 splits [5,15,25] → root [15], leaves [5] [25]. 10 → [5,10]. 20 → [20,25]. 30 → [20,25,30] splits, 25 up → root [15,25], leaves [5,10] [20] [30]. 35 → [30,35].<br><b>Root [15, 25]; leaves [5, 10], [20], [30, 35]. Height 1.</b>'},
+{t:'w',pts:6,q:'Delete 20 from your tree from the previous question. Draw the result and name the fix you used.',a:'Leaf [20] becomes empty. Right sibling [30, 35] has a spare key → <b>rotate left</b>: separator 25 moves down into the empty leaf, 30 moves up.<br><b>Root [15, 30]; leaves [5, 10], [25], [35].</b>'},
+{t:'npf',pts:3,q:'A B-tree of order 3 storing 7 keys has height 1.',a:1,e:'Height 1 can hold up to 2 + 3·2 = 8 keys, so 7 fits (root 2 keys, leaves 2,2,1). But a perfect binary shape of height 2 (all 2-nodes) also has exactly 7 keys. Both are possible.'},
+{t:'npf',pts:3,q:'Inserting n ≥ 1 keys in increasing order into an empty BST gives height n − 1.',a:0,e:'Each key becomes the right child of the previous one: a single path of n nodes, n − 1 edges.'},
+{t:'npf',pts:4,q:'Counting sort on n integers in the range [0, n²] runs in O(n) time.',a:2,e:'k = n², and the count array alone costs Θ(n²) to initialize and prefix-sum. Always Θ(n²).'}
+]},
+{name:'Part D · Short answer (14 pts)',qs:[
+{t:'w',pts:7,q:'Every comparison sort needs Ω(n log n) comparisons. Explain where this bound comes from, and why counting sort is not subject to it.',a:'Model a comparison sort as a binary decision tree: each internal node compares two items, each leaf is an output permutation. It needs at least n! leaves, and a tree of height h has ≤ 2^h leaves, so h ≥ log₂(n!) ∈ Ω(n log n). The height is the worst-case number of comparisons. Counting sort never compares two items; it uses key values as array indices, so it is not described by this decision tree and can run in Θ(n + k).'},
+{t:'w',pts:7,q:'You have n exam scores, each an integer 0–100. Describe preprocessing in Θ(n + 100) time so that "how many scores are ≥ x?" is answered in O(1).',a:'Build counting sort\'s count array C[0..100], then take prefix sums so C[v] = # scores ≤ v. For a query x: if x = 0 the answer is n; otherwise the answer is n − C[x − 1]. Each query is one subtraction: O(1).'}
+]}
+]},
+
+{id:'t2',title:'Practice Test 2',parts:[
+{name:'Part A · MinHeapSort (22 pts)',intro:`<pre>1: function MinHeapSort(A : array)
+2:   Let H be an empty min-heap;  n ← size of A
+3:   for i from 0 to n−1 do
+4:     Insert(H, A[i])
+5:   end for
+6:   Let B be an array of size n
+7:   for i from 0 to n−1 do
+8:     B[i] ← ExtractMin(H)
+9:   end for
+10:  return B</pre><p>Answer each and justify.</p>`,qs:[
+{t:'tf',pts:4,q:'MinHeapSort runs in O(n log n) time.',a:true,e:'n inserts at O(log n) plus n extractions at O(log n).'},
+{t:'tf',pts:4,q:'MinHeapSort is in place.',a:false,e:'H and B each take Θ(n) extra space. (In-place HeapSort reuses the input array.)'},
+{t:'tf',pts:4,q:'Replacing lines 3–5 with Heapify improves the worst-case asymptotic running time of MinHeapSort.',a:false,e:'Heapify makes building O(n), but the n ExtractMin calls still cost Θ(n log n) in the worst case. The total stays Θ(n log n).'},
+{t:'npf',pts:4,q:'Lines 3–5 take Θ(n log n) time.',a:1,e:'Depends on the input. Decreasing input makes every new item sift to the root: Θ(n log n). Increasing input needs no swaps at all: Θ(n).'},
+{t:'tf',pts:3,q:'MinHeapSort is stable.',a:false,e:'Counterexample: A = [1, 2a, 2b, 0]. Inserting 0 sifts it up past 2a, giving H = [0, 1, 2b, 2a]. Extract 0: 2a moves to the root and sinks below 1 → [1, 2a, 2b]. Extract 1: 2b moves to the root; 2a is not strictly smaller, so no swap → [2b, 2a]. Output 0, 1, 2b, 2a: the 2s are reversed.'},
+{t:'npf',pts:3,q:'The worst-case running time of MinHeapSort is O(n³).',a:0,e:'O is an upper bound, and n log n ∈ O(n³).'}
+]},
+{name:'Part B · Counting and bucket sort (30 pts)',qs:[
+{t:'w',pts:4,q:'Counting sort on A = [(1,P), (4,Q), (1,R), (0,S), (3,T), (4,U)] with k = 4. Give C after counting and after prefix sums.',a:'Counts: C = [1, 2, 0, 1, 2].<br>Prefix sums: <b>C = [1, 3, 3, 4, 6]</b>'},
+{t:'w',pts:8,q:'Finish the placement loop (backwards). Give B and the final contents of C.',a:'i=5 (4,U): B[5], C[4]=5 · i=4 (3,T): B[3], C[3]=3 · i=3 (0,S): B[0], C[0]=0 · i=2 (1,R): B[2], C[1]=2 · i=1 (4,Q): B[4], C[4]=4 · i=0 (1,P): B[1], C[1]=1.<br><b>B = (0,S) (1,P) (1,R) (3,T) (4,Q) (4,U)</b>; final <b>C = [0, 1, 3, 3, 4]</b>. Each C[v] now points at the first slot of v\'s block.'},
+{t:'mc',pts:4,q:'Temperatures are integers in [−40, 50]. What count-array size do you need, and where does 0 °C go?',o:['90, index 40','91, index 40','91, index 50','90, index 50'],a:1,e:'50 − (−40) + 1 = 91. Index = 0 − (−40) = 40.'},
+{t:'w',pts:8,q:'BucketSort with k = 5 on A = [34, 7, 91, 55, 62, 18, 40]. Using M = max + 1 = 92 and j = ⌊k·A[i]/M⌋, list each bucket before sorting.',a:'34 → ⌊170/92⌋ = 1; 7 → 0; 91 → ⌊455/92⌋ = 4; 55 → ⌊275/92⌋ = 2 (275 &lt; 276); 62 → ⌊310/92⌋ = 3; 18 → ⌊90/92⌋ = 0; 40 → ⌊200/92⌋ = 2.<br><b>B0 = [7, 18], B1 = [34], B2 = [55, 40], B3 = [62], B4 = [91]</b>'},
+{t:'mc',pts:3,q:'Which inner sort gives bucket sort a worst case of O(n log n)?',o:['Insertion sort','HeapSort','Recursive bucket sort','Any sort, since buckets are small'],a:1,e:'In the worst case all n items land in one bucket, so the bucket\'s sort decides the worst case. HeapSort (or MergeSort) is O(n log n).'},
+{t:'npf',pts:3,q:'Bucket sort with n buckets on n integers runs in Θ(n) time.',a:1,e:'With uniformly spread keys, yes (expected O(n)). If all keys land in one bucket, the inner sort dominates.'}
+]},
+{name:'Part C · Trees (36 pts)',qs:[
+{t:'w',pts:8,q:'Insert 8, 3, 10, 1, 6, 14, 4, 7, 13 into an empty BST. Then delete 3, then delete 8 (successor rule). Give the pre-order of the final tree and its height.',a:'Build: 8 / (3: 1, 6(4, 7)) and (10: _, 14(13, _)).<br>Delete 3: successor = min of {6, 4, 7} = 4 → 8 / (4: 1, 6(_, 7)) / (10: _, 14(13)).<br>Delete 8: successor = 10 (it has no left child). 10 moves up; 10\'s old spot is replaced by its right child 14.<br><b>Pre-order: 10, 4, 1, 6, 7, 14, 13. Height 3</b> (10 → 4 → 6 → 7).'},
+{t:'w',pts:4,q:'Run generateBST on the sorted array [2, 4, 6, 8, 10, 12]. Give the pre-order and height.',a:'m = ⌊5/2⌋ = 2 → root 6. Left [2, 4]: m = 0 → 2 with right child 4. Right [8, 10, 12]: m = 4 → 10 with children 8, 12.<br><b>Pre-order 6, 2, 4, 10, 8, 12. Height 2.</b>'},
+{t:'mc',pts:4,q:'How many different 2-3 trees store exactly {1, 2, 3, 4, 5}?',o:['1','2','3','4'],a:1,e:'Height 1, root 1 key: 4 keys in 2 leaves of ≤ 2 → only (2, 2): 1 tree. Root 2 keys: 3 keys in 3 leaves → (1, 1, 1): 1 tree. Height 0 or 2 impossible. Total 2.'},
+{t:'mc',pts:4,q:'A B-tree with minimum degree t = 2 has height 2. What are the min and max numbers of keys?',o:['7 and 63','7 and 48','5 and 63','3 and 15'],a:0,e:'Min 2t^h − 1 = 2·4 − 1 = 7. Max (2t)^(h+1) − 1 = 4³ − 1 = 63.'},
+{t:'w',pts:8,q:'2-3 tree: root [20]; left child [10] with leaves [5] [15]; right child [30, 40] with leaves [25] [35] [45]. Delete 15. Draw the result, naming each fix.',a:'Leaf [15] empties. No right sibling under [10]; left sibling [5] is minimal → <b>merge</b> [5] + 10 → [5, 10]. Node [10] now has 0 keys → deficient. Its right sibling [30, 40] has a spare → <b>rotate left</b>: 20 moves down, 30 moves up, and 30\'s left child [25] moves over.<br><b>Root [30]; left [20] with [5, 10] [25]; right [40] with [35] [45].</b>'},
+{t:'npf',pts:2,q:'A 2-3 tree of height h has at least 2^(h+1) − 1 keys.',a:0,e:'The fewest keys is when every node is a 2-node: a perfect binary tree with 2^(h+1) − 1 nodes, one key each.'},
+{t:'npf',pts:2,q:'Deleting a key from a B-tree decreases its height.',a:1,e:'Only if merges cascade up to the root and empty it.'},
+{t:'npf',pts:2,q:'In a min-heap of distinct keys, the third-smallest key is at depth 2.',a:1,e:'It is at depth 1 or 2: either the other child of the root, or a child of the 2nd smallest.'},
+{t:'npf',pts:2,q:'Heapify performs Θ(n log n) swaps in the worst case.',a:2,e:'Heapify is O(n) in total, so it cannot do Θ(n log n) swaps.'}
+]},
+{name:'Part D · Short answer (12 pts)',qs:[
+{t:'w',pts:6,q:'Show that HeapSort runs in Θ(n) when all n keys are equal.',a:'Heapify is O(n) regardless. In each of the n − 1 sort-down steps, the swap is O(1), and SiftDown compares the new root with its children, finds no child strictly larger, and stops after O(1) work. So sort-down is (n − 1)·O(1), and the total is Θ(n).'},
+{t:'w',pts:6,q:'What is the total cost of inserting n keys in decreasing order into an empty BST? Justify with a sum.',a:'Each new key is smaller than everything already there, so it follows the left spine to the bottom. The i-th insertion visits i − 1 nodes. Σ_{i=1..n} (i − 1) = n(n − 1)/2 ∈ <b>Θ(n²)</b>.'}
+]}
+]},
+
+{id:'t3',title:'Practice Test 3',parts:[
+{name:'Part A · KSort (22 pts)',intro:`<p>An array is <b>k-sorted</b> if every item is at most k positions away from its position in sorted order.</p><pre>1: function KSort(A : k-sorted array, k : ℤ≥0)
+2:   Let H be an empty min-heap;  n ← size of A
+3:   for i from 0 to min(k, n−1) do
+4:     Insert(H, A[i])
+5:   end for
+6:   idx ← 0
+7:   for i from k+1 to n−1 do
+8:     A[idx] ← ExtractMin(H);  idx ← idx + 1
+9:     Insert(H, A[i])
+10:  end for
+11:  while H is not empty do
+12:    A[idx] ← ExtractMin(H);  idx ← idx + 1
+13:  end while</pre><p>True or False. Justify.</p>`,qs:[
+{t:'tf',pts:4,q:'KSort runs in O(n log k) time.',a:true,e:'The heap never holds more than k + 1 items, so each Insert and ExtractMin is O(log k). There are n of each.'},
+{t:'tf',pts:4,q:'When k = 0, KSort runs in O(n) time.',a:true,e:'A 0-sorted array is already sorted; the heap has size 1, so each operation is O(1).'},
+{t:'tf',pts:4,q:'KSort uses Θ(k) extra space.',a:true,e:'The heap holds at most k + 1 items (for k &lt; n).'},
+{t:'tf',pts:5,q:'KSort with small k contradicts the Ω(n log n) lower bound for comparison sorting.',a:false,e:'The lower bound is a worst case over all n! input orders. k-sorted inputs are a much smaller set of permutations (each item has at most 2k+1 possible positions, so at most (2k+1)^n orders), so fewer comparisons are needed: log₂((2k+1)^n) = n·log₂(2k+1), which matches O(n log k).'},
+{t:'tf',pts:5,q:'Setting k = n − 1 turns KSort into a correct O(n log n) sort for any array.',a:true,e:'Every array is (n−1)-sorted. All items go into the heap, then come out in order: a heap sort with O(log n) operations.'}
+]},
+{name:'Part B · Heaps and sorting (34 pts)',qs:[
+{t:'w',pts:6,q:'The array [2, 5, 3, 9, 6, 4, 8, 10, 12] is a min-heap. Insert 1. Give the final array and the number of swaps.',a:'1 goes to index 9. Parent 4 (value 6) → swap. Now at 4; parent 1 (value 5) → swap. Now at 1; parent 0 (value 2) → swap.<br><b>[1, 2, 3, 9, 5, 4, 8, 10, 12, 6], 3 swaps.</b>'},
+{t:'mc',pts:4,q:'Is [10, 20, 15, 30, 40, 50, 12] a valid min-heap?',o:['Yes','No: 15 at index 2 is bigger than its child 12','No: 20 at index 1 is bigger than 10','No: the tree is not complete'],a:1,e:'Index 2 has children at 5 (50) and 6 (12). 15 > 12 breaks min-heap order.'},
+{t:'w',pts:6,q:'Max-heapify [3, 9, 2, 1, 4, 5]. Give the final array and the total number of swaps.',a:'n = 6, i = 2, 1, 0.<br>i=2: 2 vs child 5 → swap → [3, 9, 5, 1, 4, 2]<br>i=1: 9 vs 1, 4 → no swap<br>i=0: 3 vs 9, 5 → swap with 9 → [9, 3, 5, 1, 4, 2]; 3 vs 1, 4 → swap with 4 → [9, 4, 5, 1, 3, 2]<br><b>[9, 4, 5, 1, 3, 2], 3 swaps.</b>'},
+{t:'mc',pts:4,q:'Insert 5, 9, 2, 7, 11, 4 into an empty max-heap. What is the in-order traversal of the resulting tree?',o:['5, 9, 7, 11, 2, 4','2, 4, 5, 7, 9, 11','11, 9, 4, 5, 7, 2','5, 9, 7, 11, 4, 2'],a:0,e:'Array: [5] → [9,5] → [9,5,2] → 7 swaps with 5 → [9,7,2,5] → 11 swaps with 7, then 9 → [11,9,2,5,7] → 4 swaps with 2 → [11,9,4,5,7,2]. Tree: 11 / (9: 5, 7) / (4: 2, _). In-order: 5, 9, 7, 11, 2, 4.'},
+{t:'w',pts:6,q:'Your intern\'s counting sort fills B going forwards (i = 0 to n−1) while still using B[C[A[i]] − 1] and decrementing. Show on A = [(2,x), (0,y), (2,z)] that the result is not stable.',a:'Prefix sums: C[0] = 1, C[1] = 1, C[2] = 3. Forward: (2,x) → B[2], C[2] = 2; (0,y) → B[0]; (2,z) → B[1].<br>B = (0,y), (2,z), (2,x). In the input x came before z; in the output z comes first. Not stable.'},
+{t:'mc',pts:4,q:'Any comparison sort on 5 items needs at least how many comparisons in the worst case?',o:['5','6','7','10'],a:2,e:'5! = 120; 2⁶ = 64 &lt; 120 ≤ 128 = 2⁷, so h ≥ 7.'},
+{t:'mc',pts:4,q:'You must stably sort 2 million student records by exam score (integer 0–100). Best choice?',o:['HeapSort','Counting sort','QuickSort','Bucket sort with 1 bucket'],a:1,e:'k = 100 ≪ n, so counting sort is Θ(n) and stable. HeapSort and QuickSort are not stable; one bucket is just the inner sort.'}
+]},
+{name:'Part C · Trees (32 pts)',qs:[
+{t:'w',pts:6,q:'Insert 50, 40, 30, 20, 10, 60, 70 into an empty 2-3 tree. Draw the final tree.',a:'30 splits [30,40,50] → root [40], leaves [30] [50]. 20 → [20,30]. 10 → [10,20,30] splits, 20 up → root [20,40], leaves [10] [30] [50]. 60 → [50,60]. 70 → [50,60,70] splits, 60 up → [20,40,60] splits, 40 up as new root.<br><b>Root [40]; left [20] with [10] [30]; right [60] with [50] [70]. Height 2.</b>'},
+{t:'w',pts:8,q:'Delete 40 from the tree above. Draw the result, naming each fix.',a:'40 is internal. Successor = 50. Root becomes [50]; leaf [50] empties. It is the first child of [60]; right sibling [70] is minimal → <b>merge</b> [] + 60 + [70] = [60, 70]. Node [60] now has 0 keys. Its sibling [20] is minimal → <b>merge</b> [20] + 50 + [] = [20, 50] with children [10] [30] [60, 70]. Root is empty → removed.<br><b>Root [20, 50]; leaves [10], [30], [60, 70]. Height 1.</b>'},
+{t:'w',pts:6,q:'Insert 15, 10, 8, 12, 20, 17, 25 into an empty BST. Give its height. Then delete 15 (successor rule) and give the pre-order.',a:'Tree: 15 / (10: 8, 12) / (20: 17, 25). Height 2.<br>Delete 15: successor = 17 (min of right subtree) → copy up, remove leaf 17.<br><b>Pre-order: 17, 10, 8, 12, 20, 25</b>'},
+{t:'mc',pts:4,q:'For a B-tree of order 6: max keys per node; min keys in a non-root internal node; min keys in the root (if it is not a leaf)?',o:['5; 2; 1','6; 3; 1','5; 3; 2','5; 2; 2'],a:0,e:'Max keys m − 1 = 5. Min children ⌈6/2⌉ = 3 → 2 keys. Root needs ≥ 2 children → ≥ 1 key.'},
+{t:'npf',pts:2,q:'A BST built by inserting n distinct keys has height O(log n).',a:1,e:'Some insertion orders give a balanced tree; sorted order gives height n − 1.'},
+{t:'npf',pts:2,q:'A B-tree of order m holding n keys has height O(log n).',a:0,e:'B-trees are always balanced: height ≤ log_{⌈m/2⌉} n roughly.'},
+{t:'npf',pts:2,q:'Splitting a leaf in a B-tree increases the tree\'s height.',a:1,e:'Only when the split cascades all the way up and splits the root.'},
+{t:'npf',pts:2,q:'In a BST, the node holding the maximum key has no right child.',a:0,e:'A right child would hold a larger key.'}
+]},
+{name:'Part D · Short answer (12 pts)',qs:[
+{t:'w',pts:6,q:'Why are B-trees preferred over balanced BSTs for data stored on disk?',a:'Reading a node from disk is far slower than working in memory, so the cost is the number of nodes visited. A B-tree node holds many keys (one disk block), making the tree much shallower: about log_m n levels instead of log₂ n. Fewer levels means fewer disk reads per search, insert or delete.'},
+{t:'w',pts:6,q:'You have m integers with between 1 and k digits each (k ∈ Θ(m)), n digits in total, and digit counts are uniformly distributed. Sketch an O(n) sort.',a:'Bucket by digit count: put A[i] in bucket d_i − 1 (k buckets). Radix sort each bucket (stable counting sort per digit). Concatenate buckets in order: fewer digits means smaller, so the order is correct. Bucket i has ~m/k items of i+1 digits, so radix costs ~(i+1)(m/k); summing gives (m/k)·Σ(i+1), which is proportional to the total number of digits n, and m/k is constant since k ∈ Θ(m). Total O(n).'}
+]}
+]}
+];
+
+/* =====================================================================
+   RENDERING
+   ===================================================================== */
+const main=document.getElementById('main');
+const rail=document.getElementById('rail');
+function railHTML(active){
+  let s=`<div class="brand">CS 251 Midterm Kit<small>Heaps · Sorting · BSTs · B-Trees</small></div><div class="links">`;
+  s+=`<a href="#home" class="${active==='home'?'on':''}"><span class="n">★</span>Start here</a>`;
+  s+=`</div><h4>Lessons</h4><div class="links">`;
+  TOPICS.forEach((t,i)=>{ s+=`<a href="#${t.id}" class="${active===t.id?'on':''}"><span class="n">${i+1}</span>${t.title}</a>`; });
+  s+=`</div><h4>Practice tests · 60 min</h4><div class="links">`;
+  TESTS.forEach((t,i)=>{ s+=`<a href="#${t.id}" class="${active===t.id?'on':''}"><span class="n">T${i+1}</span>${t.title}</a>`; });
+  s+=`</div><h4>Review</h4><div class="links"><a href="#latex" class="${active==='latex'?'on':''}"><span class="n">TeX</span>4-page LaTeX sheet</a><a href="#sheet" class="${active==='sheet'?'on':''}"><span class="n">≡</span>Lesson boxes combined</a></div>`;
+  return s;
+}
+const LET='ABCDEFGH';
+function qHTML(q,idx,prefix,withPts){
+  const id=prefix+'-'+idx;
+  const kind={mc:'Multiple choice',npf:'Necessarily / Possibly',tf:'True / False',w:'Written'}[q.t];
+  let s=`<div class="q" id="${id}"><div class="qh"><span class="qn">Q${idx+1}</span><span class="kind">${kind}${withPts&&q.pts?` <span class="pts">· ${q.pts} pts</span>`:''}</span></div><div class="qt">${q.q}</div>`;
+  if(q.t==='w'){
+    s+=`<button class="btn" data-show="${id}">Show answer</button><div class="ans" hidden><div>${q.a}</div></div>`;
+  } else {
+    const opts = q.t==='mc'? q.o : q.t==='npf'? NPF : ['True','False'];
+    const correct = q.t==='tf' ? (q.a?0:1) : q.a;
+    s+=`<div class="opts">`+opts.map((o,j)=>`<button class="opt" data-q="${id}" data-j="${j}" data-c="${correct}"><span class="l">${LET[j]}</span><span>${o}</span></button>`).join('')+`</div>`;
+    s+=`<div class="ans" hidden><div class="verdict"></div><div>${q.e}</div></div>`;
+  }
+  return s+`</div>`;
+}
+function renderHome(){
+  return `<div class="col">
+  <div class="eyebrow">Midterm prep · Wednesday</div>
+  <h1>Everything since Stacks &amp; Queues, from zero</h1>
+  <p class="lede">Nine lessons built from your lecture slides, PSO 3–5 and Problem Set 2. Each lesson ends with a quiz and the lines to copy onto your cheat sheet. Then three one-hour practice tests with full solutions.</p>
+  <h2>Suggested plan for tonight</h2>
+  <div class="plan">
+    ${TOPICS.map((t,i)=>`<a href="#${t.id}"><span class="t">${i+1} · ${t.time}</span><b>${t.title}</b><span>Lesson, quiz, cheat-sheet box</span></a>`).join('')}
+    <a href="#latex"><span class="t">Print tonight</span><b>4-page LaTeX cheat sheet</b><span>Copy into Overleaf, print front and back</span></a>
+    ${TESTS.map((t,i)=>`<a href="#${t.id}"><span class="t">T${i+1} · 60 min</span><b>${t.title}</b><span>Timed, 100 pts, answers per question</span></a>`).join('')}
+  </div>
+  <p>Roughly 5 hours of lessons. If time is short, do lessons 1–3 and 5 (heaps and counting sort appear on every PSO), skim 4 and 6, do 7–9, then take one practice test under time.</p>
+
+  <h2>Conventions this course uses</h2>
+  <ul>
+    <li><b>Height counts edges.</b> A single node has height 0 (PS 2 Q12, PSO 3 Q2).</li>
+    <li><b>Heap arrays start at index 0:</b> children 2i+1, 2i+2; parent ⌊(i−1)/2⌋.</li>
+    <li><b>BST insert sends equal keys left</b>; delete with two children uses the in-order <b>successor</b>.</li>
+    <li><b>B-tree order m</b> (Knuth): at most m children, m−1 keys. Order 3 = 2-3 tree. PSO 5 also uses <b>minimum degree t</b> (t−1…2t−1 keys).</li>
+    <li><b>B-tree underflow</b>: try the right sibling, then the left, then merge.</li>
+  </ul>
+
+  <div class="trap"><b>Your known weak spots</b>Necessarily/possibly/necessarily-false with big-O (O is only an upper bound), and geometric sums (they converge to a constant; they do not produce log n). Both come up here: HeapSort "is O(n²)" is necessarily true, and Heapify's O(n) proof is a converging sum.</div>
+
+  <h2>About the source material</h2>
+  <p>You mentioned PSO 2; the project has PSO 3 (twice, identical), PSO 4 and PSO 5, and PSO 3 is the one with heap questions, so that is what these lessons use. I did not find the mini quizzes in the project, so the quizzes here follow the style of the PSOs and Problem Set 2 instead.</p>
+  </div>`;
+}
+function renderTopic(t,i){
+  let s=`<div class="col"><div class="eyebrow">Lesson ${i+1} of ${TOPICS.length} · about ${t.time}</div><h1>${t.title}</h1>${t.lesson}`;
+  s+=`<div class="cheat"><h3>Cheat sheet: ${t.title}<span>copy these lines</span></h3>${t.cheat}</div>`;
+  s+=`<div class="quiz"><h2>Quiz: ${t.title}</h2><p class="score" id="score-${t.id}">Answered 0 of ${t.quiz.length}</p>`;
+  s+=t.quiz.map((q,j)=>qHTML(q,j,t.id,false)).join('');
+  s+=`</div>`;
+  const nx=TOPICS[i+1], nt=nx?`#${nx.id}`:'#t1';
+  s+=`<p style="margin-top:28px"><a class="btn solid" href="${nt}" style="text-decoration:none">Next: ${nx?nx.title:'Practice Test 1'} →</a></p></div>`;
+  return s;
+}
+function renderTest(t,i){
+  let total=0; t.parts.forEach(p=>p.qs.forEach(q=>total+=q.pts||0));
+  let s=`<div class="wide"><div class="eyebrow">Practice test ${i+1} · 60 minutes · ${total} points</div><h1>${t.title}</h1>
+  <p class="lede">Work on paper first. Multiple-choice answers lock when clicked; written answers stay hidden until you open them.</p>
+  <div class="testbar"><div class="row"><span class="clock" id="clock">60:00</span>
+  <button class="btn solid" id="clk-start">Start</button><button class="btn" id="clk-reset">Reset</button></div>
+  <div class="row"><button class="btn" id="reveal-all">Reveal all answers</button><span class="confirm" id="reveal-confirm" hidden>Show every answer? <button class="btn" id="reveal-yes">Yes, reveal</button> <button class="btn" id="reveal-no">Cancel</button></span></div></div>`;
+  let n=0;
+  t.parts.forEach(p=>{
+    s+=`<div class="part">${p.name}</div>${p.intro||''}`;
+    p.qs.forEach(q=>{ s+=qHTML(q,n,t.id,true); n++; });
+  });
+  s+=`</div>`;
+  return s;
+}
+function renderLatex(){
+  return `<div class="wide"><div class="eyebrow">4 pages · 2 sheets front and back · US Letter · 2 columns</div><h1>4-page LaTeX cheat sheet</h1>
+  <p class="lede">All code, formulas in proper equation form, definitions, traps, step-by-step walkthroughs, tree diagrams and likely pseudocode questions, sized to exactly four printed pages. Colour-coded: gold boxes are key facts, blue boxes are how-to walkthroughs, red boxes are traps.</p>
+  <div class="row"><button class="btn solid" id="copy-tex">Copy LaTeX for Overleaf</button><a class="btn" href="cheat.pdf" target="_blank" rel="noopener" style="text-decoration:none">Open the PDF</a><span class="score" id="tex-msg"></span></div>
+  <div class="note" style="margin-top:14px"><b>Overleaf</b>New Project → Blank Project → replace main.tex with the copied code → Recompile. It uses only standard packages (extsizes, helvet, multicol, listings, forest, tcolorbox), so the default pdfLaTeX compiler works. Print at 100% / "Actual size", not "Fit to page".</div>
+  <h2>Page 1</h2><div class="fig"><img src="cheat-p1.png" alt="Cheat sheet page 1" style="width:100%;max-width:900px"></div>
+  <h2>Page 2</h2><div class="fig"><img src="cheat-p2.png" alt="Cheat sheet page 2" style="width:100%;max-width:900px"></div>
+  <h2>Page 3</h2><div class="fig"><img src="cheat-p3.png" alt="Cheat sheet page 3" style="width:100%;max-width:900px"></div>
+  <h2>Page 4</h2><div class="fig"><img src="cheat-p4.png" alt="Cheat sheet page 4" style="width:100%;max-width:900px"></div>
+  <h2>LaTeX source</h2><pre id="tex-pre" style="max-height:520px"></pre></div>`;
+}
+function renderSheet(){
+  return `<div class="wide"><div class="eyebrow">All nine boxes in one place</div><h1>Cheat sheet</h1>
+  <p class="lede">Black and white on purpose, so it transfers cleanly to your LaTeX sheet and you can highlight by hand.</p>
+  <p><button class="btn" id="copy-sheet">Copy all as plain text</button> <span class="score" id="copy-msg"></span></p>
+  <div class="sheet" id="sheet-body">${TOPICS.map(t=>`<div class="cheat"><h3>${t.title}</h3>${t.cheat}</div>`).join('')}</div></div>`;
+}
+
+/* ---------- interactions ---------- */
+let answered={};
+document.addEventListener('click',e=>{
+  const o=e.target.closest('.opt');
+  if(o && !o.disabled){
+    const qid=o.dataset.q, j=+o.dataset.j, c=+o.dataset.c;
+    const box=document.getElementById(qid);
+    box.querySelectorAll('.opt').forEach(b=>{ b.disabled=true; if(+b.dataset.j===c) b.classList.add('right'); });
+    if(j!==c) o.classList.add('wrong');
+    const ans=box.querySelector('.ans'); ans.hidden=false;
+    const v=ans.querySelector('.verdict'); v.textContent=j===c?'Correct.':'Not quite. Correct answer: '+LET[c]+'.'; v.className='verdict '+(j===c?'ok':'no');
+    tally(qid,j===c);
+    return;
+  }
+  const sh=e.target.closest('[data-show]');
+  if(sh){ const box=document.getElementById(sh.dataset.show); const a=box.querySelector('.ans'); a.hidden=!a.hidden; sh.textContent=a.hidden?'Show answer':'Hide answer'; tally(sh.dataset.show,null); return; }
+});
+function tally(qid,ok){
+  const topic=qid.split('-')[0];
+  answered[topic]=answered[topic]||{};
+  if(answered[topic][qid]===undefined) answered[topic][qid]=ok;
+  const el=document.getElementById('score-'+topic);
+  if(!el) return;
+  const vals=Object.values(answered[topic]);
+  const mc=vals.filter(v=>v!==null), right=mc.filter(v=>v).length;
+  const tot=TOPICS.find(t=>t.id===topic).quiz.length;
+  el.textContent=`Answered ${vals.length} of ${tot} · ${right}/${mc.length} auto-graded correct`;
+}
+
+/* timer */
+let clk={left:3600,run:false,h:null};
+function drawClock(){ const el=document.getElementById('clock'); if(!el) return; const m=Math.floor(clk.left/60), s=clk.left%60; el.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; el.classList.toggle('low',clk.left<=300); }
+function wireTest(){
+  const st=document.getElementById('clk-start');
+  st.onclick=()=>{ if(clk.run){ clearInterval(clk.h); clk.run=false; st.textContent='Resume'; } else { clk.run=true; st.textContent='Pause'; clk.h=setInterval(()=>{ if(clk.left>0){clk.left--; drawClock();} else { clearInterval(clk.h); clk.run=false; st.textContent='Time is up'; } },1000); } };
+  document.getElementById('clk-reset').onclick=()=>{ clearInterval(clk.h); clk={left:3600,run:false,h:null}; st.textContent='Start'; drawClock(); };
+  const rc=document.getElementById('reveal-confirm');
+  document.getElementById('reveal-all').onclick=()=>{ rc.hidden=false; };
+  document.getElementById('reveal-no').onclick=()=>{ rc.hidden=true; };
+  document.getElementById('reveal-yes').onclick=()=>{
+    rc.hidden=true;
+    main.querySelectorAll('.q').forEach(box=>{
+      box.querySelectorAll('.opt').forEach(b=>{ b.disabled=true; if(+b.dataset.j===+b.dataset.c) b.classList.add('right'); });
+      const a=box.querySelector('.ans'); a.hidden=false;
+      const sb=box.querySelector('[data-show]'); if(sb) sb.textContent='Hide answer';
+    });
+  };
+  drawClock();
+}
+
+/* heap lab */
+function wireLab(){
+  const lab=document.getElementById('heaplab'); if(!lab) return;
+  const fig=document.getElementById('hl-fig'), log=document.getElementById('hl-log');
+  let A=[];
+  const read=()=>document.getElementById('hl-in').value.split(/[,\s]+/).filter(Boolean).map(Number).filter(x=>!isNaN(x));
+  const better=(x,y)=>document.getElementById('hl-mode').value==='max'? x>y : x<y;
+  function show(arr,sortedFrom){
+    const f=document.createElement('div'); f.dataset.heap=(sortedFrom!==undefined?arr.slice(0,sortedFrom):arr).join(',');
+    fig.innerHTML=''; if(!arr.length){fig.innerHTML='<div class="cap">(empty)</div>';return;}
+    const tmp=document.createElement('div'); tmp.appendChild(f); hydrate(tmp); fig.innerHTML=f.innerHTML;
+    if(sortedFrom!==undefined) fig.innerHTML+=`<div class="cap">Full array: [${arr.join(', ')}]</div>`;
+  }
+  function childIdx(a,n,i){ const l=2*i+1, r=2*i+2; if(l>=n) return n; if(r>=n) return l; return better(a[l],a[r])?l:r; }
+  function sift(a,n,i,lines){ let m=childIdx(a,n,i); while(m<n && better(a[m],a[i])){ lines.push(`  swap ${a[i]} [${i}] ↔ ${a[m]} [${m}]`); [a[i],a[m]]=[a[m],a[i]]; i=m; m=childIdx(a,n,i);} }
+  lab.addEventListener('click',e=>{
+    const b=e.target.closest('[data-act]'); if(!b) return;
+    const act=b.dataset.act, lines=[];
+    if(act==='heapify'||act==='sort'){ A=read(); const n=A.length; lines.push(`Heapify [${A.join(', ')}], n=${n}, i from ${Math.floor(n/2)-1} down to 0`); for(let i=Math.floor(n/2)-1;i>=0;i--){ lines.push(`i=${i} (value ${A[i]})`); sift(A,n,i,lines); lines.push(`  → [${A.join(', ')}]`);} }
+    if(act==='insert'){ const src=read(); A=[]; src.forEach(x=>{ A.push(x); let i=A.length-1; lines.push(`insert ${x} at [${i}]`); while(i>0){ const p=Math.floor((i-1)/2); if(better(A[i],A[p])){ lines.push(`  swap ${A[i]} [${i}] ↔ ${A[p]} [${p}]`); [A[i],A[p]]=[A[p],A[i]]; i=p;} else break; } lines.push(`  → [${A.join(', ')}]`); }); }
+    if(act==='extract'){ if(!A.length){ A=read(); lines.push('(no heap yet, using the array as typed; heapify it first for a valid result)'); } if(A.length){ const t=A[0]; A[0]=A[A.length-1]; A.pop(); lines.push(`extract ${t}; move last item to root → [${A.join(', ')}]`); sift(A,A.length,0,lines); lines.push(`  → [${A.join(', ')}]`); document.getElementById('hl-in').value=A.join(', ');} }
+    if(act==='sort'){ let n=A.length; lines.push('Sort down:'); for(let i=n-1;i>=1;i--){ [A[0],A[i]]=[A[i],A[0]]; lines.push(`i=${i}: swap root with [${i}] → [${A.slice(0,i).join(', ')} | ${A.slice(i).join(', ')}]`); n--; sift(A,n,0,lines); lines.push(`  → [${A.slice(0,i).join(', ')} | ${A.slice(i).join(', ')}]`);} }
+    log.textContent=lines.join('\n'); show(A);
+  });
+  A=read(); show(A); log.textContent='Pick an action. Ties go to the right child, matching the lecture\'s MinChildIndex.';
+}
+
+function route(){
+  const id=(location.hash||'#home').slice(1);
+  rail.innerHTML=railHTML(id);
+  clearInterval(clk.h); clk={left:3600,run:false,h:null};
+  const ti=TOPICS.findIndex(t=>t.id===id), xi=TESTS.findIndex(t=>t.id===id);
+  if(ti>=0){ main.innerHTML=renderTopic(TOPICS[ti],ti); answered[id]={}; }
+  else if(xi>=0){ main.innerHTML=renderTest(TESTS[xi],xi); wireTest(); }
+  else if(id==='latex'){ main.innerHTML=renderLatex();
+    const tex=document.getElementById('texsrc').textContent.replace(/^\n/,'');
+    document.getElementById('tex-pre').textContent=tex;
+    document.getElementById('copy-tex').onclick=()=>{ const msg=document.getElementById('tex-msg');
+      navigator.clipboard.writeText(tex).then(()=>msg.textContent='Copied. Paste it into main.tex on Overleaf.').catch(()=>{ const r=document.createRange(); r.selectNodeContents(document.getElementById('tex-pre')); const sl=getSelection(); sl.removeAllRanges(); sl.addRange(r); msg.textContent='Selected the code below. Press Ctrl/Cmd+C to copy.'; }); }; }
+  else if(id==='sheet'){ main.innerHTML=renderSheet();
+    document.getElementById('copy-sheet').onclick=()=>{ const txt=document.getElementById('sheet-body').innerText; const msg=document.getElementById('copy-msg');
+      navigator.clipboard.writeText(txt).then(()=>msg.textContent='Copied.').catch(()=>{ const r=document.createRange(); r.selectNodeContents(document.getElementById('sheet-body')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Selected. Press Ctrl/Cmd+C to copy.'; }); }; }
+  else main.innerHTML=renderHome();
+  hydrate(main); wireLab();
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+route();
+</script>
+
+</body></html>
